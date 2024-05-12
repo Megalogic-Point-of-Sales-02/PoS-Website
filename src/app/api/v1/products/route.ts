@@ -43,3 +43,21 @@ export async function POST(req: NextRequest) {
         });
     }
     }
+
+export async function DELETE(req: NextRequest) {
+    // Get the request body
+    const requestBody = await req.json();
+    const { error } = await supabase.from("products").delete().eq("id", requestBody.id);
+
+    // Error
+    if (error) {
+        return new NextResponse(JSON.stringify(error.message), {
+        status: 500,
+        });
+    }
+
+    // Success
+    return new NextResponse(JSON.stringify({ message: "Product deleted successfully" }), {
+        status: 200,
+    });
+}
