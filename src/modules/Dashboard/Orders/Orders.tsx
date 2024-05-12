@@ -45,7 +45,7 @@ const Orders = () => {
           <ul>
             {orders.map((order: OrderResponse) => (
               <li key={order.id}>
-                Customer Name: {order.customer_name}, Product Name: {order.product_name}, Order Date: {order.order_date.toString()}, Ship Date: {order.ship_date.toString()}
+                Customer Name: {order.customers.customer_name}, Product Name: {order.products.product_name}, Order Date: {order.order_date.toString()}, Ship Date: {order.ship_date.toString()}
               </li>
             ))}
           </ul>
