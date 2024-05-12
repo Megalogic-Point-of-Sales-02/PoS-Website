@@ -1,4 +1,4 @@
-export interface Product {
+export interface ProductResponse {
   id: number;
   product_name: string;
   product_category: string;

@@ -1,4 +1,4 @@
-export interface Customer {
+export interface CustomerResponse {
   id: number;
   customer_name: string;
   gender: "Male" | "Female" | "Other";
