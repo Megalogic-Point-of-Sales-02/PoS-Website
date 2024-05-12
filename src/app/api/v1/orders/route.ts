@@ -1,3 +1,4 @@
+import { OrderRequest } from "@/interfaces/OrderRequest";
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,4 +22,26 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {}
+export async function POST(req: NextRequest) {
+  // Get the request body
+  const requestBody: OrderRequest = await req.json();
+  console.log("data: ", requestBody);
+
+  // Insert the data
+  // query = "INSERT INTO orders (order_date, ship_date, customer_id, product_id) VALUES ('2023-05-01', '2023-05-03', 1, 1)"
+  const { data, error } = await supabase.from("orders").insert([requestBody]).select();
+
+  // Error
+  if (error) {
+    return new NextResponse(JSON.stringify(error.message), {
+      status: 500,
+    });
+  }
+
+  // Success
+  if (data) {
+    return new NextResponse(JSON.stringify(data), {
+      status: 200,
+    });
+  }
+}
