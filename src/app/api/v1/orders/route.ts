@@ -45,3 +45,21 @@ export async function POST(req: NextRequest) {
     });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  // Get the request body
+  const requestBody = await req.json();
+  const { error } = await supabase.from("orders").delete().eq("id", requestBody.id);
+
+  // Error
+  if (error) {
+    return new NextResponse(JSON.stringify(error.message), {
+      status: 500,
+    });
+  }
+
+  // Success
+  return new NextResponse(JSON.stringify({ message: `Berhasil menghapus order dengan id: ${requestBody.id}` }), {
+    status: 200,
+  });
+}
