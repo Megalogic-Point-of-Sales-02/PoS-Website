@@ -29,6 +29,7 @@ const MonthylRevenue = () => {
       setMonthlyRevenue(data);
     }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -38,7 +39,7 @@ const MonthylRevenue = () => {
           id="date-prefix"
           name="date-prefix"
           value={datePrefix}
-          max="2024-05"
+          max={getCurrentDatePrefix()}
           onChange={(e) => {
             setDatePrefix(e.target.value);
             console.log(e.target.value);
