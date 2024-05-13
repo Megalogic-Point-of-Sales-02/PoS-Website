@@ -1,6 +1,7 @@
 import Customers from "./Customers/Customers";
 import Orders from "./Orders/Orders";
 import Products from "./Products/Products";
+import MonthylRevenue from "./Revenues/Monthly/MonthylRevenue";
 
 const Dashboard = () => {
   return (
@@ -14,6 +15,9 @@ const Dashboard = () => {
 
       <h2 className="text-xl">Product List</h2>
       <Products />
+
+      <h2 className="text-xl">Monthly Revenue</h2>
+      <MonthylRevenue />
     </>
   );
 };
