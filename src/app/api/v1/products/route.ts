@@ -57,7 +57,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     // Success
-    return new NextResponse(JSON.stringify({ message: "Product deleted successfully" }), {
+    return new NextResponse(JSON.stringify({ message: `Berhasil menghapus order dengan id: ${requestBody.id}` }), {
         status: 200,
     });
 }
