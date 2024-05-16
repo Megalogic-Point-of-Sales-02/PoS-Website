@@ -45,7 +45,7 @@ const ListProducts = () => {
       {products !== null && products !== undefined && (
         <>
           {/* Table */}
-          <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem">
+          <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
             <Flex flexDirection="row">
               <Text fontSize="2xl">Product List</Text>
               <Spacer />
@@ -55,6 +55,7 @@ const ListProducts = () => {
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
                   <Tr>
+                    <Th color="white">ID</Th>
                     <Th color="white">Name</Th>
                     <Th color="white">Category</Th>
                     <Th color="white">Subcategory</Th>
@@ -67,6 +68,7 @@ const ListProducts = () => {
                 <Tbody>
                   {products.map((product: ProductResponse) => (
                     <Tr key={product.id}>
+                      <Td>{product.id}</Td>
                       <Td>{product.product_name}</Td>
                       <Td>{product.product_category}</Td>
                       <Td>{product.product_sub_category}</Td>

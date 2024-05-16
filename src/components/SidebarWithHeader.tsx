@@ -67,7 +67,7 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
-    <Box transition="3s ease" bg="#132337" borderRight="1px" borderRightColor="#0f1824" w={{ base: "full", md: 60 }} pos="fixed" h="full" {...rest}>
+    <Box transition="3s ease" bg="#132337" borderRight="2px" borderRightColor="#1c2e45" w={{ base: "full", md: 60 }} pos="fixed" h="full" {...rest}>
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontWeight="bold" color={"white"}>
           Megalogic PoS
@@ -124,7 +124,7 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   return (
-    <Flex ml={{ base: 0, md: 60 }} px={{ base: 4, md: 4 }} height="20" alignItems="center" bg="#132337" borderBottomWidth="1px" borderBottomColor="#132337" justifyContent={{ base: "space-between", md: "flex-end" }} {...rest}>
+    <Flex ml={{ base: 0, md: 60 }} px={{ base: 4, md: 4 }} height="4rem" alignItems="center" bg="#132337" borderBottomWidth="1px" borderBottomColor="#132337" justifyContent={{ base: "space-between", md: "flex-end" }} {...rest}>
       <IconButton display={{ base: "flex", md: "none" }} onClick={onOpen} bgColor="#white" aria-label="open menu" icon={<FiMenu />} />
 
       <Text display={{ base: "flex", md: "none" }} fontSize="2xl" fontWeight="bold" color="white">

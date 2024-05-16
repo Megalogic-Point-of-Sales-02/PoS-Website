@@ -48,7 +48,7 @@ const ListCustomers = () => {
       {customers !== null && customers !== undefined && (
         <>
           {/* Table */}
-          <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem">
+          <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
             <Flex flexDirection="row">
               <Text fontSize="2xl">Customer List</Text>
               <Spacer />
