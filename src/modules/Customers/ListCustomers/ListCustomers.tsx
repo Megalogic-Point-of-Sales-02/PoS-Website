@@ -1,6 +1,7 @@
 "use client";
 
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
+import { Box, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 const ListCustomers = () => {
@@ -43,13 +44,45 @@ const ListCustomers = () => {
       {/* Show Customers */}
       {customers !== null && customers !== undefined && (
         <>
-          <ul>
-            {customers.map((customer: CustomerResponse) => (
-              <li key={customer.id}>
-                Name: {customer.customer_name}, Gender: {customer.gender}, Age: {customer.age}, Job: {customer.job}, Segment: {customer.segment}, Total Spend: {customer.total_spend}
-              </li>
-            ))}
-          </ul>
+          {/* Table */}
+          <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem">
+            <Flex flexDirection="row">
+              <Text fontSize="2xl">Customer List</Text>
+              <Spacer />
+              <Button>Add Customer</Button>
+            </Flex>
+            <TableContainer>
+              <Table variant="simple" colorScheme="blackAlpha">
+                <Thead bgColor={"#1c2e45"}>
+                  <Tr>
+                    <Th color="white">Name</Th>
+                    <Th color="white">Gender</Th>
+                    <Th color="white" isNumeric>
+                      Age
+                    </Th>
+                    <Th color="white">Job</Th>
+                    <Th color="white">Segment</Th>
+                    <Th color="white" isNumeric>
+                      Total Spend
+                    </Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {customers.map((customer: CustomerResponse) => (
+                    <Tr key={customer.id}>
+                      <Td>{customer.customer_name}</Td>
+                      <Td>{customer.gender}</Td>
+                      <Td isNumeric>{customer.age}</Td>
+                      <Td>{customer.job}</Td>
+                      <Td>{customer.segment}</Td>
+                      <Td isNumeric>{customer.total_spend}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+                <Tfoot></Tfoot>
+              </Table>
+            </TableContainer>
+          </Flex>
         </>
       )}
     </div>
