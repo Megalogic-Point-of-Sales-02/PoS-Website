@@ -1,11 +1,13 @@
 "use client";
 
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import AddCustomer from "../AddCustomer/AddCustomer";
 
 const ListCustomers = () => {
+  const { isOpen: isAddCustOpen, onOpen: onAddCustOpen, onClose: onAddCustClose } = useDisclosure();
   const [customers, setCustomers] = useState<CustomerResponse[] | null | undefined>(null);
 
   useEffect(() => {
@@ -50,12 +52,14 @@ const ListCustomers = () => {
             <Flex flexDirection="row">
               <Text fontSize="2xl">Customer List</Text>
               <Spacer />
-              <Button>Add Customer</Button>
+              <Button onClick={onAddCustOpen}>Add Customer</Button>
+              <AddCustomer isOpen={isAddCustOpen} onClose={onAddCustClose} />
             </Flex>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
                   <Tr>
+                    <Th color="white">ID</Th>
                     <Th color="white">Name</Th>
                     <Th color="white">Gender</Th>
                     <Th color="white" isNumeric>
@@ -72,6 +76,7 @@ const ListCustomers = () => {
                 <Tbody>
                   {customers.map((customer: CustomerResponse) => (
                     <Tr key={customer.id}>
+                      <Td>{customer.id}</Td>
                       <Td>{customer.customer_name}</Td>
                       <Td>{customer.gender}</Td>
                       <Td isNumeric>{customer.age}</Td>
