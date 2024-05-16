@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
-import { Box, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 const ListCustomers = () => {

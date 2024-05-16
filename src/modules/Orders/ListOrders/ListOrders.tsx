@@ -2,6 +2,7 @@
 
 import { OrderResponse } from "@/interfaces/OrderResponse";
 import { useEffect, useState } from "react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
 
 const ListOrders = () => {
   const [orders, setOrders] = useState<OrderResponse[] | null | undefined>(null);
@@ -42,14 +43,40 @@ const ListOrders = () => {
       {/* Show Customers */}
       {orders !== null && orders !== undefined && (
         <>
-          <ul>
-            {orders.map((order: OrderResponse) => (
-              <li key={order.id}>
-                Customer Name: {order.customers.customer_name}, Product Name: {order.products.product_name}, Order Date: {order.order_date.toString()}, Ship Date: {order.ship_date.toString()}
-              </li>
-            ))}
-          </ul>
-        </>
+        {/* Table */}
+        <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem">
+          <Flex flexDirection="row">
+            <Text fontSize="2xl">Order List</Text>
+            <Spacer />
+            <Button>Add order</Button>
+          </Flex>
+          <TableContainer>
+            <Table variant="simple" colorScheme="blackAlpha">
+              <Thead bgColor={"#1c2e45"}>
+                <Tr>
+                  <Th color="white">Order Date</Th>
+                  <Th color="white">Shipping Date</Th>
+                  <Th color="white">Customer</Th>
+                  <Th color="white">
+                    Product
+                  </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {orders.map((order: OrderResponse) => (
+                  <Tr key={order.id}>
+                    <Td>{order.order_date.toString()}</Td>
+                    <Td>{order.ship_date.toString()}</Td>
+                    <Td>{order.customers.customer_name}</Td>
+                    <Td>{order.products.product_name}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+              <Tfoot></Tfoot>
+            </Table>
+          </TableContainer>
+        </Flex>
+      </>
       )}
     </div>
   );
