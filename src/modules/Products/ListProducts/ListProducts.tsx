@@ -3,6 +3,7 @@
 import { ProductResponse } from "@/interfaces/ProductResponse";
 import { useEffect, useState } from "react";
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { FaTrashAlt } from "react-icons/fa";
 
 const ListProducts = () => {
   const [products, setProducts] = useState<ProductResponse[] | null | undefined>(null);
@@ -60,6 +61,7 @@ const ListProducts = () => {
                     <Th color="white" isNumeric>
                       Price
                     </Th>
+                    <Th width="5rem"></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -69,6 +71,11 @@ const ListProducts = () => {
                       <Td>{product.product_category}</Td>
                       <Td>{product.product_sub_category}</Td>
                       <Td isNumeric>{product.product_price}</Td>
+                      <Td width="5rem">
+                        <Button colorScheme="red" size="sm" variant="outline">
+                          <FaTrashAlt />
+                        </Button>
+                      </Td>
                     </Tr>
                   ))}
                 </Tbody>

@@ -3,6 +3,7 @@
 import { OrderResponse } from "@/interfaces/OrderResponse";
 import { useEffect, useState } from "react";
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { FaTrashAlt } from "react-icons/fa";
 
 const ListOrders = () => {
   const [orders, setOrders] = useState<OrderResponse[] | null | undefined>(null);
@@ -60,6 +61,7 @@ const ListOrders = () => {
                   <Th color="white">
                     Product
                   </Th>
+                  <Th width="5rem"></Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -69,6 +71,11 @@ const ListOrders = () => {
                     <Td>{order.ship_date.toString()}</Td>
                     <Td>{order.customers.customer_name}</Td>
                     <Td>{order.products.product_name}</Td>
+                    <Td width="5rem">
+                        <Button colorScheme="red" size="sm" variant="outline">
+                          <FaTrashAlt />
+                        </Button>
+                      </Td>
                   </Tr>
                 ))}
               </Tbody>

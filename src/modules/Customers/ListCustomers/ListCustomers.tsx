@@ -3,6 +3,7 @@
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
 
 const ListCustomers = () => {
   const [customers, setCustomers] = useState<CustomerResponse[] | null | undefined>(null);
@@ -65,6 +66,7 @@ const ListCustomers = () => {
                     <Th color="white" isNumeric>
                       Total Spend
                     </Th>
+                    <Th width="5rem"></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -76,6 +78,11 @@ const ListCustomers = () => {
                       <Td>{customer.job}</Td>
                       <Td>{customer.segment}</Td>
                       <Td isNumeric>{customer.total_spend}</Td>
+                      <Td width="5rem">
+                        <Button colorScheme="red" size="sm" variant="outline">
+                          <FaTrashAlt />
+                        </Button>
+                      </Td>
                     </Tr>
                   ))}
                 </Tbody>
