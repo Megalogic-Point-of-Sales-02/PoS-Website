@@ -3,7 +3,7 @@
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
 import { useEffect, useState } from "react";
 
-const Customers = () => {
+const ListCustomers = () => {
   const [customers, setCustomers] = useState<CustomerResponse[] | null | undefined>(null);
 
   useEffect(() => {
@@ -56,4 +56,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default ListCustomers;

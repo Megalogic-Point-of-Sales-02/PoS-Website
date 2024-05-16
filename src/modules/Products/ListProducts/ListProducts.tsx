@@ -3,7 +3,7 @@
 import { ProductResponse } from "@/interfaces/ProductResponse";
 import { useEffect, useState } from "react";
 
-const Products = () => {
+const ListProducts = () => {
   const [products, setProducts] = useState<ProductResponse[] | null | undefined>(null);
 
   useEffect(() => {
@@ -55,4 +55,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default ListProducts;

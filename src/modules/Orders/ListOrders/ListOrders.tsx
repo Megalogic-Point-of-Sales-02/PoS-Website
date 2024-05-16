@@ -3,7 +3,7 @@
 import { OrderResponse } from "@/interfaces/OrderResponse";
 import { useEffect, useState } from "react";
 
-const Orders = () => {
+const ListOrders = () => {
   const [orders, setOrders] = useState<OrderResponse[] | null | undefined>(null);
 
   useEffect(() => {
@@ -55,4 +55,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default ListOrders;
