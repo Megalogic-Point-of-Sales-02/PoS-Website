@@ -2,15 +2,18 @@
 
 import { OrderResponse } from "@/interfaces/OrderResponse";
 import { useEffect, useState } from "react";
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, CircularProgress, Center } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, CircularProgress, Center, useDisclosure } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { FaTrashAlt } from "react-icons/fa";
 import convertDate from "@/utils/convertDate";
+import DeleteOrder from "../DeleteOrder/DeleteOrder";
+import React from "react";
 
 const ListOrders = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [orders, setOrders] = useState<OrderResponse[] | undefined>(undefined);
-
+  const { isOpen: isDeleteOrderOpen, onOpen: onDeleteOrderOpen, onClose: onDeleteOrderClose } = useDisclosure();
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
   useEffect(() => {
     async function fetchOrders() {
       try {
@@ -79,9 +82,10 @@ const ListOrders = () => {
                       <Td color="#3b82f6">{order.customers.customer_name}</Td>
                       <Td color="#3b82f6">{order.products.product_name}</Td>
                       <Td width="5rem">
-                        <Button colorScheme="red" size="sm" variant="outline">
+                        <Button onClick={onDeleteOrderOpen} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
                         </Button>
+                        <DeleteOrder id={order.id} isOpen={isDeleteOrderOpen} onClose={onDeleteOrderClose} cancelRef={cancelRef}/>
                       </Td>
                     </Tr>
                   ))}

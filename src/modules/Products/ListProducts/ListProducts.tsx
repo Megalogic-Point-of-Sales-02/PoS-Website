@@ -2,14 +2,20 @@
 
 import { ProductResponse } from "@/interfaces/ProductResponse";
 import { useEffect, useState } from "react";
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, Center, CircularProgress } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, Center, CircularProgress, useDisclosure } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { FaTrashAlt } from "react-icons/fa";
 import convertRupiah from "@/utils/convertRupiah";
+import React from "react";
+import AddProduct from "../AddProduct/AddProduct";
+import DeleteProduct from "../DeleteProduct/DeleteProduct";
 
 const ListProducts = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [products, setProducts] = useState<ProductResponse[] | undefined>(undefined);
+  const { isOpen: isAddProdOpen, onOpen: onAddProdOpen, onClose: onAddProdClose } = useDisclosure();
+  const { isOpen: isDeleteProdOpen, onOpen: onDeleteProdOpen, onClose: onDeleteProdClose } = useDisclosure();
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -56,7 +62,8 @@ const ListProducts = () => {
             <Flex flexDirection="row">
               <Text fontSize="2xl">Product List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />}>Add Product</Button>
+              <Button leftIcon={<AddIcon />} onClick={onAddProdOpen}>Add Product</Button>
+              <AddProduct isOpen={isAddProdOpen} onClose={onAddProdClose} />
             </Flex>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
@@ -83,9 +90,10 @@ const ListProducts = () => {
                         {convertRupiah(product.product_price)}
                       </Td>
                       <Td width="5rem">
-                        <Button colorScheme="red" size="sm" variant="outline">
+                        <Button onClick={onDeleteProdOpen} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
                         </Button>
+                        <DeleteProduct id={product.id} isOpen={isDeleteProdOpen} onClose={onDeleteProdClose} cancelRef={cancelRef}/>
                       </Td>
                     </Tr>
                   ))}

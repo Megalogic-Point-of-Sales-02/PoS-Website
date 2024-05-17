@@ -73,6 +73,7 @@ const AddCustomer = ({ onClose, isOpen }: AddCustomerProps) => {
           segment: "Consumer",
           total_spend: 0,
         });
+        onClose();
       }
     } catch (error) {
       console.error("Error submitting form", error);
