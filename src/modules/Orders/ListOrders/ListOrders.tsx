@@ -2,11 +2,13 @@
 
 import { OrderResponse } from "@/interfaces/OrderResponse";
 import { useEffect, useState } from "react";
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, CircularProgress, Center } from "@chakra-ui/react";
 import { FaTrashAlt } from "react-icons/fa";
+import convertDate from "@/utils/convertDate";
 
 const ListOrders = () => {
-  const [orders, setOrders] = useState<OrderResponse[] | null | undefined>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [orders, setOrders] = useState<OrderResponse[] | undefined>(undefined);
 
   useEffect(() => {
     async function fetchOrders() {
@@ -21,6 +23,8 @@ const ListOrders = () => {
         }
       } catch (error) {
         console.error("Error fetching the data");
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchOrders();
@@ -28,21 +32,23 @@ const ListOrders = () => {
   return (
     <div>
       {/* Fetching the API */}
-      {orders === null && (
+      {isLoading === true && (
         <>
-          <div>Loading Orders...</div>
+          <Center>
+            <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
+          </Center>
         </>
       )}
 
       {/* No Customer */}
-      {orders === undefined && (
+      {orders === undefined && isLoading === false && (
         <>
           <div>No Orders</div>
         </>
       )}
 
       {/* Show Customers */}
-      {orders !== null && orders !== undefined && (
+      {isLoading === false && orders !== undefined && (
         <>
           {/* Table */}
           <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
@@ -65,12 +71,12 @@ const ListOrders = () => {
                 </Thead>
                 <Tbody>
                   {orders.map((order: OrderResponse) => (
-                    <Tr key={order.id}>
+                    <Tr key={order.id} color="#92afd3">
                       <Td>{order.id}</Td>
-                      <Td>{order.order_date.toString()}</Td>
-                      <Td>{order.ship_date.toString()}</Td>
-                      <Td>{order.customers.customer_name}</Td>
-                      <Td>{order.products.product_name}</Td>
+                      <Td>{convertDate(order.order_date)}</Td>
+                      <Td>{convertDate(order.ship_date)}</Td>
+                      <Td color="#3b82f6">{order.customers.customer_name}</Td>
+                      <Td color="#3b82f6">{order.products.product_name}</Td>
                       <Td width="5rem">
                         <Button colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />

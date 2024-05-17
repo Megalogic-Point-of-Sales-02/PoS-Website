@@ -29,6 +29,7 @@ import { IconType } from "react-icons";
 import { ReactText } from "react";
 import { IoPeopleOutline, IoCartOutline } from "react-icons/io5";
 import { AiOutlineInbox } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 
 interface LinkItemProps {
   name: string;
@@ -66,6 +67,8 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const pathname = usePathname();
+
   return (
     <Box transition="3s ease" bg="#132337" borderRight="2px" borderRightColor="#1c2e45" w={{ base: "full", md: 60 }} pos="fixed" h="full" {...rest}>
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
@@ -75,7 +78,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} bgColor={"white"} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} endpoint={link.endpoint} color={"white"}>
+        <NavItem key={link.name} icon={link.icon} endpoint={link.endpoint} isActive={pathname === link.endpoint} color={"white"}>
           {link.name}
         </NavItem>
       ))}
@@ -86,9 +89,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   endpoint: string;
+  isActive: boolean;
   children: ReactText;
 }
-const NavItem = ({ icon, endpoint, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, endpoint, isActive, children, ...rest }: NavItemProps) => {
   return (
     <Link href={endpoint} style={{ textDecoration: "none" }} _focus={{ boxShadow: "none" }}>
       <Flex
@@ -98,22 +102,29 @@ const NavItem = ({ icon, endpoint, children, ...rest }: NavItemProps) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        bg={isActive ? "#1c2e45" : "transparent"} // Set background color if endpoint matches
         _hover={{
           bg: "#1c2e45",
+          color: "white",
         }}
+        transition="all 0.2s ease"
         {...rest}
       >
         {icon && (
           <Icon
             mr="4"
             fontSize="16"
+            color={isActive ? "#3b82f6" : "#92afd3"}
             _groupHover={{
               color: "white",
             }}
             as={icon}
+            transition="all 0.2s ease"
           />
         )}
-        {children}
+        <Text color={isActive ? "#3b82f6" : "#92afd3"} _groupHover={{ color: "white" }} transition="all 0.2s ease">
+          {children}
+        </Text>
       </Flex>
     </Link>
   );

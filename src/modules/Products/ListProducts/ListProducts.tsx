@@ -2,11 +2,13 @@
 
 import { ProductResponse } from "@/interfaces/ProductResponse";
 import { useEffect, useState } from "react";
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, Center, CircularProgress } from "@chakra-ui/react";
 import { FaTrashAlt } from "react-icons/fa";
+import convertRupiah from "@/utils/convertRupiah";
 
 const ListProducts = () => {
-  const [products, setProducts] = useState<ProductResponse[] | null | undefined>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [products, setProducts] = useState<ProductResponse[] | undefined>(undefined);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -21,6 +23,8 @@ const ListProducts = () => {
         }
       } catch (error) {
         console.error("Error fetching the data");
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchProducts();
@@ -28,21 +32,23 @@ const ListProducts = () => {
   return (
     <div>
       {/* Fetching the API */}
-      {products === null && (
+      {isLoading === true && (
         <>
-          <div>Loading Products...</div>
+          <Center>
+            <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
+          </Center>
         </>
       )}
 
       {/* No product */}
-      {products === undefined && (
+      {products === undefined && isLoading === false && (
         <>
           <div>No Products</div>
         </>
       )}
 
       {/* Show products */}
-      {products !== null && products !== undefined && (
+      {isLoading === false && products !== undefined && (
         <>
           {/* Table */}
           <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
@@ -67,12 +73,14 @@ const ListProducts = () => {
                 </Thead>
                 <Tbody>
                   {products.map((product: ProductResponse) => (
-                    <Tr key={product.id}>
+                    <Tr key={product.id} color="#92afd3">
                       <Td>{product.id}</Td>
-                      <Td>{product.product_name}</Td>
+                      <Td color="white">{product.product_name}</Td>
                       <Td>{product.product_category}</Td>
                       <Td>{product.product_sub_category}</Td>
-                      <Td isNumeric>{product.product_price}</Td>
+                      <Td isNumeric color="#3b82f6">
+                        {convertRupiah(product.product_price)}
+                      </Td>
                       <Td width="5rem">
                         <Button colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />

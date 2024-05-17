@@ -1,17 +1,19 @@
 "use client";
 
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, useDisclosure } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, useDisclosure, Center, CircularProgress } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import AddCustomer from "../AddCustomer/AddCustomer";
 import React from "react";
 import DeleteCustomer from "../DeleteCustomer/DeleteCustomer";
+import convertRupiah from "@/utils/convertRupiah";
 
 const ListCustomers = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { isOpen: isAddCustOpen, onOpen: onAddCustOpen, onClose: onAddCustClose } = useDisclosure();
   const { isOpen: isDeleteCustOpen, onOpen: onDeleteCustOpen, onClose: onDeleteCustClose } = useDisclosure();
-  const [customers, setCustomers] = useState<CustomerResponse[] | null | undefined>(null);
+  const [customers, setCustomers] = useState<CustomerResponse[] | undefined>(undefined);
   const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -27,6 +29,8 @@ const ListCustomers = () => {
         }
       } catch (error) {
         console.error("Error fetching the data");
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchCustomers();
@@ -35,21 +39,23 @@ const ListCustomers = () => {
   return (
     <div>
       {/* Fetching the API */}
-      {customers === null && (
+      {isLoading === true && (
         <>
-          <div>Loading Customer...</div>
+          <Center>
+            <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
+          </Center>
         </>
       )}
 
       {/* No Customer */}
-      {customers === undefined && (
+      {customers === undefined && isLoading === false && (
         <>
           <div>No customer</div>
         </>
       )}
 
       {/* Show Customers */}
-      {customers !== null && customers !== undefined && (
+      {customers !== undefined && isLoading === false && (
         <>
           {/* Table */}
           <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
@@ -79,14 +85,16 @@ const ListCustomers = () => {
                 </Thead>
                 <Tbody>
                   {customers.map((customer: CustomerResponse) => (
-                    <Tr key={customer.id}>
+                    <Tr key={customer.id} color="#92afd3">
                       <Td>{customer.id}</Td>
-                      <Td>{customer.customer_name}</Td>
+                      <Td color="white">{customer.customer_name}</Td>
                       <Td>{customer.gender}</Td>
                       <Td isNumeric>{customer.age}</Td>
                       <Td>{customer.job}</Td>
                       <Td>{customer.segment}</Td>
-                      <Td isNumeric>{customer.total_spend}</Td>
+                      <Td isNumeric color="#3b82f6">
+                        {convertRupiah(customer.total_spend)}
+                      </Td>
                       <Td width="5rem">
                         <Button colorScheme="red" size="sm" variant="outline" onClick={onDeleteCustOpen}>
                           <FaTrashAlt />
