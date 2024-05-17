@@ -3,6 +3,7 @@
 import { ProductResponse } from "@/interfaces/ProductResponse";
 import { useEffect, useState } from "react";
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, Center, CircularProgress } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 import { FaTrashAlt } from "react-icons/fa";
 import convertRupiah from "@/utils/convertRupiah";
 
@@ -55,7 +56,7 @@ const ListProducts = () => {
             <Flex flexDirection="row">
               <Text fontSize="2xl">Product List</Text>
               <Spacer />
-              <Button>Add product</Button>
+              <Button leftIcon={<AddIcon />}>Add Product</Button>
             </Flex>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">

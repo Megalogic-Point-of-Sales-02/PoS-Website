@@ -3,6 +3,7 @@
 import { OrderResponse } from "@/interfaces/OrderResponse";
 import { useEffect, useState } from "react";
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, CircularProgress, Center } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 import { FaTrashAlt } from "react-icons/fa";
 import convertDate from "@/utils/convertDate";
 
@@ -55,7 +56,7 @@ const ListOrders = () => {
             <Flex flexDirection="row">
               <Text fontSize="2xl">Order List</Text>
               <Spacer />
-              <Button>Add order</Button>
+              <Button leftIcon={<AddIcon />}>Add Order</Button>
             </Flex>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">

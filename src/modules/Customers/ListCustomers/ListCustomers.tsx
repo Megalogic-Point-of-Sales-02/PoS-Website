@@ -2,6 +2,7 @@
 
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, useDisclosure, Center, CircularProgress } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import AddCustomer from "../AddCustomer/AddCustomer";
@@ -62,7 +63,9 @@ const ListCustomers = () => {
             <Flex flexDirection="row">
               <Text fontSize="2xl">Customer List</Text>
               <Spacer />
-              <Button onClick={onAddCustOpen}>Add Customer</Button>
+              <Button leftIcon={<AddIcon />} onClick={onAddCustOpen}>
+                Add Customer
+              </Button>
               <AddCustomer isOpen={isAddCustOpen} onClose={onAddCustClose} />
             </Flex>
             <TableContainer>
