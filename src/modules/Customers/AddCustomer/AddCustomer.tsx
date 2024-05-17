@@ -60,7 +60,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
         // Create a success toast
         toast({
           title: "Success",
-          description: `Customer with data: ${message} added successfully`,
+          description: `Customer with ID ${message[0].id} added successfully`,
           status: "success",
           duration: 5000,
           isClosable: true,

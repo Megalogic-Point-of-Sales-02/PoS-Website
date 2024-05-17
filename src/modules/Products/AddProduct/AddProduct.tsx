@@ -12,7 +12,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
   const [formData, setFormData] = useState<ProductRequest>({
     product_name: "",
     product_category: "",
-    product_sub_category: "" ,
+    product_sub_category: "",
     product_price: "" as unknown as number,
   });
 
@@ -52,29 +52,29 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
         const message = await response.json();
         toast({
           title: "Success",
-          description: `Product with data: ${message} added successfully`,
+          description: `Product with ID ${message[0].id} added successfully`,
           status: "success",
           duration: 5000,
           isClosable: true,
         });
         setFormData({
-            product_name: "",
-            product_category: "",
-            product_sub_category: "",
-            product_price: "" as unknown as number,
-            });
+          product_name: "",
+          product_category: "",
+          product_sub_category: "",
+          product_price: "" as unknown as number,
+        });
         handleProductChange();
         onClose();
-        }
+      }
     } catch (error) {
-        console.error("Error submitting form", error);
-        toast({
-          title: "Error",
-          description: "An error occurred while submitting the form.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
+      console.error("Error submitting form", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while submitting the form.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -107,7 +107,6 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
                   <FormLabel htmlFor="product_price">Price</FormLabel>
                   <Input type="number" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
                 </FormControl>
-                
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem">
                 Submit
@@ -118,8 +117,8 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-        </>
-    );
+    </>
+  );
 };
 
 export default AddProduct;
