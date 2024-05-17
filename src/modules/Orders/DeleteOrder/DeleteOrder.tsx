@@ -2,57 +2,69 @@ import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader,
 import React from "react";
 
 interface DeleteOrderProps {
-  id: number;
+  id: number | null;
   isOpen: boolean;
   onClose: () => void;
   cancelRef: React.RefObject<HTMLButtonElement>;
+  handleOrderChange: () => void;
 }
 
-const DeleteOrder = ({ id, isOpen, onClose, cancelRef }: DeleteOrderProps) => {
+const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: DeleteOrderProps) => {
   const toast = useToast();
 
   const handleDelete = async (e) => {
-    console.log("deleting order with id", id.toString());
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/v1/orders", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id }),
-      });
+    if (id !== null) {
+      console.log("deleting order with id", id.toString());
+      e.preventDefault();
+      try {
+        const response = await fetch("/api/v1/orders", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: id }),
+        });
 
-      if (!response.ok) {
-        // Wait for the message
-        const errorMessage = await response.json();
-        // Create an error toast
+        if (!response.ok) {
+          // Wait for the message
+          const errorMessage = await response.json();
+          // Create an error toast
+          toast({
+            title: "Error",
+            description: errorMessage.error,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          return;
+        } else {
+          // Wait for the message
+          const message = await response.json();
+          // Create a success toast
+          toast({
+            title: "Success",
+            description: `Order with ID ${id} is deleted`,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          handleOrderChange();
+          onClose();
+        }
+      } catch (error) {
+        console.error("Error Deleting Order", error);
         toast({
           title: "Error",
-          description: errorMessage.error,
+          description: "An error occurred while deleting the order.",
           status: "error",
           duration: 5000,
           isClosable: true,
         });
-        return;
-      } else {
-        // Wait for the message
-        const message = await response.json();
-        // Create a success toast
-        toast({
-          title: "Success",
-          description: `${message}`,
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        onClose();
       }
-    } catch (error) {
-      console.error("Error Deleting Order", error);
+    } else {
       toast({
         title: "Error",
-        description: "An error occurred while deleting the order.",
+        description: "Order ID is null",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -66,7 +78,7 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef }: DeleteOrderProps) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Order
+              Delete Order With ID {id}
             </AlertDialogHeader>
 
             <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>

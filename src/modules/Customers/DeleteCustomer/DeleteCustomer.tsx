@@ -43,7 +43,7 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
           // Create a success toast
           toast({
             title: "Success",
-            description: `${message}`,
+            description: `Customer with ID ${id} is deleted`,
             status: "success",
             duration: 5000,
             isClosable: true,

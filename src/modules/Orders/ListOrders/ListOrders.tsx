@@ -11,9 +11,12 @@ import React from "react";
 
 const ListOrders = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refreshData, setRefreshData] = useState<boolean>(false);
   const [orders, setOrders] = useState<OrderResponse[] | undefined>(undefined);
   const { isOpen: isDeleteOrderOpen, onOpen: onDeleteOrderOpen, onClose: onDeleteOrderClose } = useDisclosure();
+  const [currentOrderId, setCurrentOrderId] = useState<number | null>(null); // State for the current order ID to be deleted
   const cancelRef = React.useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     async function fetchOrders() {
       try {
@@ -32,7 +35,16 @@ const ListOrders = () => {
       }
     }
     fetchOrders();
-  }, []);
+  }, [refreshData]);
+
+  const handleOrderChange = () => {
+    setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
+  };
+
+  const handleDeleteClick = (id: number) => {
+    setCurrentOrderId(id);
+    onDeleteOrderOpen();
+  };
   return (
     <div>
       {/* Fetching the API */}
@@ -82,10 +94,10 @@ const ListOrders = () => {
                       <Td color="#3b82f6">{order.customers.customer_name}</Td>
                       <Td color="#3b82f6">{order.products.product_name}</Td>
                       <Td width="5rem">
-                        <Button onClick={onDeleteOrderOpen} colorScheme="red" size="sm" variant="outline">
+                        <Button onClick={() => handleDeleteClick(order.id)} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
                         </Button>
-                        <DeleteOrder id={order.id} isOpen={isDeleteOrderOpen} onClose={onDeleteOrderClose} cancelRef={cancelRef}/>
+                        <DeleteOrder id={currentOrderId} isOpen={isDeleteOrderOpen} onClose={onDeleteOrderClose} cancelRef={cancelRef} handleOrderChange={handleOrderChange} />
                       </Td>
                     </Tr>
                   ))}
