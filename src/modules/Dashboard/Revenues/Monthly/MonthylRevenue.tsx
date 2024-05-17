@@ -1,5 +1,7 @@
 "use client";
 
+import convertRupiah from "@/utils/convertRupiah";
+import { Box, Button, Flex, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 const MonthylRevenue = () => {
@@ -31,26 +33,47 @@ const MonthylRevenue = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="date-prefix">Select month:</label>
-        <input
-          type="month"
-          id="date-prefix"
-          name="date-prefix"
-          value={datePrefix}
-          max={getCurrentDatePrefix()}
-          onChange={(e) => {
-            setDatePrefix(e.target.value);
-            console.log(e.target.value);
-          }}
-        />
-        <br />
-        <button type="submit">Get Monthly Revenue</button>
-      </form>
-      <div>Monthly Revenue: </div>
-      {monthlyRevenue !== null && <>{monthlyRevenue}</>}
-    </div>
+    <>
+      <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth="15rem" minHeight="2rem">
+        {monthlyRevenue !== null && (
+          <>
+            <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
+              {convertRupiah(monthlyRevenue)}
+            </Text>
+          </>
+        )}
+        <Text fontSize="lg" fontWeight="medium">
+          Monthly Revenue
+        </Text>
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <FormLabel htmlFor="date-prefix" color="#92afd3">
+              Select Month and Year
+            </FormLabel>
+            <Flex flexDirection="row" columnGap="1rem">
+              <Input
+                bgColor="white"
+                type="month"
+                id="date-prefix"
+                name="date-prefix"
+                value={datePrefix}
+                max={getCurrentDatePrefix()}
+                maxWidth="12rem"
+                height="2.8rem"
+                color="#0f1824"
+                onChange={(e) => {
+                  setDatePrefix(e.target.value);
+                  console.log(e.target.value);
+                }}
+              />
+              <Button type="submit" padding="1.4rem" height="2.8rem" bgColor="white">
+                Calculate
+              </Button>
+            </Flex>
+          </FormControl>
+        </form>
+      </Box>
+    </>
   );
 };
 

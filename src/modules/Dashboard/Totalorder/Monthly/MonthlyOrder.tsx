@@ -31,6 +31,7 @@ const MonthlyOrder = () => {
 
   return (
     <div>
+      <h2 className="text-xl">Monthly Order</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="date-prefix">Select month:</label>
         <input

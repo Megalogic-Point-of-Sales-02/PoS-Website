@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   // Success
   if (data === null) {
     // Return no monthly revenue if data is null
-    return new NextResponse(JSON.stringify("No Monthly Revenue"), {
+    return new NextResponse(JSON.stringify("0"), {
       status: 200,
     });
   } else {
