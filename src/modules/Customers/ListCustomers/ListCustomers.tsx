@@ -12,9 +12,11 @@ import convertRupiah from "@/utils/convertRupiah";
 
 const ListCustomers = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refreshData, setRefreshData] = useState<boolean>(false);
   const { isOpen: isAddCustOpen, onOpen: onAddCustOpen, onClose: onAddCustClose } = useDisclosure();
   const { isOpen: isDeleteCustOpen, onOpen: onDeleteCustOpen, onClose: onDeleteCustClose } = useDisclosure();
   const [customers, setCustomers] = useState<CustomerResponse[] | undefined>(undefined);
+  const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(null); // State for the current customer ID to be deleted
   const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -35,7 +37,16 @@ const ListCustomers = () => {
       }
     }
     fetchCustomers();
-  }, []);
+  }, [refreshData]);
+
+  const handleCustomerChange = () => {
+    setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
+  };
+
+  const handleDeleteClick = (id: number) => {
+    setCurrentCustomerId(id);
+    onDeleteCustOpen();
+  };
 
   return (
     <div>
@@ -66,7 +77,7 @@ const ListCustomers = () => {
               <Button leftIcon={<AddIcon />} onClick={onAddCustOpen}>
                 Add Customer
               </Button>
-              <AddCustomer isOpen={isAddCustOpen} onClose={onAddCustClose} />
+              <AddCustomer isOpen={isAddCustOpen} onClose={onAddCustClose} handleCustomerChange={handleCustomerChange} />
             </Flex>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
@@ -99,10 +110,10 @@ const ListCustomers = () => {
                         {convertRupiah(customer.total_spend)}
                       </Td>
                       <Td width="5rem">
-                        <Button colorScheme="red" size="sm" variant="outline" onClick={onDeleteCustOpen}>
+                        <Button colorScheme="red" size="sm" variant="outline" onClick={() => handleDeleteClick(customer.id)}>
                           <FaTrashAlt />
                         </Button>
-                        <DeleteCustomer id={customer.id} isOpen={isDeleteCustOpen} onClose={onDeleteCustClose} cancelRef={cancelRef} />
+                        <DeleteCustomer id={currentCustomerId} isOpen={isDeleteCustOpen} onClose={onDeleteCustClose} cancelRef={cancelRef} handleCustomerChange={handleCustomerChange} />
                       </Td>
                     </Tr>
                   ))}

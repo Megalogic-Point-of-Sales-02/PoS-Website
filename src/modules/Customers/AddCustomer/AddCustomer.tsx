@@ -5,9 +5,10 @@ import { useState } from "react";
 interface AddCustomerProps extends BoxProps {
   onClose: () => void;
   isOpen: boolean;
+  handleCustomerChange: () => void;
 }
 
-const AddCustomer = ({ onClose, isOpen }: AddCustomerProps) => {
+const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps) => {
   // Set the useState type to the interface for request and assign a default placeholder
   const [formData, setFormData] = useState<CustomerRequest>({
     customer_name: "",
@@ -73,6 +74,7 @@ const AddCustomer = ({ onClose, isOpen }: AddCustomerProps) => {
           segment: "Consumer",
           total_spend: 0,
         });
+        handleCustomerChange(); // call handleCustomerChange to trigger useeffect
         onClose();
       }
     } catch (error) {
