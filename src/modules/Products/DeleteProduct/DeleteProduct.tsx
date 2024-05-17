@@ -2,16 +2,18 @@ import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader,
 import React from "react";
 
 interface DeleteProductProps {
-  id: number;
+  id: number | null;
   isOpen: boolean;
   onClose: () => void;
   cancelRef: React.RefObject<HTMLButtonElement>;
+  handleProductChange: () => void;
 }
 
-const DeleteProduct = ({ id, isOpen, onClose, cancelRef }: DeleteProductProps) => {
+const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: DeleteProductProps) => {
   const toast = useToast();
 
   const handleDelete = async (e) => {
+    if(id !== null){
     console.log("deleting product with id", id.toString());
     e.preventDefault();
     try {
@@ -29,7 +31,7 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef }: DeleteProductProps) =
         // Create an error toast
         toast({
           title: "Error",
-          description: errorMessage.error,
+          description: errorMessage,
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -41,11 +43,12 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef }: DeleteProductProps) =
         // Create a success toast
         toast({
           title: "Success",
-          description: `${message}`,
+          description: `Product with ID ${id} is deleted`,
           status: "success",
           duration: 5000,
           isClosable: true,
         });
+        handleProductChange();
         onClose();
       }
     } catch (error) {
@@ -58,6 +61,15 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef }: DeleteProductProps) =
         isClosable: true,
       });
     }
+  } else {
+    toast({
+      title: "Error",
+      description: "Product ID is null. Please try again.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
   };
 
   return (
@@ -66,7 +78,7 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef }: DeleteProductProps) =
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete product
+              Delete product with ID: {id}
             </AlertDialogHeader>
 
             <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>

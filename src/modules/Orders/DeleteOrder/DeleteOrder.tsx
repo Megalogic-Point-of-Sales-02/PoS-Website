@@ -31,7 +31,7 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
           // Create an error toast
           toast({
             title: "Error",
-            description: errorMessage.error,
+            description: errorMessage,
             status: "error",
             duration: 5000,
             isClosable: true,

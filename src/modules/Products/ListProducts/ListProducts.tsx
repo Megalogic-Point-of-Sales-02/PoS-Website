@@ -13,6 +13,8 @@ import DeleteProduct from "../DeleteProduct/DeleteProduct";
 const ListProducts = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [products, setProducts] = useState<ProductResponse[] | undefined>(undefined);
+  const [refreshData, setRefreshData] = useState<boolean>(false);
+  const [currentProductId, setCurrentProductId] = useState<number | null>(null); // State for the current product ID to be deleted
   const { isOpen: isAddProdOpen, onOpen: onAddProdOpen, onClose: onAddProdClose } = useDisclosure();
   const { isOpen: isDeleteProdOpen, onOpen: onDeleteProdOpen, onClose: onDeleteProdClose } = useDisclosure();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
@@ -35,7 +37,17 @@ const ListProducts = () => {
       }
     }
     fetchProducts();
-  }, []);
+  }, [refreshData]);
+  
+  const handleProductChange = () => {
+    setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
+  };
+
+  const handleDeleteClick = (id: number) => {
+    setCurrentProductId(id);
+    onDeleteProdOpen();
+  };
+
   return (
     <div>
       {/* Fetching the API */}
@@ -63,7 +75,7 @@ const ListProducts = () => {
               <Text fontSize="2xl">Product List</Text>
               <Spacer />
               <Button leftIcon={<AddIcon />} onClick={onAddProdOpen}>Add Product</Button>
-              <AddProduct isOpen={isAddProdOpen} onClose={onAddProdClose} />
+              <AddProduct isOpen={isAddProdOpen} onClose={onAddProdClose} handleProductChange={handleProductChange} />
             </Flex>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
@@ -90,10 +102,10 @@ const ListProducts = () => {
                         {convertRupiah(product.product_price)}
                       </Td>
                       <Td width="5rem">
-                        <Button onClick={onDeleteProdOpen} colorScheme="red" size="sm" variant="outline">
+                        <Button onClick={() => handleDeleteClick(product.id)} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
                         </Button>
-                        <DeleteProduct id={product.id} isOpen={isDeleteProdOpen} onClose={onDeleteProdClose} cancelRef={cancelRef}/>
+                        <DeleteProduct id={currentProductId} isOpen={isDeleteProdOpen} onClose={onDeleteProdClose} cancelRef={cancelRef} handleProductChange={handleProductChange} />
                       </Td>
                     </Tr>
                   ))}

@@ -5,9 +5,10 @@ import { useState } from "react";
 interface AddProductProps extends BoxProps {
   onClose: () => void;
   isOpen: boolean;
+  handleProductChange: () => void;
 }
 
-const AddProduct = ({ onClose, isOpen }: AddProductProps) => {
+const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) => {
   const [formData, setFormData] = useState<ProductRequest>({
     product_name: "",
     product_category: "",
@@ -62,6 +63,7 @@ const AddProduct = ({ onClose, isOpen }: AddProductProps) => {
             product_sub_category: "",
             product_price: "" as unknown as number,
             });
+        handleProductChange();
         onClose();
         }
     } catch (error) {
