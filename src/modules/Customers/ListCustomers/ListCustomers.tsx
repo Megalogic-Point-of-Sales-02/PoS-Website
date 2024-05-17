@@ -5,10 +5,14 @@ import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, But
 import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import AddCustomer from "../AddCustomer/AddCustomer";
+import React from "react";
+import DeleteCustomer from "../DeleteCustomer/DeleteCustomer";
 
 const ListCustomers = () => {
   const { isOpen: isAddCustOpen, onOpen: onAddCustOpen, onClose: onAddCustClose } = useDisclosure();
+  const { isOpen: isDeleteCustOpen, onOpen: onDeleteCustOpen, onClose: onDeleteCustClose } = useDisclosure();
   const [customers, setCustomers] = useState<CustomerResponse[] | null | undefined>(null);
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     async function fetchCustomers() {
@@ -84,9 +88,10 @@ const ListCustomers = () => {
                       <Td>{customer.segment}</Td>
                       <Td isNumeric>{customer.total_spend}</Td>
                       <Td width="5rem">
-                        <Button colorScheme="red" size="sm" variant="outline">
+                        <Button colorScheme="red" size="sm" variant="outline" onClick={onDeleteCustOpen}>
                           <FaTrashAlt />
                         </Button>
+                        <DeleteCustomer id={customer.id} isOpen={isDeleteCustOpen} onClose={onDeleteCustClose} cancelRef={cancelRef} />
                       </Td>
                     </Tr>
                   ))}

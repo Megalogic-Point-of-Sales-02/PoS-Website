@@ -1,9 +1,9 @@
-import Customers from "./ListCustomers/ListCustomers";
+import ListCustomers from "./ListCustomers/ListCustomers";
 
 const CustomersModule = () => {
   return (
     <div>
-      <Customers />
+      <ListCustomers />
     </div>
   );
 };
