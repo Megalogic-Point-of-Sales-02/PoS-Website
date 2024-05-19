@@ -1,5 +1,6 @@
 "use client";
 
+import { Box, Button, Flex, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 const MonthlyOrder = () => {
@@ -30,27 +31,47 @@ const MonthlyOrder = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-xl">Monthly Order</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="date-prefix">Select month:</label>
-        <input
-          type="month"
-          id="date-prefix"
-          name="date-prefix"
-          value={datePrefix}
-          max={getCurrentDatePrefix()}
-          onChange={(e) => {
-            setDatePrefix(e.target.value);
-            console.log(e.target.value);
-          }}
-        />
-        <br />
-        <button type="submit">Get Monthly Order</button>
-      </form>
-      <div>Monthly Order: </div>
-      {monthlyOrder !== null && <>{monthlyOrder}</>}
-    </div>
+    <>
+      <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth="15rem" minHeight="2rem">
+        {monthlyOrder !== null && (
+          <>
+            <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
+              {monthlyOrder}
+            </Text>
+          </>
+        )}
+        <Text fontSize="lg" fontWeight="medium">
+          Monthly Order
+        </Text>
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <FormLabel htmlFor="date-prefix" color="#92afd3">
+              Select Month and Year
+            </FormLabel>
+            <Flex flexDirection="row" columnGap="1rem">
+              <Input
+                bgColor="white"
+                type="month"
+                id="date-prefix"
+                name="date-prefix"
+                value={datePrefix}
+                max={getCurrentDatePrefix()}
+                maxWidth="12rem"
+                height="2.8rem"
+                color="#0f1824"
+                onChange={(e) => {
+                  setDatePrefix(e.target.value);
+                  console.log(e.target.value);
+                }}
+              />
+              <Button type="submit" padding="1.4rem" height="2.8rem" bgColor="white">
+                Calculate
+              </Button>
+            </Flex>
+          </FormControl>
+        </form>
+      </Box>
+    </>
   );
 };
 
