@@ -8,11 +8,13 @@ import { FaTrashAlt } from "react-icons/fa";
 import convertDate from "@/utils/convertDate";
 import DeleteOrder from "../DeleteOrder/DeleteOrder";
 import React from "react";
+import AddOrder from "../AddOrder/AddOrder";
 
 const ListOrders = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
   const [orders, setOrders] = useState<OrderResponse[] | undefined>(undefined);
+  const { isOpen: isAddOrderOpen, onOpen: onAddOrderOpen, onClose: onAddOrderClose } = useDisclosure();
   const { isOpen: isDeleteOrderOpen, onOpen: onDeleteOrderOpen, onClose: onDeleteOrderClose } = useDisclosure();
   const [currentOrderId, setCurrentOrderId] = useState<number | null>(null); // State for the current order ID to be deleted
   const cancelRef = React.useRef<HTMLButtonElement>(null);
@@ -71,7 +73,10 @@ const ListOrders = () => {
             <Flex flexDirection="row">
               <Text fontSize="2xl">Order List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />}>Add Order</Button>
+              <Button leftIcon={<AddIcon />} onClick={onAddOrderOpen}>
+                Add Order
+              </Button>
+              <AddOrder isOpen={isAddOrderOpen} onClose={onAddOrderClose} handleOrderChange={handleOrderChange} />
             </Flex>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
