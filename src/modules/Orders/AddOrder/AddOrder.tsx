@@ -177,12 +177,12 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
               <Flex gap="1.5rem" wrap="wrap">
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="order_date">Order Date</FormLabel>
-                  <Input type="date" name="order_date" value={formData.order_date.toISOString().substring(0, 10)} onChange={handleDateChange} id="order_date" />
+                  <Input isDisabled type="date" name="order_date" value={formData.order_date.toISOString().substring(0, 10)} onChange={handleDateChange} id="order_date" />
                 </FormControl>
 
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="ship_date">Ship Date</FormLabel>
-                  <Input type="date" name="ship_date" value={formData.ship_date.toISOString().substring(0, 10)} onChange={handleDateChange} id="ship_date" />
+                  <Input type="date" name="ship_date" value={formData.ship_date.toISOString().substring(0, 10)} min={new Date().toISOString().substring(0, 10)} onChange={handleDateChange} id="ship_date" />
                 </FormControl>
 
                 <FormControl isRequired flex="1 1 40%">
