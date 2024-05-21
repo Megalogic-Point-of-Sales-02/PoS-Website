@@ -4,4 +4,5 @@ export interface OrderResponse {
   ship_date: Date;
   customer_id: number;
   product_id: number;
+  quantity: number;
 }

@@ -18,6 +18,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
     ship_date: new Date(),
     customer_id: "" as unknown as number, // Start with an empty string;
     product_id: "" as unknown as number, // Start with an empty string;
+    quantity: 1,
   });
 
   const toast = useToast();
@@ -71,6 +72,14 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
     }));
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
@@ -111,6 +120,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
           ship_date: new Date(),
           customer_id: "" as unknown as number, // Start with an empty string;
           product_id: "" as unknown as number, // Start with an empty string;
+          quantity: 1,
         });
         handleOrderChange(); // call handleOrderChange to trigger useeffect
         onClose();
@@ -165,6 +175,11 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="product_id">Product ID</FormLabel>
                   <ReactSelect name="product_id" options={productOptions} onChange={handleSelectChange} placeholder="Select product" />
+                </FormControl>
+
+                <FormControl isRequired flex="1 1 40%">
+                  <FormLabel htmlFor="quantity">Quantity</FormLabel>
+                  <Input type="number" name="quantity" value={formData.quantity} onChange={handleChange} id="quantity" placeholder="Enter quantity" />
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem">

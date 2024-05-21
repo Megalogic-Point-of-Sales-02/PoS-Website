@@ -87,6 +87,7 @@ const ListOrders = () => {
                     <Th color="white">Shipping Date</Th>
                     <Th color="white">Customer</Th>
                     <Th color="white">Product</Th>
+                    <Th color="white">Quantity</Th>
                     <Th width="5rem"></Th>
                   </Tr>
                 </Thead>
@@ -98,6 +99,7 @@ const ListOrders = () => {
                       <Td>{convertDate(order.ship_date)}</Td>
                       <Td color="#3b82f6">{order.customer_id}</Td>
                       <Td color="#3b82f6">{order.product_id}</Td>
+                      <Td color="#3b82f6">{order.quantity}</Td>
                       <Td width="5rem">
                         <Button onClick={() => handleDeleteClick(order.id)} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
