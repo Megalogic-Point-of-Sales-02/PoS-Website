@@ -167,7 +167,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent maxWidth="800px">
           <ModalHeader>Add Order</ModalHeader>
@@ -186,12 +186,12 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
                 </FormControl>
 
                 <FormControl isRequired flex="1 1 40%">
-                  <FormLabel htmlFor="customer_id">Customer ID</FormLabel>
+                  <FormLabel htmlFor="customer_id">Customer Name</FormLabel>
                   <ReactSelect name="customer_id" options={customerOptions} onChange={handleSelectChange} placeholder="Select customer" />
                 </FormControl>
 
                 <FormControl isRequired flex="1 1 40%">
-                  <FormLabel htmlFor="product_id">Product ID</FormLabel>
+                  <FormLabel htmlFor="product_id">Product Name</FormLabel>
                   <ReactSelect name="product_id" options={productOptions} onChange={handleSelectChange} placeholder="Select product" />
                 </FormControl>
 

@@ -80,7 +80,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent maxWidth="800px">
           <ModalHeader>Add Product</ModalHeader>
