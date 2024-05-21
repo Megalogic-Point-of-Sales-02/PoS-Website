@@ -19,6 +19,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
     customer_id: "" as unknown as number, // Start with an empty string;
     product_id: "" as unknown as number, // Start with an empty string;
     quantity: 1,
+    sales: 0,
   });
 
   const toast = useToast();
@@ -54,6 +55,22 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
 
     fetchCustomersAndProducts();
   }, [toast]);
+
+  useEffect(() => {
+    const calculateSales = async () => {
+      console.log("DIHITUNG");
+      const response = await fetch(`/api/v1/products?id=${formData.product_id}`);
+      const productData = await response.json();
+      const sales = productData[0].product_price * formData.quantity;
+      setFormData((prevData) => ({
+        ...prevData,
+        sales: sales,
+      }));
+    };
+    if (formData.product_id && formData.quantity) {
+      calculateSales();
+    }
+  }, [formData.product_id, formData.quantity]);
 
   // Set value of a label when there is a change in the form
   const handleDateChange = (e) => {
@@ -121,6 +138,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
           customer_id: "" as unknown as number, // Start with an empty string;
           product_id: "" as unknown as number, // Start with an empty string;
           quantity: 1,
+          sales: 0,
         });
         handleOrderChange(); // call handleOrderChange to trigger useeffect
         onClose();
@@ -180,6 +198,11 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="quantity">Quantity</FormLabel>
                   <Input type="number" name="quantity" value={formData.quantity} onChange={handleChange} id="quantity" placeholder="Enter quantity" />
+                </FormControl>
+
+                <FormControl isRequired flex="1 1 40%">
+                  <FormLabel htmlFor="sales">Sales</FormLabel>
+                  <Input type="number" name="sales" value={formData.sales} id="sales" isDisabled />
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem">

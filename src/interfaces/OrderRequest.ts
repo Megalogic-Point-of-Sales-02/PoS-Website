@@ -4,4 +4,5 @@ export interface OrderRequest {
   customer_id: number;
   product_id: number;
   quantity: number;
+  sales: number;
 }

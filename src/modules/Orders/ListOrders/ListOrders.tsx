@@ -9,6 +9,7 @@ import convertDate from "@/utils/convertDate";
 import DeleteOrder from "../DeleteOrder/DeleteOrder";
 import React from "react";
 import AddOrder from "../AddOrder/AddOrder";
+import convertRupiah from "@/utils/convertRupiah";
 
 const ListOrders = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -88,6 +89,7 @@ const ListOrders = () => {
                     <Th color="white">Customer</Th>
                     <Th color="white">Product</Th>
                     <Th color="white">Quantity</Th>
+                    <Th color="white">Sales</Th>
                     <Th width="5rem"></Th>
                   </Tr>
                 </Thead>
@@ -100,6 +102,7 @@ const ListOrders = () => {
                       <Td color="#3b82f6">{order.customer_id}</Td>
                       <Td color="#3b82f6">{order.product_id}</Td>
                       <Td color="#3b82f6">{order.quantity}</Td>
+                      <Td color="#3b82f6">{convertRupiah(order.sales)}</Td>
                       <Td width="5rem">
                         <Button onClick={() => handleDeleteClick(order.id)} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
