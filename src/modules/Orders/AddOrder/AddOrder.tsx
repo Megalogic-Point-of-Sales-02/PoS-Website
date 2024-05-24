@@ -175,38 +175,38 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
     <>
       <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
-        <ModalContent maxWidth="800px">
+        <ModalContent maxWidth="800px" marginX="2rem">
           <ModalHeader>Add Order</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSubmit}>
               <Flex gap="1.5rem" wrap="wrap">
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="order_date">Order Date</FormLabel>
                   <Input isDisabled type="date" name="order_date" value={formData.order_date.toISOString().substring(0, 10)} onChange={handleDateChange} id="order_date" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="ship_date">Ship Date</FormLabel>
                   <Input type="date" name="ship_date" value={formData.ship_date.toISOString().substring(0, 10)} min={new Date().toISOString().substring(0, 10)} onChange={handleDateChange} id="ship_date" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="customer_id">Customer Name</FormLabel>
                   <ReactSelect name="customer_id" options={customerOptions} onChange={handleSelectChange} placeholder="Select customer" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="product_id">Product Name</FormLabel>
                   <ReactSelect name="product_id" options={productOptions} onChange={handleSelectChange} placeholder="Select product" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="quantity">Quantity</FormLabel>
                   <Input type="number" name="quantity" value={formData.quantity} onChange={handleChange} id="quantity" placeholder="Enter quantity" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%" position="relative">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }} position="relative">
                   <FormLabel htmlFor="sales">Sales</FormLabel>
                   <Input type="number" name="sales" value={isLoadingPrice ? 0 : formData.sales} id="sales" isDisabled />
                   {isLoadingPrice && <Spinner size="sm" position="absolute" right="8px" top="60%" />} {/* Show spinner while loading */}

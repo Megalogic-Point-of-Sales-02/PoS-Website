@@ -86,28 +86,28 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
     <>
       <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
-        <ModalContent maxWidth="800px">
+        <ModalContent maxWidth="800px" marginX="2rem">
           <ModalHeader>Add Product</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSubmit}>
               <Flex gap="1.5rem" wrap="wrap">
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="product_name">Product Name</FormLabel>
                   <Input name="product_name" value={formData.product_name} onChange={handleChange} id="product_name" placeholder="Enter product name" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="product_category">Category</FormLabel>
                   <Input name="product_category" value={formData.product_category} onChange={handleChange} id="product_category" placeholder="Enter category" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="product_sub_category">Sub Category</FormLabel>
                   <Input type="product_sub_category" name="product_sub_category" value={formData.product_sub_category} onChange={handleChange} id="product_sub_category" placeholder="Enter sub category" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="product_price">Price</FormLabel>
                   <Input type="number" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
                 </FormControl>
