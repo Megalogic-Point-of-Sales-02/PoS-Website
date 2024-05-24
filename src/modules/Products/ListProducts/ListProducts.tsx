@@ -75,7 +75,7 @@ const ListProducts = () => {
             <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
               <Text fontSize="2xl">Product List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />} onClick={onAddProdOpen}>
+              <Button leftIcon={<AddIcon />} onClick={onAddProdOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Product
               </Button>
               <AddProduct isOpen={isAddProdOpen} onClose={onAddProdClose} handleProductChange={handleProductChange} />
