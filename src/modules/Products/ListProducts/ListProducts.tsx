@@ -38,8 +38,9 @@ const ListProducts = () => {
     }
     fetchProducts();
   }, [refreshData]);
-  
+
   const handleProductChange = () => {
+    setIsLoading(true);
     setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
   };
 
@@ -74,7 +75,9 @@ const ListProducts = () => {
             <Flex flexDirection="row">
               <Text fontSize="2xl">Product List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />} onClick={onAddProdOpen}>Add Product</Button>
+              <Button leftIcon={<AddIcon />} onClick={onAddProdOpen}>
+                Add Product
+              </Button>
               <AddProduct isOpen={isAddProdOpen} onClose={onAddProdClose} handleProductChange={handleProductChange} />
             </Flex>
             <TableContainer>
@@ -105,7 +108,6 @@ const ListProducts = () => {
                         <Button onClick={() => handleDeleteClick(product.id)} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
                         </Button>
-                        <DeleteProduct id={currentProductId} isOpen={isDeleteProdOpen} onClose={onDeleteProdClose} cancelRef={cancelRef} handleProductChange={handleProductChange} />
                       </Td>
                     </Tr>
                   ))}
@@ -113,6 +115,7 @@ const ListProducts = () => {
                 <Tfoot></Tfoot>
               </Table>
             </TableContainer>
+            <DeleteProduct id={currentProductId} isOpen={isDeleteProdOpen} onClose={onDeleteProdClose} cancelRef={cancelRef} handleProductChange={handleProductChange} />
           </Flex>
         </>
       )}

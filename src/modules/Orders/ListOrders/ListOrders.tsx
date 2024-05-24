@@ -41,6 +41,7 @@ const ListOrders = () => {
   }, [refreshData]);
 
   const handleOrderChange = () => {
+    setIsLoading(true);
     setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
   };
 
@@ -107,7 +108,6 @@ const ListOrders = () => {
                         <Button onClick={() => handleDeleteClick(order.id)} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
                         </Button>
-                        <DeleteOrder id={currentOrderId} isOpen={isDeleteOrderOpen} onClose={onDeleteOrderClose} cancelRef={cancelRef} handleOrderChange={handleOrderChange} />
                       </Td>
                     </Tr>
                   ))}
@@ -115,6 +115,7 @@ const ListOrders = () => {
                 <Tfoot></Tfoot>
               </Table>
             </TableContainer>
+            <DeleteOrder id={currentOrderId} isOpen={isDeleteOrderOpen} onClose={onDeleteOrderClose} cancelRef={cancelRef} handleOrderChange={handleOrderChange} />
           </Flex>
         </>
       )}

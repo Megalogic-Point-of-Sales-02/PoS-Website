@@ -1,7 +1,7 @@
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
 import { OrderRequest } from "@/interfaces/OrderRequest";
 import { ProductResponse } from "@/interfaces/ProductResponse";
-import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useToast } from "@chakra-ui/react";
+import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import ReactSelect from "react-select";
 
@@ -12,6 +12,9 @@ interface AddOrderProps extends BoxProps {
 }
 
 const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
+  const [isLoadingPrice, setIsLoadingPrice] = useState<boolean>(false);
+
   // Set the useState type to the interface for request and assign a default placeholder
   const [formData, setFormData] = useState<OrderRequest>({
     order_date: new Date(),
@@ -58,7 +61,6 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
 
   useEffect(() => {
     const calculateSales = async () => {
-      console.log("DIHITUNG");
       const response = await fetch(`/api/v1/products?id=${formData.product_id}`);
       const productData = await response.json();
       const sales = productData[0].product_price * formData.quantity;
@@ -66,8 +68,10 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
         ...prevData,
         sales: sales,
       }));
+      setIsLoadingPrice(false);
     };
     if (formData.product_id && formData.quantity) {
+      setIsLoadingPrice(true);
       calculateSales();
     }
   }, [formData.product_id, formData.quantity]);
@@ -99,7 +103,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setIsLoadingButton(true);
     try {
       const response = await fetch("/api/v1/orders", {
         method: "POST",
@@ -152,6 +156,8 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsLoadingButton(false);
     }
   };
 
@@ -200,13 +206,14 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
                   <Input type="number" name="quantity" value={formData.quantity} onChange={handleChange} id="quantity" placeholder="Enter quantity" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex="1 1 40%" position="relative">
                   <FormLabel htmlFor="sales">Sales</FormLabel>
-                  <Input type="number" name="sales" value={formData.sales} id="sales" isDisabled />
+                  <Input type="number" name="sales" value={isLoadingPrice ? 0 : formData.sales} id="sales" isDisabled />
+                  {isLoadingPrice && <Spinner size="sm" position="absolute" right="8px" top="60%" />} {/* Show spinner while loading */}
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem">
-                Submit
+                {isLoadingButton ? <Spinner /> : "Submit"}
               </Button>
             </form>
           </ModalBody>

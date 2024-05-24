@@ -1,5 +1,5 @@
-import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useToast } from "@chakra-ui/react";
-import React from "react";
+import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useToast, Spinner } from "@chakra-ui/react";
+import React, { useState } from "react";
 
 interface DeleteOrderProps {
   id: number | null;
@@ -11,8 +11,10 @@ interface DeleteOrderProps {
 
 const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: DeleteOrderProps) => {
   const toast = useToast();
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
 
   const handleDelete = async (e) => {
+    setIsLoadingButton(true);
     if (id !== null) {
       console.log("deleting order with id", id.toString());
       e.preventDefault();
@@ -60,6 +62,8 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
           duration: 5000,
           isClosable: true,
         });
+      } finally {
+        setIsLoadingButton(false);
       }
     } else {
       toast({
@@ -69,12 +73,13 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
         duration: 5000,
         isClosable: true,
       });
+      setIsLoadingButton(false);
     }
   };
 
   return (
     <div>
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose} closeOnOverlayClick={false}>
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -88,7 +93,7 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
                 Cancel
               </Button>
               <Button colorScheme="red" onClick={handleDelete} ml={3}>
-                Delete
+                {isLoadingButton ? <Spinner /> : "Delete"}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

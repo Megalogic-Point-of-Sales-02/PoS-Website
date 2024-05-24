@@ -1,5 +1,5 @@
 import { ProductRequest } from "@/interfaces/ProductRequest";
-import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useToast } from "@chakra-ui/react";
+import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spinner, Stack, Text, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface AddProductProps extends BoxProps {
@@ -9,6 +9,8 @@ interface AddProductProps extends BoxProps {
 }
 
 const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) => {
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
+
   const [formData, setFormData] = useState<ProductRequest>({
     product_name: "",
     product_category: "",
@@ -29,7 +31,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setIsLoadingButton(true);
     try {
       const response = await fetch("/api/v1/products", {
         method: "POST",
@@ -75,6 +77,8 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsLoadingButton(false);
     }
   };
 
@@ -109,7 +113,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem">
-                Submit
+                {isLoadingButton ? <Spinner /> : "Submit"}
               </Button>
             </form>
           </ModalBody>
