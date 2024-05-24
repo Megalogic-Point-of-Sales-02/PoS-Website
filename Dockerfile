@@ -17,8 +17,6 @@ RUN npm install
 
 COPY . .
 
-ENV NEXT_PUBLIC_SUPABASE_URL=https://igswakcuoxvtcwkhczne.supabase.co
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlnc3dha2N1b3h2dGN3a2hjem5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU0MzY5MDEsImV4cCI6MjAzMTAxMjkwMX0.K0ztyeqlQ4tv-UPyCqRtJSD77B1-PqVM09_5VWJNGQQ
 RUN npm run build
 
 CMD ["npm", "start"]
