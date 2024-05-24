@@ -112,7 +112,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
                   <Input type="number" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
                 </FormControl>
               </Flex>
-              <Button type="submit" width="100%" marginTop="2rem">
+              <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
                 {isLoadingButton ? <Spinner /> : "Submit"}
               </Button>
             </form>
