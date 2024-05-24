@@ -72,10 +72,10 @@ const ListOrders = () => {
         <>
           {/* Table */}
           <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
-            <Flex flexDirection="row">
+            <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
               <Text fontSize="2xl">Order List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />} onClick={onAddOrderOpen}>
+              <Button leftIcon={<AddIcon />} onClick={onAddOrderOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Order
               </Button>
               <AddOrder isOpen={isAddOrderOpen} onClose={onAddOrderClose} handleOrderChange={handleOrderChange} />

@@ -27,40 +27,39 @@ const Totalorder = () => {
     fetchTotalOrder();
   });
 
-    return (
-      <>
-        {/* Fetching the API */}
-        {isLoading === true && (
-          <>
-            <Center>
-              <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
-            </Center>
-          </>
-        )}
+  return (
+    <>
+      {/* Fetching the API */}
+      {isLoading === true && (
+        <>
+          <Center>
+            <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
+          </Center>
+        </>
+      )}
 
-        {/* No Customer */}
-        {totalOrder === undefined && isLoading === false && (
-          <>
-            <div>No customer</div>
-          </>
-        )}
+      {/* No Customer */}
+      {totalOrder === undefined && isLoading === false && (
+        <>
+          <div>No customer</div>
+        </>
+      )}
 
-        {/* Show Customers */}
-        {totalOrder !== undefined && isLoading === false && (
-          <>
-            <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth="15rem" minHeight="2rem">
-              <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
-                {totalOrder}
-              </Text>
-              <Text fontSize="lg" fontWeight="medium">
-                Total Order
-              </Text>
-            </Box>
-          </>
-        )}
-      </>
-    );
-  };
-  
-  export default Totalorder;
-  
+      {/* Show Customers */}
+      {totalOrder !== undefined && isLoading === false && (
+        <>
+          <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxW="23rem" w="100%" minH="10rem">
+            <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
+              {totalOrder}
+            </Text>
+            <Text fontSize="lg" fontWeight="medium">
+              Total Order
+            </Text>
+          </Box>
+        </>
+      )}
+    </>
+  );
+};
+
+export default Totalorder;

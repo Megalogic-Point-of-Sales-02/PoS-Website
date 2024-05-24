@@ -72,7 +72,7 @@ const ListProducts = () => {
         <>
           {/* Table */}
           <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
-            <Flex flexDirection="row">
+            <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
               <Text fontSize="2xl">Product List</Text>
               <Spacer />
               <Button leftIcon={<AddIcon />} onClick={onAddProdOpen}>

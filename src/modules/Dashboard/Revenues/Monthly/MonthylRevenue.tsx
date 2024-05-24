@@ -34,7 +34,7 @@ const MonthylRevenue = () => {
 
   return (
     <>
-      <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth="15rem" minHeight="2rem">
+      <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxW="23rem" w="100%" minH="10rem">
         {monthlyRevenue !== null && (
           <>
             <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
