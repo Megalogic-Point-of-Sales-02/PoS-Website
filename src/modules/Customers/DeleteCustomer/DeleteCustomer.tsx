@@ -1,5 +1,5 @@
-import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useToast } from "@chakra-ui/react";
-import React from "react";
+import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useToast, Spinner } from "@chakra-ui/react";
+import React , { useState }from "react";
 
 interface DeleteCustomerProps {
   id: number | null;
@@ -11,10 +11,12 @@ interface DeleteCustomerProps {
 
 const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }: DeleteCustomerProps) => {
   const toast = useToast();
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
 
   const handleDelete = async (e) => {
+    setIsLoadingButton(true);
     if (id !== null) {
-      console.log("deleting cust with id", id.toString());
+      console.log("deleting customer with id", id.toString());
       e.preventDefault();
       try {
         const response = await fetch("/api/v1/customers", {
@@ -60,6 +62,8 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
           duration: 5000,
           isClosable: true,
         });
+      } finally {
+        setIsLoadingButton(false);
       }
     } else {
       toast({
@@ -69,12 +73,13 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
         duration: 5000,
         isClosable: true,
       });
+      setIsLoadingButton(false);
     }
   };
 
   return (
     <div>
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose} closeOnOverlayClick={false}>
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -88,7 +93,7 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
                 Cancel
               </Button>
               <Button colorScheme="red" onClick={handleDelete} ml={3}>
-                Delete
+              {isLoadingButton ? <Spinner /> : "Delete"}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

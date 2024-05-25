@@ -1,5 +1,5 @@
 import { CustomerRequest } from "@/interfaces/CustomerRequest";
-import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useToast } from "@chakra-ui/react";
+import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useToast, Spinner } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface AddCustomerProps extends BoxProps {
@@ -9,6 +9,8 @@ interface AddCustomerProps extends BoxProps {
 }
 
 const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps) => {
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
+
   // Set the useState type to the interface for request and assign a default placeholder
   const [formData, setFormData] = useState<CustomerRequest>({
     customer_name: "",
@@ -33,7 +35,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setIsLoadingButton(true);
     try {
       const response = await fetch("/api/v1/customers", {
         method: "POST",
@@ -48,7 +50,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
         // Create an error toast
         toast({
           title: "Error",
-          description: errorMessage.error,
+          description: errorMessage,
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -86,6 +88,8 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsLoadingButton(false);
     }
   };
   return (
@@ -108,7 +112,6 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
                   <Select name="gender" value={formData.gender} onChange={handleChange} id="gender">
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
-                    <option value="Other">Other</option>
                   </Select>
                 </FormControl>
 
@@ -137,7 +140,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem">
-                Submit
+              {isLoadingButton ? <Spinner /> : "Submit"}
               </Button>
             </form>
           </ModalBody>

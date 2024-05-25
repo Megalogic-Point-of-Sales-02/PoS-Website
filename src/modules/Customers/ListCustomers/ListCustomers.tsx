@@ -40,6 +40,7 @@ const ListCustomers = () => {
   }, [refreshData]);
 
   const handleCustomerChange = () => {
+    setIsLoading(true);
     setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
   };
 
@@ -71,10 +72,10 @@ const ListCustomers = () => {
         <>
           {/* Table */}
           <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
-            <Flex flexDirection="row">
+            <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
               <Text fontSize="2xl">Customer List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />} onClick={onAddCustOpen}>
+              <Button leftIcon={<AddIcon />} onClick={onAddCustOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Customer
               </Button>
               <AddCustomer isOpen={isAddCustOpen} onClose={onAddCustClose} handleCustomerChange={handleCustomerChange} />
@@ -113,7 +114,6 @@ const ListCustomers = () => {
                         <Button colorScheme="red" size="sm" variant="outline" onClick={() => handleDeleteClick(customer.id)}>
                           <FaTrashAlt />
                         </Button>
-                        <DeleteCustomer id={currentCustomerId} isOpen={isDeleteCustOpen} onClose={onDeleteCustClose} cancelRef={cancelRef} handleCustomerChange={handleCustomerChange} />
                       </Td>
                     </Tr>
                   ))}
@@ -121,6 +121,7 @@ const ListCustomers = () => {
                 <Tfoot></Tfoot>
               </Table>
             </TableContainer>
+            <DeleteCustomer id={currentCustomerId} isOpen={isDeleteCustOpen} onClose={onDeleteCustClose} cancelRef={cancelRef} handleCustomerChange={handleCustomerChange} />
           </Flex>
         </>
       )}
