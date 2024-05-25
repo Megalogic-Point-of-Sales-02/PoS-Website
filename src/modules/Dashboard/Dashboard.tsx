@@ -4,6 +4,7 @@ import TotalRevenues from "./Revenues/TotalRevenues";
 import MonthlyOrder from "./Totalorder/Monthly/MonthlyOrder";
 import Totalorder from "./Totalorder/Totalorder";
 import TotalCustomer from "./Customer/TotalCustomer";
+import TotalProduct from "./Product/TotalProduct";
 
 const Dashboard = () => {
   return (
@@ -16,6 +17,7 @@ const Dashboard = () => {
           <TotalRevenues />
           <Totalorder />
           <TotalCustomer />
+          <TotalProduct />
           <MonthlyRevenue />
           <MonthlyOrder />
         </Flex>
