@@ -4,7 +4,7 @@ import convertRupiah from "@/utils/convertRupiah";
 import { Box, Button, Flex, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-const MonthylRevenue = () => {
+const MonthlyRevenue = () => {
   const [monthlyRevenue, setMonthlyRevenue] = useState(null);
 
   const getCurrentDatePrefix = () => {
@@ -77,4 +77,4 @@ const MonthylRevenue = () => {
   );
 };
 
-export default MonthylRevenue;
+export default MonthlyRevenue;

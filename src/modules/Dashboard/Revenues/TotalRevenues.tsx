@@ -4,7 +4,7 @@ import convertRupiah from "@/utils/convertRupiah";
 import { Center, CircularProgress, Text, Flex, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-const Revenues = () => {
+const TotalRevenues = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [revenue, setRevenue] = useState<number | undefined>(undefined);
 
@@ -49,7 +49,7 @@ const Revenues = () => {
       {/* Show Customers */}
       {revenue !== undefined && isLoading === false && (
         <>
-          <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxW="23rem" w="100%" minH="10rem">
+          <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxW="17.5rem" w="100%" minH="10rem">
             <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
               {convertRupiah(revenue)}
             </Text>
@@ -63,4 +63,4 @@ const Revenues = () => {
   );
 };
 
-export default Revenues;
+export default TotalRevenues;

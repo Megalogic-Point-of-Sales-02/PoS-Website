@@ -48,7 +48,7 @@ const Totalorder = () => {
       {/* Show Customers */}
       {totalOrder !== undefined && isLoading === false && (
         <>
-          <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxW="23rem" w="100%" minH="10rem">
+          <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxW="17.5rem" w="100%" minH="10rem">
             <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
               {totalOrder}
             </Text>

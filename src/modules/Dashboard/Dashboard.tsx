@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import MonthylRevenue from "./Revenues/Monthly/MonthylRevenue";
-import Revenues from "./Revenues/Revenues";
+import MonthlyRevenue from "./Revenues/Monthly/MonthlyRevenue";
+import TotalRevenues from "./Revenues/TotalRevenues";
 import MonthlyOrder from "./Totalorder/Monthly/MonthlyOrder";
 import Totalorder from "./Totalorder/Totalorder";
 
@@ -12,9 +12,9 @@ const Dashboard = () => {
           Dashboard
         </Text>
         <Flex flexDirection="row" wrap="wrap" gap="2rem">
-          <Revenues />
-          <MonthylRevenue />
+          <TotalRevenues />
           <Totalorder />
+          <MonthlyRevenue />
           <MonthlyOrder />
         </Flex>
       </Box>
