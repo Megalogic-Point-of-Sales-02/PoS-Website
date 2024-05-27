@@ -49,7 +49,7 @@ export const authOption: NextAuthOptions = {
           // if validatepassword true
           if (validatePassword) {
             // create accessToken
-            const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.NEXTAUTH_SECRET, { expiresIn: "30s" });
+            const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.NEXTAUTH_SECRET, { expiresIn: "7d" });
             // return the user
             return { id: user.id, username: user.username, fullname: user.fullname, accessToken: accessToken };
           }

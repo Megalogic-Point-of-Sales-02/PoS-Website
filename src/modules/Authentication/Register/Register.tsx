@@ -86,7 +86,7 @@ const Register = () => {
     <Flex alignItems="center" justifyContent="center">
       <Flex padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxWidth="md" width="100%" justifyContent="center" flexDirection="column" gap="1rem" marginX="1rem">
         <Text as="h1" fontSize="2xl" fontWeight="semibold" marginX="auto">
-          Login
+          Register
         </Text>
         <form onSubmit={handleSubmit}>
           <Flex gap="1.5rem" flexDirection="column">
@@ -106,7 +106,7 @@ const Register = () => {
             </FormControl>
           </Flex>
           <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
-            {isLoadingButton ? <Spinner /> : "Login"}
+            {isLoadingButton ? <Spinner /> : "Register"}
           </Button>
         </form>
       </Flex>
