@@ -4,6 +4,7 @@ import { ProductResponse } from "@/interfaces/ProductResponse";
 import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import ReactSelect from "react-select";
+import DOMPurify from "isomorphic-dompurify";
 
 interface AddOrderProps extends BoxProps {
   onClose: () => void;
@@ -79,9 +80,11 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
   // Set value of a label when there is a change in the form
   const handleDateChange = (e) => {
     const { name, value } = e.target;
+    const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
+    console.log("sanitized value: " + sanitizedValue)
     setFormData((prevData) => ({
       ...prevData,
-      [name]: new Date(value),
+      [name]: new Date(sanitizedValue),
     }));
   };
 

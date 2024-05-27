@@ -1,6 +1,7 @@
 import { CustomerRequest } from "@/interfaces/CustomerRequest";
 import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useToast, Spinner } from "@chakra-ui/react";
 import { useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 
 interface AddCustomerProps extends BoxProps {
   onClose: () => void;
@@ -26,9 +27,11 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
   // Set value of a label when there is a change in the form
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
+    console.log("sanitized value: " + sanitizedValue)
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: sanitizedValue,
     }));
     console.log(formData);
   };

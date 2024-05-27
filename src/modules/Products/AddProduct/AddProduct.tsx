@@ -1,6 +1,7 @@
 import { ProductRequest } from "@/interfaces/ProductRequest";
 import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spinner, Stack, Text, useToast } from "@chakra-ui/react";
 import { useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 
 interface AddProductProps extends BoxProps {
   onClose: () => void;
@@ -22,9 +23,11 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
+    console.log("sanitized value: " + sanitizedValue)
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: sanitizedValue,
     }));
     console.log(formData);
   };
