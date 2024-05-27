@@ -3,7 +3,8 @@ import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  checkToken(req);
+  const tokenResponse = checkToken(req);
+  if (tokenResponse !== true) return tokenResponse;
 
   // Get the data
   const { data, error } = await supabase.rpc("total_order"); // call for function total_order in supabase

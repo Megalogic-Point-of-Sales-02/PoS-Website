@@ -11,6 +11,7 @@ const checkToken = (req: NextRequest) => {
   if (decoded === null) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized: Invalid Token" }), { status: 401 });
   }
+  return true;
 };
 
 export default checkToken;
