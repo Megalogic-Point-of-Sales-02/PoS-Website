@@ -28,13 +28,11 @@ const TotalCustomer = () => {
   }, []);
 
   return (
-    <>
+    <Box flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minH="8rem" width="100%" minWidth={{ base: "100%", sm: "calc(50% - 2rem)", lg: "calc(25% - 2rem)" }}>
       {/* Fetching the API */}
       {isLoading === true && (
         <>
-          <Center>
-            <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
-          </Center>
+          <CircularProgress isIndeterminate color="green.300" marginBottom="0.5rem" />
         </>
       )}
 
@@ -48,17 +46,15 @@ const TotalCustomer = () => {
       {/* Show Customers */}
       {totalCustomer !== undefined && isLoading === false && (
         <>
-          <Box padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxW="17.5rem" w="100%" minH="10rem">
-            <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
-              {totalCustomer}
-            </Text>
-            <Text fontSize="lg" fontWeight="medium">
-              Total Customer
-            </Text>
-          </Box>
+          <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
+            {totalCustomer}
+          </Text>
         </>
       )}
-    </>
+      <Text fontSize="lg" fontWeight="medium">
+        Total Customer
+      </Text>
+    </Box>
   );
 };
 

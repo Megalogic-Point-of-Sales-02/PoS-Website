@@ -142,9 +142,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               </HStack>
             </MenuButton>
             <MenuList bg="#132337" borderColor="#0f1824">
-              <MenuItem bg="#132337">Profile</MenuItem>
+              <MenuItem bg="#132337" onClick={() => push("/profile")}>
+                Profile
+              </MenuItem>
               <MenuItem bg="#132337">Settings</MenuItem>
-              <MenuItem bg="#132337">Billing</MenuItem>
               <MenuDivider borderColor="#1c2e45" />
               <MenuItem bg="#132337" onClick={() => push("/api/auth/signout")}>
                 Sign out

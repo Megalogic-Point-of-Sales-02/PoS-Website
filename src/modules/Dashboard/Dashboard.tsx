@@ -10,7 +10,7 @@ const Dashboard = () => {
   return (
     <>
       <Box padding="1rem">
-        <Text fontSize="2xl" marginBottom="1rem">
+        <Text fontSize="2xl" fontWeight="semibold" marginBottom="1rem" textAlign={{ base: "center", lg: "left" }}>
           Dashboard
         </Text>
         <Flex flexDirection="row" wrap="wrap" gap="2rem">
@@ -18,6 +18,8 @@ const Dashboard = () => {
           <Totalorder />
           <TotalCustomer />
           <TotalProduct />
+        </Flex>
+        <Flex flexDirection="row" wrap="wrap" gap="2rem" marginTop="2rem">
           <MonthlyRevenue />
           <MonthlyOrder />
         </Flex>
