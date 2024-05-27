@@ -1,13 +1,13 @@
-import checkToken from "@/utils/checkToken";
+import { LoginRequest } from "@/interfaces/LoginRequest";
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  checkToken(req);
+export async function POST(req: NextRequest) {
+  const requestBody: LoginRequest = await req.json();
+  let data: any, error: any;
 
-  // Get the data
-  // query = "SELECT sum(total_spend) FROM customers"
-  const { data, error } = await supabase.rpc("total_spend_sum"); // call for function total_spend_sum in supabase
+  // Check the data
+  ({ data, error } = await supabase.from("users").select("*").eq("username", requestBody.username));
 
   // Error
   if (error) {

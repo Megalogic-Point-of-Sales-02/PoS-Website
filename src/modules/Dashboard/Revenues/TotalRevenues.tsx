@@ -2,16 +2,26 @@
 
 import convertRupiah from "@/utils/convertRupiah";
 import { Center, CircularProgress, Text, Flex, Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const TotalRevenues = () => {
+  const { data: session, status } = useSession();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [revenue, setRevenue] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     async function fetchRevenue() {
       try {
-        const response = await fetch("/api/v1/revenues");
+        const methodAndHeader = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+        };
+        const response = await fetch("/api/v1/revenues", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
@@ -19,14 +29,14 @@ const TotalRevenues = () => {
           const data = await response.json();
           setRevenue(data);
         }
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching the data");
-      } finally {
         setIsLoading(false);
       }
     }
-    fetchRevenue();
-  });
+    if (session) fetchRevenue();
+  }, [session]);
 
   return (
     <>

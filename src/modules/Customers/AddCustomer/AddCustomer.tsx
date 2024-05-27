@@ -28,7 +28,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
   const handleChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log("sanitized value: " + sanitizedValue)
+    console.log("sanitized value: " + sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
       [name]: sanitizedValue,
@@ -142,8 +142,8 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
                   <Input type="number" name="total_spend" value={formData.total_spend} onChange={handleChange} id="total_spend" placeholder="Enter total spend" />
                 </FormControl>
               </Flex>
-              <Button type="submit" width="100%" marginTop="2rem">
-              {isLoadingButton ? <Spinner /> : "Submit"}
+              <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
+                {isLoadingButton ? <Spinner /> : "Submit"}
               </Button>
             </form>
           </ModalBody>

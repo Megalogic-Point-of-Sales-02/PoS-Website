@@ -25,7 +25,7 @@ const TotalProduct = () => {
       }
     }
     fetchTotalProduct();
-  });
+  }, []);
 
   return (
     <>

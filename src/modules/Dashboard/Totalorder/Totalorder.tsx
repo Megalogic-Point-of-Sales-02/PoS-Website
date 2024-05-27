@@ -25,7 +25,7 @@ const Totalorder = () => {
       }
     }
     fetchTotalOrder();
-  });
+  }, []);
 
   return (
     <>

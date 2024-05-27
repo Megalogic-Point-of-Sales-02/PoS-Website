@@ -7,7 +7,8 @@ import { IconType } from "react-icons";
 import { ReactText } from "react";
 import { IoPeopleOutline, IoCartOutline } from "react-icons/io5";
 import { AiOutlineInbox } from "react-icons/ai";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface LinkItemProps {
   name: string;
@@ -112,6 +113,9 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const { data: session, status } = useSession();
+  const { push } = useRouter();
+
   return (
     <Flex ml={{ base: 0, md: 60 }} px={{ base: 4, md: 4 }} height="4rem" alignItems="center" bg="#132337" borderBottomWidth="1px" borderBottomColor="#132337" justifyContent={{ base: "space-between", md: "flex-end" }} {...rest}>
       <IconButton display={{ base: "flex", md: "none" }} onClick={onOpen} bgColor="#white" aria-label="open menu" icon={<FiMenu />} />
@@ -127,7 +131,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <HStack>
                 <Avatar size={"sm"} />
                 <VStack display={{ base: "none", md: "flex" }} alignItems="flex-start" spacing="1px" ml="2">
-                  <Text fontSize="sm">Admin</Text>
+                  {session ? <Text fontSize="sm">{session?.user.username}</Text> : <Text fontSize="sm">Load username...</Text>}
                   <Text fontSize="xs" color="gray.600">
                     Admin
                   </Text>
@@ -142,7 +146,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem bg="#132337">Settings</MenuItem>
               <MenuItem bg="#132337">Billing</MenuItem>
               <MenuDivider borderColor="#1c2e45" />
-              <MenuItem bg="#132337">Sign out</MenuItem>
+              <MenuItem bg="#132337" onClick={() => push("/api/auth/signout")}>
+                Sign out
+              </MenuItem>
             </MenuList>
           </Menu>
         </Flex>

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import SidebarWithHeader from "@/components/SidebarWithHeader";
+import AuthProvider from "./AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <SidebarWithHeader>{children}</SidebarWithHeader>
+          <AuthProvider>
+            <SidebarWithHeader>{children}</SidebarWithHeader>
+          </AuthProvider>
         </Providers>
       </body>
     </html>
