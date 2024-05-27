@@ -1,7 +1,10 @@
+import checkToken from "@/utils/checkToken";
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
+  checkToken(req);
+
   // Get the data
   const { data, error } = await supabase.rpc("total_order"); // call for function total_order in supabase
 
