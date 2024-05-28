@@ -5,6 +5,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Flex, FormControl, FormLabel, Text, Button, Spinner, Input, useToast, Link, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 
 const Register = () => {
   const toast = useToast();
@@ -77,9 +78,11 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
+    console.log(sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: sanitizedValue,
     }));
     console.log(formData);
   };

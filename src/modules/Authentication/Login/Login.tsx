@@ -6,6 +6,7 @@ import { Flex, FormControl, FormLabel, InputRightElement, Button, Spinner, Input
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 
 const Login = () => {
   const { push } = useRouter();
@@ -63,9 +64,11 @@ const Login = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
+    console.log(sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: sanitizedValue,
     }));
     console.log(formData);
   };
