@@ -1,8 +1,12 @@
+import checkToken from "@/utils/checkToken";
 import { ProductRequest } from "@/interfaces/ProductRequest";
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if (tokenResponse !== true) return tokenResponse;
+
   // Get the data
   // query = "SELECT count(id) FROM products"
   const { data, error } = await supabase.rpc("total_product");
