@@ -1,16 +1,26 @@
 "use client";
 
 import { Center, CircularProgress, Text, Flex, Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const TotalProduct = () => {
+  const { data: session, status } = useSession();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [totalProduct, setTotalProduct] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     async function fetchTotalProduct() {
       try {
-        const response = await fetch("/api/v1/products/total");
+        const methodAndHeader = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+        };
+        const response = await fetch("/api/v1/products/total", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
@@ -24,8 +34,8 @@ const TotalProduct = () => {
         setIsLoading(false);
       }
     }
-    fetchTotalProduct();
-  }, []);
+    if (session) fetchTotalProduct();
+  }, [session]);
 
   return (
     <Box flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minH="8rem" width="100%" minWidth={{ base: "100%", sm: "calc(50% - 2rem)", lg: "calc(25% - 2rem)" }}>
