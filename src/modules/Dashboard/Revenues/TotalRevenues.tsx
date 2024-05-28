@@ -47,14 +47,14 @@ const TotalRevenues = () => {
         </>
       )}
 
-      {/* No Customer */}
+      {/* No Total Revenue */}
       {revenue === undefined && isLoading === false && (
         <>
           <div>No Total Revenues</div>
         </>
       )}
 
-      {/* Show Customers */}
+      {/* Show Total Revenues */}
       {revenue !== undefined && isLoading === false && (
         <>
           <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">

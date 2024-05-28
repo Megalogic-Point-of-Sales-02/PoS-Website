@@ -46,14 +46,14 @@ const Totalorder = () => {
         </>
       )}
 
-      {/* No Customer */}
+      {/* No TotalOrder */}
       {totalOrder === undefined && isLoading === false && (
         <>
           <div>No Total Order</div>
         </>
       )}
 
-      {/* Show Customers */}
+      {/* Show TotalOrders */}
       {totalOrder !== undefined && isLoading === false && (
         <>
           <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
