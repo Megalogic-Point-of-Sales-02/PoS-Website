@@ -1,3 +1,4 @@
+import SidebarWithHeader from "@/components/SidebarWithHeader";
 import Dashboard from "@/modules/Dashboard/Dashboard";
 import Image from "next/image";
 
