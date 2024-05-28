@@ -1,7 +1,7 @@
 "use client";
 
 import { LoginRequest } from "@/interfaces/LoginRequest";
-import { Flex, FormControl, FormLabel, Select, Button, Spinner, Input, useToast, Text, Link } from "@chakra-ui/react";
+import { Flex, FormControl, FormLabel, Select, Button, Spinner, Input, useToast, Text, Link, Box } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -69,8 +69,11 @@ const Login = () => {
   };
 
   return (
-    <Flex alignItems="center" justifyContent="center">
-      <Flex padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxWidth="md" width="100%" justifyContent="center" flexDirection="column" gap="1rem" marginX="1rem">
+    <Flex bgColor="#0f1824" alignItems="center" justifyContent="center" height="calc(100vh)" border="1px solid green" flexDir="column" rowGap="2rem">
+      <Text as="h1" color="white" fontSize="4xl" fontWeight="semibold" whiteSpace="pre-line" textAlign="center">
+        {"Megalogic\nPoint of Sales"}
+      </Text>
+      <Flex padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxWidth="md" width="100%" justifyContent="center" flexDirection="column" gap="1rem" marginX="1rem" color="white">
         <Text as="h1" fontSize="2xl" fontWeight="semibold" marginX="auto">
           Login
         </Text>

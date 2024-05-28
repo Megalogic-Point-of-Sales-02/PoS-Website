@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import SidebarWithHeader from "@/components/SidebarWithHeader";
 import AuthProvider from "./AuthProvider";
+import SidebarWrapper from "@/components/SidebarWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <AuthProvider>
-            <SidebarWithHeader>{children}</SidebarWithHeader>
+            <SidebarWrapper>{children}</SidebarWrapper>
           </AuthProvider>
         </Providers>
       </body>

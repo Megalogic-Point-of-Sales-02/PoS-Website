@@ -1,7 +1,7 @@
 "use client";
 
 import { RegisterRequest } from "@/interfaces/RegisterRequest";
-import { Flex, FormControl, FormLabel, Text, Button, Spinner, Input, useToast } from "@chakra-ui/react";
+import { Flex, FormControl, FormLabel, Text, Button, Spinner, Input, useToast, Link } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -83,8 +83,11 @@ const Register = () => {
   };
 
   return (
-    <Flex alignItems="center" justifyContent="center">
-      <Flex padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxWidth="md" width="100%" justifyContent="center" flexDirection="column" gap="1rem" marginX="1rem">
+    <Flex bgColor="#0f1824" alignItems="center" justifyContent="center" height="calc(100vh)" border="1px solid green" flexDir="column" rowGap="2rem">
+      <Text as="h1" color="white" fontSize="4xl" fontWeight="semibold" whiteSpace="pre-line" textAlign="center">
+        {"Megalogic\nPoint of Sales"}
+      </Text>
+      <Flex padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxWidth="md" width="100%" justifyContent="center" flexDirection="column" gap="1rem" marginX="1rem" color="white">
         <Text as="h1" fontSize="2xl" fontWeight="semibold" marginX="auto">
           Register
         </Text>
@@ -109,6 +112,12 @@ const Register = () => {
             {isLoadingButton ? <Spinner /> : "Register"}
           </Button>
         </form>
+        <Text textAlign="center">
+          Already have an account?{" "}
+          <Link onClick={() => push("/login")} color="#3b82f6">
+            Login
+          </Link>
+        </Text>
       </Flex>
     </Flex>
   );
