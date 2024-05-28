@@ -49,7 +49,7 @@ const Totalorder = () => {
       {/* No Customer */}
       {totalOrder === undefined && isLoading === false && (
         <>
-          <div>No customer</div>
+          <div>No Total Order</div>
         </>
       )}
 
