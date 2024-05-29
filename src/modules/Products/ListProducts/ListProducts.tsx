@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, Center, CircularProgress, useDisclosure } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { FaTrashAlt } from "react-icons/fa";
+import { useSession } from "next-auth/react";
 import convertRupiah from "@/utils/convertRupiah";
 import React from "react";
 import AddProduct from "../AddProduct/AddProduct";
@@ -17,12 +18,20 @@ const ListProducts = () => {
   const [currentProductId, setCurrentProductId] = useState<number | null>(null); // State for the current product ID to be deleted
   const { isOpen: isAddProdOpen, onOpen: onAddProdOpen, onClose: onAddProdClose } = useDisclosure();
   const { isOpen: isDeleteProdOpen, onOpen: onDeleteProdOpen, onClose: onDeleteProdClose } = useDisclosure();
+  const { data: session, status} = useSession();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await fetch("/api/v1/products");
+        const methodAndHeader = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+        };
+        const response = await fetch("/api/v1/products", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
@@ -36,8 +45,8 @@ const ListProducts = () => {
         setIsLoading(false);
       }
     }
-    fetchProducts();
-  }, [refreshData]);
+    if(session) fetchProducts();
+  }, [refreshData, session]);
 
   const handleProductChange = () => {
     setIsLoading(true);

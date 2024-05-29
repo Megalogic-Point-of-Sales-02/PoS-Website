@@ -1,8 +1,12 @@
 import { OrderRequest } from "@/interfaces/OrderRequest";
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
+import checkToken from "@/utils/checkToken";
 
 export async function GET(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   // Get the data
   // query = "SELECT o.id, o.order_date, o.ship_date, c.customer_name, p.product_name FROM orders o INNER JOIN customers c ON o.customer_id=c.id INNER JOIN products p ON o.product_id=p.id"
   const { data, error } = await supabase.from("orders").select("*");
@@ -23,6 +27,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   // Get the request body
   const requestBody: OrderRequest = await req.json();
   console.log("data: ", requestBody);
@@ -47,6 +54,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   // Get the request body
   const requestBody = await req.json();
   const { error } = await supabase.from("orders").delete().eq("id", requestBody.id);

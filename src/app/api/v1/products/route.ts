@@ -1,8 +1,12 @@
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 import { ProductRequest } from "@/interfaces/ProductRequest";
+import checkToken from "@/utils/checkToken";
 
 export async function GET(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   const searchParams = req.nextUrl.searchParams;
   let data, error;
 
@@ -33,6 +37,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   // Get the request body
   const requestBody: ProductRequest = await req.json();
   console.log("data: ", requestBody);
@@ -56,6 +63,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   // Get the request body
   const requestBody = await req.json();
   const { error } = await supabase.from("products").delete().eq("id", requestBody.id);

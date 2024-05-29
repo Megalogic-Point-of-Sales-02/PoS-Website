@@ -20,6 +20,7 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
     if (id !== null) {
       console.log("deleting customer with id", id.toString());
       e.preventDefault();
+      if(session){
       try {
         const response = await fetch("/api/v1/customers", {
           method: "DELETE",
@@ -68,7 +69,7 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
       } finally {
         setIsLoadingButton(false);
       }
-    } else {
+    }} else {
       toast({
         title: "Error",
         description: "Customer ID is null",

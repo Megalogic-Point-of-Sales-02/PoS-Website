@@ -2,6 +2,7 @@ import { ProductRequest } from "@/interfaces/ProductRequest";
 import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spinner, Stack, Text, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import DOMPurify from "isomorphic-dompurify";
+import { useSession } from "next-auth/react";
 
 interface AddProductProps extends BoxProps {
   onClose: () => void;
@@ -11,6 +12,7 @@ interface AddProductProps extends BoxProps {
 
 const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) => {
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
+  const { data: session, status} = useSession();
 
   const [formData, setFormData] = useState<ProductRequest>({
     product_name: "",
@@ -35,6 +37,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoadingButton(true);
+    if(session){
     try {
       const response = await fetch("/api/v1/products", {
         method: "POST",
@@ -83,7 +86,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
     } finally {
       setIsLoadingButton(false);
     }
-  };
+  }};
 
   return (
     <>

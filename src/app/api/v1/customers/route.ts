@@ -1,8 +1,12 @@
 import { CustomerRequest } from "@/interfaces/CustomerRequest";
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
+import checkToken from "@/utils/checkToken";
 
 export async function GET(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   // Get the data
   // query = "SELECT * FROM customers"
   const { data, error } = await supabase.from("customers").select("*");
@@ -23,6 +27,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   // Get the request body
   const requestBody: CustomerRequest = await req.json();
   console.log("data: ", requestBody);
@@ -47,6 +54,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const tokenResponse = checkToken(req);
+  if(tokenResponse !== true) return tokenResponse;
+
   // Get the request body
   const requestBody = await req.json();
   const { error } = await supabase.from("customers").delete().eq("id", requestBody.id);

@@ -10,6 +10,7 @@ import DeleteOrder from "../DeleteOrder/DeleteOrder";
 import React from "react";
 import AddOrder from "../AddOrder/AddOrder";
 import convertRupiah from "@/utils/convertRupiah";
+import { useSession } from "next-auth/react";
 
 const ListOrders = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -19,11 +20,19 @@ const ListOrders = () => {
   const { isOpen: isDeleteOrderOpen, onOpen: onDeleteOrderOpen, onClose: onDeleteOrderClose } = useDisclosure();
   const [currentOrderId, setCurrentOrderId] = useState<number | null>(null); // State for the current order ID to be deleted
   const cancelRef = React.useRef<HTMLButtonElement>(null);
+  const {data:session,status} = useSession();
 
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const response = await fetch("/api/v1/orders");
+        const methodAndHeader = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+        };
+        const response = await fetch("/api/v1/orders", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
@@ -37,8 +46,8 @@ const ListOrders = () => {
         setIsLoading(false);
       }
     }
-    fetchOrders();
-  }, [refreshData]);
+    if(session) fetchOrders();
+  }, [refreshData, session]);
 
   const handleOrderChange = () => {
     setIsLoading(true);

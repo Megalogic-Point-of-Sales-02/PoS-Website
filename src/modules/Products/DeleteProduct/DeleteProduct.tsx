@@ -1,5 +1,6 @@
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useToast, Spinner } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface DeleteProductProps {
   id: number | null;
@@ -12,12 +13,14 @@ interface DeleteProductProps {
 const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: DeleteProductProps) => {
   const toast = useToast();
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
+  const { data: session, status} = useSession();
 
   const handleDelete = async (e) => {
     setIsLoadingButton(true);
     if (id !== null) {
       console.log("deleting product with id", id.toString());
       e.preventDefault();
+      if(session){
       try {
         const response = await fetch("/api/v1/products", {
           method: "DELETE",
@@ -65,7 +68,7 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: 
       } finally {
         setIsLoadingButton(false);
       }
-    } else {
+    }} else {
       toast({
         title: "Error",
         description: "Product ID is null. Please try again.",

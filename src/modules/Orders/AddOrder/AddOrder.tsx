@@ -5,6 +5,7 @@ import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody
 import { useEffect, useState } from "react";
 import ReactSelect from "react-select";
 import DOMPurify from "isomorphic-dompurify";
+import { useSession } from "next-auth/react";
 
 interface AddOrderProps extends BoxProps {
   onClose: () => void;
@@ -16,6 +17,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [isLoadingPrice, setIsLoadingPrice] = useState<boolean>(false);
 
+  const {data: session,status} = useSession();
   // Set the useState type to the interface for request and assign a default placeholder
   const [formData, setFormData] = useState<OrderRequest>({
     order_date: new Date(),
@@ -34,7 +36,14 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
   useEffect(() => {
     const fetchCustomersAndProducts = async () => {
       try {
-        const [customersResponse, productsResponse] = await Promise.all([fetch("/api/v1/customers"), fetch("/api/v1/products")]);
+        const methodAndHeader = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+        };
+        const [customersResponse, productsResponse] = await Promise.all([fetch("/api/v1/customers", methodAndHeader), fetch("/api/v1/products", methodAndHeader)]);
 
         if (!customersResponse.ok || !productsResponse.ok) {
           throw new Error("Failed to fetch data");
@@ -71,11 +80,11 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
       }));
       setIsLoadingPrice(false);
     };
-    if (formData.product_id && formData.quantity) {
+    if (formData.product_id && formData.quantity && session) {
       setIsLoadingPrice(true);
       calculateSales();
     }
-  }, [formData.product_id, formData.quantity]);
+  }, [formData.product_id, formData.quantity, session]);
 
   // Set value of a label when there is a change in the form
   const handleDateChange = (e) => {
@@ -107,6 +116,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoadingButton(true);
+    if(session){
     try {
       const response = await fetch("/api/v1/orders", {
         method: "POST",
@@ -162,7 +172,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
     } finally {
       setIsLoadingButton(false);
     }
-  };
+  }};
 
   const customerOptions = customers.map((customer) => ({
     value: customer.id,

@@ -9,8 +9,10 @@ import AddCustomer from "../AddCustomer/AddCustomer";
 import React from "react";
 import DeleteCustomer from "../DeleteCustomer/DeleteCustomer";
 import convertRupiah from "@/utils/convertRupiah";
+import { useSession } from "next-auth/react";
 
 const ListCustomers = () => {
+  const {data: session, status} =useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
   const { isOpen: isAddCustOpen, onOpen: onAddCustOpen, onClose: onAddCustClose } = useDisclosure();
@@ -22,7 +24,14 @@ const ListCustomers = () => {
   useEffect(() => {
     async function fetchCustomers() {
       try {
-        const response = await fetch("/api/v1/customers");
+        const methodAndHeader = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+        };
+        const response = await fetch("/api/v1/customers", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
@@ -36,8 +45,8 @@ const ListCustomers = () => {
         setIsLoading(false);
       }
     }
-    fetchCustomers();
-  }, [refreshData]);
+    if(session) fetchCustomers();
+  }, [refreshData, session]);
 
   const handleCustomerChange = () => {
     setIsLoading(true);

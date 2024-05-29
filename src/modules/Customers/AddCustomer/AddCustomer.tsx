@@ -41,6 +41,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoadingButton(true);
+    if (session){
     try {
       const response = await fetch("/api/v1/customers", {
         method: "POST",
@@ -97,7 +98,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
     } finally {
       setIsLoadingButton(false);
     }
-  };
+  }};
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
