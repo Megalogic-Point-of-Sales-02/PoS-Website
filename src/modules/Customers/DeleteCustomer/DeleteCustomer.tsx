@@ -1,4 +1,5 @@
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useToast, Spinner } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import React , { useState }from "react";
 
 interface DeleteCustomerProps {
@@ -10,6 +11,7 @@ interface DeleteCustomerProps {
 }
 
 const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }: DeleteCustomerProps) => {
+  const { data: session, status } = useSession();
   const toast = useToast();
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
 
@@ -23,6 +25,7 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
           },
           body: JSON.stringify({ id: id }),
         });

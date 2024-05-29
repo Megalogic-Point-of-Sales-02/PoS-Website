@@ -2,6 +2,7 @@ import { CustomerRequest } from "@/interfaces/CustomerRequest";
 import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useToast, Spinner } from "@chakra-ui/react";
 import { useState } from "react";
 import DOMPurify from "isomorphic-dompurify";
+import { useSession } from "next-auth/react";
 
 interface AddCustomerProps extends BoxProps {
   onClose: () => void;
@@ -10,6 +11,7 @@ interface AddCustomerProps extends BoxProps {
 }
 
 const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps) => {
+  const { data: session, status } = useSession();
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
 
   // Set the useState type to the interface for request and assign a default placeholder
@@ -44,6 +46,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session!.user.accessToken}`,
         },
         body: JSON.stringify(formData),
       });
