@@ -26,6 +26,7 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: 
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
           },
           body: JSON.stringify({ id: id }),
         });
@@ -36,7 +37,7 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: 
           // Create an error toast
           toast({
             title: "Error",
-            description: errorMessage,
+            description: errorMessage.error,
             status: "error",
             duration: 5000,
             isClosable: true,

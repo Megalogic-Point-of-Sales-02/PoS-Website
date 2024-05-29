@@ -26,6 +26,7 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
           },
           body: JSON.stringify({ id: id }),
         });
