@@ -111,6 +111,12 @@ const Login = () => {
             Register
           </Link>
         </Text>
+        <Text textAlign="center">
+          Forgot Password?{" "}
+          <Link onClick={() => push("/forgot-password")} color="#3b82f6">
+            Click Here
+          </Link>
+        </Text>
       </Flex>
     </Flex>
   );

@@ -1,29 +1,44 @@
 "use client";
 
-import { RegisterRequest } from "@/interfaces/RegisterRequest";
+import { ResetPasswordRequest } from "@/interfaces/ResetPasswordRequest";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Flex, FormControl, FormLabel, Text, Button, Spinner, Input, useToast, Link, InputGroup, InputRightElement } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { Flex, FormControl, FormLabel, InputRightElement, Button, Spinner, Input, useToast, Text, Link, Box, InputGroup } from "@chakra-ui/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import DOMPurify from "isomorphic-dompurify";
 
-const Register = () => {
-  const toast = useToast();
+const ResetPassword = () => {
   const { push } = useRouter();
+  const toast = useToast();
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState<RegisterRequest>({
-    username: "",
-    fullname: "",
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // Get the token from the params
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
+  const [formData, setFormData] = useState<ResetPasswordRequest>({
     password: "",
-    email: "",
+    confirm_password: "",
+    reset_token: token || undefined,
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoadingButton(true);
+    if (formData.password !== formData.confirm_password) {
+      toast({
+        title: "Error",
+        description: "The password and the confirmation password don't match",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      setIsLoadingButton(false);
+      return;
+    }
+
     try {
-      const response = await fetch("/api/v1/auth/register", {
+      const response = await fetch("/api/v1/auth/reset-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,19 +62,11 @@ const Register = () => {
         // Create a success toast
         toast({
           title: "Success",
-          description: `Register Successful`,
+          description: message.message,
           status: "success",
           duration: 5000,
           isClosable: true,
         });
-        // Set the form data back to the default
-        setFormData({
-          username: "",
-          password: "",
-          fullname: "",
-          email: "",
-        });
-
         // redirect to login page
         push("/login");
       }
@@ -80,11 +87,9 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log(sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
-      [name]: sanitizedValue,
+      [name]: value,
     }));
     console.log(formData);
   };
@@ -96,25 +101,10 @@ const Register = () => {
       </Text>
       <Flex padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" maxWidth="md" width="100%" justifyContent="center" flexDirection="column" gap="1rem" marginX="1rem" color="white">
         <Text as="h1" fontSize="2xl" fontWeight="semibold" marginX="auto">
-          Register
+          Reset Password
         </Text>
         <form onSubmit={handleSubmit}>
           <Flex gap="1.5rem" flexDirection="column">
-            <FormControl isRequired>
-              <FormLabel htmlFor="username">Username</FormLabel>
-              <Input name="username" value={formData.username} onChange={handleChange} id="username" placeholder="Enter username" bgColor="white" color="black" />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel htmlFor="fullname">Full Name</FormLabel>
-              <Input name="fullname" value={formData.fullname} onChange={handleChange} id="fullname" placeholder="Enter Full Name" bgColor="white" color="black" />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <Input type="email" name="email" value={formData.email} onChange={handleChange} id="email" placeholder="Enter Email" bgColor="white" color="black" />
-            </FormControl>
-
             <FormControl isRequired>
               <FormLabel htmlFor="password">Password</FormLabel>
               <InputGroup>
@@ -124,22 +114,36 @@ const Register = () => {
                     {showPassword ? <ViewOffIcon /> : <ViewIcon />}
                   </Button>
                 </InputRightElement>
-              </InputGroup>{" "}
+              </InputGroup>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel htmlFor="confirm_password">Confirm Password</FormLabel>
+              <InputGroup>
+                <Input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirm_password"
+                  value={formData.confirm_password}
+                  onChange={handleChange}
+                  id="confirm_password"
+                  placeholder="Enter confirm password"
+                  bgColor="white"
+                  color="black"
+                />
+                <InputRightElement marginRight="2">
+                  <Button name="Toggle confirm password visibility" type="button" onClick={() => setShowConfirmPassword((prev) => !prev)} height="8" fontSize="sm" bg="transparent">
+                    {showConfirmPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
           </Flex>
           <Button colorScheme="blue" type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
-            {isLoadingButton ? <Spinner /> : "Register"}
+            {isLoadingButton ? <Spinner /> : "Submit"}
           </Button>
         </form>
-        <Text textAlign="center">
-          Already have an account?{" "}
-          <Link onClick={() => push("/login")} color="#3b82f6">
-            Login
-          </Link>
-        </Text>
       </Flex>
     </Flex>
   );
 };
 
-export default Register;
+export default ResetPassword;
