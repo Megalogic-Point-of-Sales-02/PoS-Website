@@ -3,6 +3,7 @@ import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody
 import { useState } from "react";
 import DOMPurify from "isomorphic-dompurify";
 import { useSession } from "next-auth/react";
+import validateInput from "@/utils/validateInput"
 
 interface AddProductProps extends BoxProps {
   onClose: () => void;
@@ -27,6 +28,18 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
     console.log("sanitized value: " + sanitizedValue)
+
+    if (!validateInput(sanitizedValue)) {
+      toast({
+        title: "Invalid Input",
+        description: "The input contains forbidden characters or patterns.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: sanitizedValue,
@@ -43,6 +56,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session!.user.accessToken}`,
         },
         body: JSON.stringify(formData),
       });
@@ -115,7 +129,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
 
                 <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="product_price">Price</FormLabel>
-                  <Input type="number" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
+                  <Input type="number" min ="0" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>

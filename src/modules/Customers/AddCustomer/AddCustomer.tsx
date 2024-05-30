@@ -3,6 +3,7 @@ import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody
 import { useState } from "react";
 import DOMPurify from "isomorphic-dompurify";
 import { useSession } from "next-auth/react";
+import validateInput from "@/utils/validateInput";
 
 interface AddCustomerProps extends BoxProps {
   onClose: () => void;
@@ -31,6 +32,18 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
     console.log("sanitized value: " + sanitizedValue);
+
+    if (!validateInput(sanitizedValue)) {
+      toast({
+        title: "Invalid Input",
+        description: "The input contains forbidden characters or patterns.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: sanitizedValue,
@@ -143,7 +156,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
 
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="total_spend">Total Spend</FormLabel>
-                  <Input type="number" name="total_spend" value={formData.total_spend} onChange={handleChange} id="total_spend" placeholder="Enter total spend" />
+                  <Input type="number" min="0" name="total_spend" value={formData.total_spend} onChange={handleChange} id="total_spend" placeholder="Enter total spend" />
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>

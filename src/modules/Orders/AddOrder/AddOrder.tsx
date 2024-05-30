@@ -71,7 +71,14 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
 
   useEffect(() => {
     const calculateSales = async () => {
-      const response = await fetch(`/api/v1/products?id=${formData.product_id}`);
+      const methodAndHeader = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session!.user.accessToken}`,
+        },
+      };
+      const response = await fetch(`/api/v1/products?id=${formData.product_id}`, methodAndHeader);
       const productData = await response.json();
       const sales = productData[0].product_price * formData.quantity;
       setFormData((prevData) => ({
@@ -122,6 +129,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session!.user.accessToken}`,
         },
         body: JSON.stringify(formData),
       });
@@ -216,7 +224,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
 
                 <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="quantity">Quantity</FormLabel>
-                  <Input type="number" name="quantity" value={formData.quantity} onChange={handleChange} id="quantity" placeholder="Enter quantity" />
+                  <Input type="number" min="0" name="quantity" value={formData.quantity} onChange={handleChange} id="quantity" placeholder="Enter quantity" />
                 </FormControl>
 
                 <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }} position="relative">
