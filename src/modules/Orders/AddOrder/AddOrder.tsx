@@ -8,6 +8,7 @@ import DOMPurify from "isomorphic-dompurify";
 import { useSession } from "next-auth/react";
 import { triggerCustomerChurnPrediction } from "@/utils/machineLearningModelUtils/customerChurn";
 import { CustomerChurnPredictionContext } from "@/utils/predictionContext";
+import { supabase } from "@/utils/supabase";
 
 interface AddOrderProps extends BoxProps {
   onClose: () => void;

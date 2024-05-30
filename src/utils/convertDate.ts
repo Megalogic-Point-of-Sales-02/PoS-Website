@@ -1,5 +1,4 @@
 const convertDate = (date: Date | string) => {
-  console.log(typeof date);
   if (typeof date === "string") {
     date = new Date(date);
   }
