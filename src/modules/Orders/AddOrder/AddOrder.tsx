@@ -8,6 +8,8 @@ import DOMPurify from "isomorphic-dompurify";
 import { useSession } from "next-auth/react";
 import { triggerCustomerChurnPrediction } from "@/utils/machineLearningModelUtils/customerChurn";
 import { CustomerChurnPredictionContext } from "@/utils/predictionContext";
+import { triggerCustomerSegmentationPerform } from "@/utils/machineLearningModelUtils/customerSegmentation";
+import { CustomerSegmentationPerformContext } from "@/utils/performContext";
 import { supabase } from "@/utils/supabase";
 
 interface AddOrderProps extends BoxProps {
@@ -17,7 +19,8 @@ interface AddOrderProps extends BoxProps {
 }
 
 const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
-  const context = useContext(CustomerChurnPredictionContext);
+  const contextChurn = useContext(CustomerChurnPredictionContext);
+  const contextSegmentation = useContext(CustomerSegmentationPerformContext);
 
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [isLoadingPrice, setIsLoadingPrice] = useState<boolean>(false);
@@ -163,7 +166,8 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
           });
 
           // Run predict machine learning model in background
-          triggerCustomerChurnPrediction(session, context);
+          triggerCustomerChurnPrediction(session, contextChurn);
+          triggerCustomerSegmentationPerform(session, contextSegmentation);
 
           // Set the form data back to the default
           setFormData({
@@ -234,7 +238,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
 
                 <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="quantity">Quantity</FormLabel>
-                  <Input type="number" min="0" name="quantity" value={formData.quantity} onChange={handleChange} id="quantity" placeholder="Enter quantity" />
+                  <Input type="number" min="1" name="quantity" value={formData.quantity} onChange={handleChange} id="quantity" placeholder="Enter quantity" />
                 </FormControl>
 
                 <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }} position="relative">

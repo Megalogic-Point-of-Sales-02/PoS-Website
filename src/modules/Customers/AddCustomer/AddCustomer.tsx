@@ -123,7 +123,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
             <form onSubmit={handleSubmit}>
               <Flex gap="1.5rem" wrap="wrap">
                 <FormControl isRequired flex="1 1 40%">
-                  <FormLabel htmlFor="customer_name">Customer Name</FormLabel>
+                  <FormLabel htmlFor="customer_name">Customer</FormLabel>
                   <Input name="customer_name" value={formData.customer_name} onChange={handleChange} id="customer_name" placeholder="Enter customer name" />
                 </FormControl>
 
@@ -137,7 +137,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
 
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="age">Age</FormLabel>
-                  <Input type="number" name="age" value={formData.age} onChange={handleChange} id="age" placeholder="Enter age" />
+                  <Input type="number" min ="1" name="age" value={formData.age} onChange={handleChange} id="age" placeholder="Enter age" />
                 </FormControl>
 
                 <FormControl isRequired flex="1 1 40%">
@@ -156,7 +156,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
 
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="total_spend">Total Spend</FormLabel>
-                  <Input type="number" min="0" name="total_spend" value={formData.total_spend} onChange={handleChange} id="total_spend" placeholder="Enter total spend" />
+                  <Input type="number" min="1" name="total_spend" value={formData.total_spend} onChange={handleChange} id="total_spend" placeholder="Enter total spend" />
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>

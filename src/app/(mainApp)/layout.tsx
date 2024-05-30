@@ -1,5 +1,6 @@
 import SidebarWithHeader from "@/components/SidebarWithHeader";
 import { CustomerChurnPredictionProvider } from "@/utils/predictionContext";
+import { CustomerSegmentationPerformProvider } from "@/utils/performContext";
 
 export default function MainAppLayout({
   children,
@@ -7,8 +8,8 @@ export default function MainAppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <CustomerChurnPredictionProvider>
+    <CustomerChurnPredictionProvider><CustomerSegmentationPerformProvider>
       <SidebarWithHeader>{children}</SidebarWithHeader>
-    </CustomerChurnPredictionProvider>
+    </CustomerSegmentationPerformProvider></CustomerChurnPredictionProvider>
   );
 }

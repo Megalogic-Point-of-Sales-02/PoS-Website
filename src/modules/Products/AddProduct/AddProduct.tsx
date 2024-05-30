@@ -129,7 +129,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
 
                 <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="product_price">Price</FormLabel>
-                  <Input type="number" min ="0" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
+                  <Input type="number" min ="1" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
                 </FormControl>
               </Flex>
               <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
