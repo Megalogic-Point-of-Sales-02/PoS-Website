@@ -2,10 +2,12 @@ import { CustomerResponse } from "@/interfaces/CustomerResponse";
 import { OrderRequest } from "@/interfaces/OrderRequest";
 import { ProductResponse } from "@/interfaces/ProductResponse";
 import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast, Spinner } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ReactSelect from "react-select";
 import DOMPurify from "isomorphic-dompurify";
 import { useSession } from "next-auth/react";
+import { triggerCustomerChurnPrediction } from "@/utils/machineLearningModelUtils/customerChurn";
+import { CustomerChurnPredictionContext } from "@/utils/predictionContext";
 
 interface AddOrderProps extends BoxProps {
   onClose: () => void;
@@ -14,10 +16,12 @@ interface AddOrderProps extends BoxProps {
 }
 
 const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
+  const context = useContext(CustomerChurnPredictionContext);
+
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [isLoadingPrice, setIsLoadingPrice] = useState<boolean>(false);
 
-  const {data: session,status} = useSession();
+  const { data: session, status } = useSession();
   // Set the useState type to the interface for request and assign a default placeholder
   const [formData, setFormData] = useState<OrderRequest>({
     order_date: new Date(),
@@ -97,7 +101,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
   const handleDateChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log("sanitized value: " + sanitizedValue)
+    console.log("sanitized value: " + sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
       [name]: new Date(sanitizedValue),
@@ -123,64 +127,69 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoadingButton(true);
-    if(session){
-    try {
-      const response = await fetch("/api/v1/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session!.user.accessToken}`,
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        // Wait for the message
-        const errorMessage = await response.json();
-        // Create an error toast
+    if (session) {
+      try {
+        const response = await fetch("/api/v1/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        });
+        if (!response.ok) {
+          // Wait for the message
+          const errorMessage = await response.json();
+          // Create an error toast
+          toast({
+            title: "Error",
+            description: errorMessage.error,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          return;
+        } else {
+          // Wait for the message
+          const message = await response.json();
+          // Create a success toast
+          toast({
+            title: "Success",
+            description: `Order with ID ${message[0].id} added successfully`,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+
+          // Run predict machine learning model in background
+          triggerCustomerChurnPrediction(session, context);
+
+          // Set the form data back to the default
+          setFormData({
+            order_date: new Date(),
+            ship_date: new Date(),
+            customer_id: "" as unknown as number, // Start with an empty string;
+            product_id: "" as unknown as number, // Start with an empty string;
+            quantity: 1,
+            sales: 0,
+          });
+          handleOrderChange(); // call handleOrderChange to trigger useeffect
+          onClose();
+        }
+      } catch (error) {
+        console.error("Error submitting form", error);
         toast({
           title: "Error",
-          description: errorMessage.error,
+          description: "An error occurred while submitting the form.",
           status: "error",
           duration: 5000,
           isClosable: true,
         });
-        return;
-      } else {
-        // Wait for the message
-        const message = await response.json();
-        // Create a success toast
-        toast({
-          title: "Success",
-          description: `Order with ID ${message[0].id} added successfully`,
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        // Set the form data back to the default
-        setFormData({
-          order_date: new Date(),
-          ship_date: new Date(),
-          customer_id: "" as unknown as number, // Start with an empty string;
-          product_id: "" as unknown as number, // Start with an empty string;
-          quantity: 1,
-          sales: 0,
-        });
-        handleOrderChange(); // call handleOrderChange to trigger useeffect
-        onClose();
+      } finally {
+        setIsLoadingButton(false);
       }
-    } catch (error) {
-      console.error("Error submitting form", error);
-      toast({
-        title: "Error",
-        description: "An error occurred while submitting the form.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setIsLoadingButton(false);
     }
-  }};
+  };
 
   const customerOptions = customers.map((customer) => ({
     value: customer.id,
