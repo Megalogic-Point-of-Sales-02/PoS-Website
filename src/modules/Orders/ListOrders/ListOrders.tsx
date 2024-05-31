@@ -20,7 +20,7 @@ const ListOrders = () => {
   const { isOpen: isDeleteOrderOpen, onOpen: onDeleteOrderOpen, onClose: onDeleteOrderClose } = useDisclosure();
   const [currentOrderId, setCurrentOrderId] = useState<number | null>(null); // State for the current order ID to be deleted
   const cancelRef = React.useRef<HTMLButtonElement>(null);
-  const {data:session,status} = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     async function fetchOrders() {
@@ -46,7 +46,7 @@ const ListOrders = () => {
         setIsLoading(false);
       }
     }
-    if(session) fetchOrders();
+    if (session) fetchOrders();
   }, [refreshData, session]);
 
   const handleOrderChange = () => {
@@ -84,7 +84,7 @@ const ListOrders = () => {
             <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
               <Text fontSize="2xl">Order List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />} onClick={onAddOrderOpen} w={{ base: "100%", sm: "fit-content" }}>
+              <Button colorScheme="blue" leftIcon={<AddIcon />} onClick={onAddOrderOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Order
               </Button>
               <AddOrder isOpen={isAddOrderOpen} onClose={onAddOrderClose} handleOrderChange={handleOrderChange} />

@@ -3,7 +3,7 @@ import { BoxProps, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody
 import { useState } from "react";
 import DOMPurify from "isomorphic-dompurify";
 import { useSession } from "next-auth/react";
-import validateInput from "@/utils/validateInput"
+import validateInput from "@/utils/validateInput";
 
 interface AddProductProps extends BoxProps {
   onClose: () => void;
@@ -13,7 +13,7 @@ interface AddProductProps extends BoxProps {
 
 const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) => {
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
-  const { data: session, status} = useSession();
+  const { data: session, status } = useSession();
 
   const [formData, setFormData] = useState<ProductRequest>({
     product_name: "",
@@ -27,7 +27,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
   const handleChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log("sanitized value: " + sanitizedValue)
+    console.log("sanitized value: " + sanitizedValue);
 
     if (!validateInput(sanitizedValue)) {
       toast({
@@ -50,57 +50,58 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoadingButton(true);
-    if(session){
-    try {
-      const response = await fetch("/api/v1/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session!.user.accessToken}`,
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        const errorMessage = await response.json();
+    if (session) {
+      try {
+        const response = await fetch("/api/v1/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        });
+        if (!response.ok) {
+          const errorMessage = await response.json();
+          toast({
+            title: "Error",
+            description: errorMessage.error,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          return;
+        } else {
+          const message = await response.json();
+          toast({
+            title: "Success",
+            description: `Product with ID ${message[0].id} added successfully`,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          setFormData({
+            product_name: "",
+            product_category: "",
+            product_sub_category: "",
+            product_price: "" as unknown as number,
+          });
+          handleProductChange();
+          onClose();
+        }
+      } catch (error) {
+        console.error("Error submitting form", error);
         toast({
           title: "Error",
-          description: errorMessage.error,
+          description: "An error occurred while submitting the form.",
           status: "error",
           duration: 5000,
           isClosable: true,
         });
-        return;
-      } else {
-        const message = await response.json();
-        toast({
-          title: "Success",
-          description: `Product with ID ${message[0].id} added successfully`,
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        setFormData({
-          product_name: "",
-          product_category: "",
-          product_sub_category: "",
-          product_price: "" as unknown as number,
-        });
-        handleProductChange();
-        onClose();
+      } finally {
+        setIsLoadingButton(false);
       }
-    } catch (error) {
-      console.error("Error submitting form", error);
-      toast({
-        title: "Error",
-        description: "An error occurred while submitting the form.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setIsLoadingButton(false);
     }
-  }};
+  };
 
   return (
     <>
@@ -129,10 +130,10 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
 
                 <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="product_price">Price</FormLabel>
-                  <Input type="number" min ="1" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
+                  <Input type="number" min="1" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
                 </FormControl>
               </Flex>
-              <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
+              <Button colorScheme="blue" type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
                 {isLoadingButton ? <Spinner /> : "Submit"}
               </Button>
             </form>

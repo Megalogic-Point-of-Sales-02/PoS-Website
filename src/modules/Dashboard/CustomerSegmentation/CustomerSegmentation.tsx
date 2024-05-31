@@ -10,10 +10,10 @@ import dynamic from "next/dynamic";
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const CustomerSegmentation = () => {
-  const { data:session, status} = useSession();
-  const {customerSegmentationPerformStatus} = useContext(CustomerSegmentationPerformContext);
-  const [isLoading,setIsLoading] = useState<boolean>(true);
-  const [customerSegmentation, setCustomerSegmentation] = useState<CustomerSegmentationResponse>({ bronzeCount:0, silverCount:0, goldCount:0, diamondCount:0 });
+  const { data: session, status } = useSession();
+  const { customerSegmentationPerformStatus } = useContext(CustomerSegmentationPerformContext);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [customerSegmentation, setCustomerSegmentation] = useState<CustomerSegmentationResponse>({ bronzeCount: 0, silverCount: 0, goldCount: 0, diamondCount: 0 });
 
   useEffect(() => {
     async function fetchCustomerSegmentation() {
@@ -70,16 +70,11 @@ const CustomerSegmentation = () => {
     if (session) fetchCustomerSegmentation();
   }, [session]);
 
-  const maxVal = Math.max(
-    customerSegmentation.bronzeCount,
-    customerSegmentation.silverCount,
-    customerSegmentation.goldCount,
-    customerSegmentation.diamondCount
-  );
-  
-  function valueToPercent (value) {
-    return (value * 100) / maxVal
-  } 
+  const maxVal = Math.max(customerSegmentation.bronzeCount, customerSegmentation.silverCount, customerSegmentation.goldCount, customerSegmentation.diamondCount);
+
+  function valueToPercent(value) {
+    return (value * 100) / maxVal;
+  }
 
   const radialbarApexChart = {
     series: [valueToPercent(customerSegmentation.bronzeCount), valueToPercent(customerSegmentation.silverCount), valueToPercent(customerSegmentation.goldCount), valueToPercent(customerSegmentation.diamondCount)],
@@ -94,14 +89,14 @@ const CustomerSegmentation = () => {
           endAngle: 270,
           hollow: {
             margin: 5,
-            size: '30%',
-            background: 'transparent',
+            size: "30%",
+            background: "transparent",
             image: undefined,
           },
           dataLabels: {
             name: {
               show: true,
-              fontSize: '16px',
+              fontSize: "16px",
             },
             value: {
               show: false,
@@ -111,18 +106,18 @@ const CustomerSegmentation = () => {
             enabled: true,
             useSeriesColors: true,
             margin: 8,
-            fontSize: '16px',
-            formatter: function(seriesName, opts) {
-              const count = (opts.w.globals.series[opts.seriesIndex] * maxVal)/100;
-              return seriesName + ":  " + count
+            fontSize: "16px",
+            formatter: function (seriesName, opts) {
+              const count = (opts.w.globals.series[opts.seriesIndex] * maxVal) / 100;
+              return seriesName + ":  " + count;
             },
           },
           track: {
             show: true,
             startAngle: undefined,
             endAngle: undefined,
-            background: '#f2f2f2',
-            strokeWidth: '97%',
+            background: "#f2f2f2",
+            strokeWidth: "97%",
             opacity: 1,
             margin: 5, // margin is in pixels
             dropShadow: {
@@ -130,37 +125,80 @@ const CustomerSegmentation = () => {
               top: 0,
               left: 0,
               blur: 3,
-              opacity: 0.5
-            }
-          }
-        }
-      },
-      colors: ['#6A3805', '#545454', '#AF9500', '#34ebc9'],
-      labels: ["Bronze", "Silver", "Gold", "Diamond"],
-      responsive: [{
-        breakpoint: 768,
-          options: {
-            chart: {
-              width: "200",
-              height: "200",
-            },
-            legend: {
-              fontSize: "8px",
-              labels: {
-                colors: ["#ffffff", "#ffffff"],
-              },
-              position: "top",
+              opacity: 0.5,
             },
           },
-      }],
+        },
+      },
+      colors: ["#6A3805", "#545454", "#AF9500", "#34ebc9"],
+      labels: ["Bronze", "Silver", "Gold", "Diamond"],
+      responsive: [
+        {
+          breakpoint: 768,
+          options: {
+            chart: {
+              width: "250",
+              height: "250",
+            },
+            plotOptions: {
+              radialBar: {
+                offsetY: 0,
+                startAngle: 0,
+                endAngle: 270,
+                hollow: {
+                  margin: 5,
+                  size: "30%",
+                  background: "transparent",
+                  image: undefined,
+                },
+                dataLabels: {
+                  name: {
+                    show: true,
+                    fontSize: "10px",
+                  },
+                  value: {
+                    show: false,
+                  },
+                },
+                barLabels: {
+                  enabled: true,
+                  useSeriesColors: true,
+                  margin: 8,
+                  fontSize: "10px",
+                  formatter: function (seriesName, opts) {
+                    const count = (opts.w.globals.series[opts.seriesIndex] * maxVal) / 100;
+                    return seriesName + ":  " + count;
+                  },
+                },
+                track: {
+                  show: true,
+                  startAngle: undefined,
+                  endAngle: undefined,
+                  background: "#f2f2f2",
+                  strokeWidth: "97%",
+                  opacity: 1,
+                  margin: 5, // margin is in pixels
+                  dropShadow: {
+                    enabled: false,
+                    top: 0,
+                    left: 0,
+                    blur: 3,
+                    opacity: 0.5,
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
       yaxis: {
-        max: maxVal
-      }
-    }
+        max: maxVal,
+      },
+    },
   };
 
   return (
-    <Flex flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth={{ base: "100%", lg: "calc(50% - 2rem)" }} w="100%" minH="10rem" flexDirection="column" alignItems="center" gap="1rem">
+    <Flex flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth={{ base: "100%", xl: "calc(50% - 2rem)" }} w="100%" minH="10rem" flexDirection="column" alignItems="center">
       <Text fontSize="lg" fontWeight="medium">
         Customer Segmentation Clustering
       </Text>
@@ -175,7 +213,7 @@ const CustomerSegmentation = () => {
       {/* Show Customer Churn */}
       {customerSegmentationPerformStatus.status !== "processing" && isLoading === false && (
         <>
-          <ApexChart options={radialbarApexChart.options} series={radialbarApexChart.series} type="radialBar" width={"400"} height={"400"} />
+          <ApexChart options={radialbarApexChart.options} series={radialbarApexChart.series} type="radialBar" width={"300"} height={"300"} />
         </>
       )}
     </Flex>

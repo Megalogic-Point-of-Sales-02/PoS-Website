@@ -247,7 +247,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
                   {isLoadingPrice && <Spinner size="sm" position="absolute" right="8px" top="60%" />} {/* Show spinner while loading */}
                 </FormControl>
               </Flex>
-              <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
+              <Button colorScheme="blue" type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
                 {isLoadingButton ? <Spinner /> : "Submit"}
               </Button>
             </form>

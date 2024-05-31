@@ -12,7 +12,7 @@ import convertRupiah from "@/utils/convertRupiah";
 import { useSession } from "next-auth/react";
 
 const ListCustomers = () => {
-  const {data: session, status} =useSession();
+  const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
   const { isOpen: isAddCustOpen, onOpen: onAddCustOpen, onClose: onAddCustClose } = useDisclosure();
@@ -45,7 +45,7 @@ const ListCustomers = () => {
         setIsLoading(false);
       }
     }
-    if(session) fetchCustomers();
+    if (session) fetchCustomers();
   }, [refreshData, session]);
 
   const handleCustomerChange = () => {
@@ -84,7 +84,7 @@ const ListCustomers = () => {
             <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
               <Text fontSize="2xl">Customer List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />} onClick={onAddCustOpen} w={{ base: "100%", sm: "fit-content" }}>
+              <Button colorScheme="blue" leftIcon={<AddIcon />} onClick={onAddCustOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Customer
               </Button>
               <AddCustomer isOpen={isAddCustOpen} onClose={onAddCustClose} handleCustomerChange={handleCustomerChange} />
@@ -104,6 +104,8 @@ const ListCustomers = () => {
                     <Th color="white" isNumeric>
                       Total Spend
                     </Th>
+                    <Th color="white">Churn</Th>
+                    <Th color="white">Segmentation</Th>
                     <Th width="5rem"></Th>
                   </Tr>
                 </Thead>
@@ -119,6 +121,8 @@ const ListCustomers = () => {
                       <Td isNumeric color="#3b82f6">
                         {convertRupiah(customer.total_spend)}
                       </Td>
+                      <Td>{customer.churn === null ? "No Yet Ordered" : customer.churn}</Td>
+                      <Td>{customer.segmentation === null ? "No Yet Ordered" : customer.segmentation}</Td>
                       <Td width="5rem">
                         <Button colorScheme="red" size="sm" variant="outline" onClick={() => handleDeleteClick(customer.id)}>
                           <FaTrashAlt />

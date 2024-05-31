@@ -6,4 +6,6 @@ export interface CustomerResponse {
   job: string;
   segment: "Consumer" | "Corporate" | "Home Office";
   total_spend: number;
+  churn: string | null;
+  segmentation: string | null;
 }

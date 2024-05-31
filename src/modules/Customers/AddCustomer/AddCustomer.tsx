@@ -54,64 +54,65 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoadingButton(true);
-    if (session){
-    try {
-      const response = await fetch("/api/v1/customers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session!.user.accessToken}`,
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        // Wait for the message
-        const errorMessage = await response.json();
-        // Create an error toast
+    if (session) {
+      try {
+        const response = await fetch("/api/v1/customers", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        });
+        if (!response.ok) {
+          // Wait for the message
+          const errorMessage = await response.json();
+          // Create an error toast
+          toast({
+            title: "Error",
+            description: errorMessage,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          return;
+        } else {
+          // Wait for the message
+          const message = await response.json();
+          // Create a success toast
+          toast({
+            title: "Success",
+            description: `Customer with ID ${message[0].id} added successfully`,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          // Set the form data back to the default
+          setFormData({
+            customer_name: "",
+            gender: "Male",
+            age: 0,
+            job: "",
+            segment: "Consumer",
+            total_spend: 0,
+          });
+          handleCustomerChange(); // call handleCustomerChange to trigger useeffect
+          onClose();
+        }
+      } catch (error) {
+        console.error("Error submitting form", error);
         toast({
           title: "Error",
-          description: errorMessage,
+          description: "An error occurred while submitting the form.",
           status: "error",
           duration: 5000,
           isClosable: true,
         });
-        return;
-      } else {
-        // Wait for the message
-        const message = await response.json();
-        // Create a success toast
-        toast({
-          title: "Success",
-          description: `Customer with ID ${message[0].id} added successfully`,
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        // Set the form data back to the default
-        setFormData({
-          customer_name: "",
-          gender: "Male",
-          age: 0,
-          job: "",
-          segment: "Consumer",
-          total_spend: 0,
-        });
-        handleCustomerChange(); // call handleCustomerChange to trigger useeffect
-        onClose();
+      } finally {
+        setIsLoadingButton(false);
       }
-    } catch (error) {
-      console.error("Error submitting form", error);
-      toast({
-        title: "Error",
-        description: "An error occurred while submitting the form.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setIsLoadingButton(false);
     }
-  }};
+  };
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
@@ -137,7 +138,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
 
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="age">Age</FormLabel>
-                  <Input type="number" min ="1" name="age" value={formData.age} onChange={handleChange} id="age" placeholder="Enter age" />
+                  <Input type="number" min="1" name="age" value={formData.age} onChange={handleChange} id="age" placeholder="Enter age" />
                 </FormControl>
 
                 <FormControl isRequired flex="1 1 40%">
@@ -159,7 +160,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
                   <Input type="number" min="1" name="total_spend" value={formData.total_spend} onChange={handleChange} id="total_spend" placeholder="Enter total spend" />
                 </FormControl>
               </Flex>
-              <Button type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
+              <Button colorScheme="blue" type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
                 {isLoadingButton ? <Spinner /> : "Submit"}
               </Button>
             </form>

@@ -93,7 +93,7 @@ const MonthlyOrder = () => {
                       console.log(e.target.value);
                     }}
                   />
-                  <Button type="submit" padding="1.4rem" height="2.8rem" bgColor="white">
+                  <Button colorScheme="blue" type="submit" padding="1.4rem" height="2.8rem">
                     Calculate
                   </Button>
                 </Flex>

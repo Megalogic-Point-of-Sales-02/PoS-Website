@@ -27,8 +27,6 @@ const Dashboard = () => {
         </Flex>
         <Flex flexDirection="row" wrap="wrap" gap="2rem" marginTop="2rem">
           <CustomerChurn />
-        </Flex>
-        <Flex flexDirection="row" wrap="wrap" gap="2rem" marginTop="2rem">
           <CustomerSegmentation />
         </Flex>
       </Box>

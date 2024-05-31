@@ -18,7 +18,7 @@ const ListProducts = () => {
   const [currentProductId, setCurrentProductId] = useState<number | null>(null); // State for the current product ID to be deleted
   const { isOpen: isAddProdOpen, onOpen: onAddProdOpen, onClose: onAddProdClose } = useDisclosure();
   const { isOpen: isDeleteProdOpen, onOpen: onDeleteProdOpen, onClose: onDeleteProdClose } = useDisclosure();
-  const { data: session, status} = useSession();
+  const { data: session, status } = useSession();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const ListProducts = () => {
         setIsLoading(false);
       }
     }
-    if(session) fetchProducts();
+    if (session) fetchProducts();
   }, [refreshData, session]);
 
   const handleProductChange = () => {
@@ -84,7 +84,7 @@ const ListProducts = () => {
             <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
               <Text fontSize="2xl">Product List</Text>
               <Spacer />
-              <Button leftIcon={<AddIcon />} onClick={onAddProdOpen} w={{ base: "100%", sm: "fit-content" }}>
+              <Button colorScheme="blue" leftIcon={<AddIcon />} onClick={onAddProdOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Product
               </Button>
               <AddProduct isOpen={isAddProdOpen} onClose={onAddProdClose} handleProductChange={handleProductChange} />

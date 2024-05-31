@@ -73,8 +73,8 @@ const CustomerChurn = () => {
           breakpoint: 768,
           options: {
             chart: {
-              width: "200",
-              height: "200",
+              width: "250",
+              height: "250",
             },
             legend: {
               fontSize: "17px",
@@ -97,7 +97,7 @@ const CustomerChurn = () => {
   };
 
   return (
-    <Flex flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth={{ base: "100%", lg: "calc(50% - 2rem)" }} w="100%" minH="10rem" flexDirection="column" alignItems="center" gap="1rem">
+    <Flex flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth={{ base: "100%", xl: "calc(50% - 2rem)" }} w="100%" minH="10rem" flexDirection="column" alignItems="center" gap="1rem">
       <Text fontSize="lg" fontWeight="medium">
         Customer Churn Prediction
       </Text>
