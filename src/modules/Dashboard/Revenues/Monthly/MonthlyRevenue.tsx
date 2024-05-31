@@ -15,7 +15,6 @@ const MonthlyRevenue = () => {
     const year = dateObj.getUTCFullYear();
 
     const currentDatePrefix = year + "-" + monthPadded;
-    console.log("current date prefix: ", currentDatePrefix);
     return currentDatePrefix;
   };
 

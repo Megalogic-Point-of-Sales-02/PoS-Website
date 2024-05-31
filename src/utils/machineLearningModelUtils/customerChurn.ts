@@ -27,7 +27,6 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
     const customersId = await response.json();
 
     // Get the predicted values
-    console.log("FAST_API_URL: ", process.env.NEXT_PUBLIC_FAST_API_URL);
     const predictResponse = await fetch(`${process.env.NEXT_PUBLIC_FAST_API_URL}/predict`, {
       method: "POST",
       headers: {
