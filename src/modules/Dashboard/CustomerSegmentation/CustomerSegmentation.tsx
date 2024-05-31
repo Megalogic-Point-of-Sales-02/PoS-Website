@@ -116,7 +116,7 @@ const CustomerSegmentation = () => {
             show: true,
             startAngle: undefined,
             endAngle: undefined,
-            background: "#f2f2f2",
+            background: "#fff",
             strokeWidth: "97%",
             opacity: 1,
             margin: 5, // margin is in pixels
@@ -130,7 +130,7 @@ const CustomerSegmentation = () => {
           },
         },
       },
-      colors: ["#6A3805", "#545454", "#AF9500", "#34ebc9"],
+      colors: ["#bf8040", "#a9a9a9", "#ffbf00", "#34ebc9"],
       labels: ["Bronze", "Silver", "Gold", "Diamond"],
       responsive: [
         {
@@ -154,7 +154,7 @@ const CustomerSegmentation = () => {
                 dataLabels: {
                   name: {
                     show: true,
-                    fontSize: "10px",
+                    fontSize: "12px",
                   },
                   value: {
                     show: false,
@@ -164,7 +164,7 @@ const CustomerSegmentation = () => {
                   enabled: true,
                   useSeriesColors: true,
                   margin: 8,
-                  fontSize: "10px",
+                  fontSize: "12px",
                   formatter: function (seriesName, opts) {
                     const count = (opts.w.globals.series[opts.seriesIndex] * maxVal) / 100;
                     return seriesName + ":  " + count;
@@ -174,7 +174,7 @@ const CustomerSegmentation = () => {
                   show: true,
                   startAngle: undefined,
                   endAngle: undefined,
-                  background: "#f2f2f2",
+                  background: "#fff",
                   strokeWidth: "97%",
                   opacity: 1,
                   margin: 5, // margin is in pixels
