@@ -5,7 +5,10 @@ import { CustomerChurnPredictionContext } from "@/utils/predictionContext";
 import { Center, CircularProgress, Text, Flex, Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import React, { useContext, useEffect, useState } from "react";
-import Chart from "react-apexcharts";
+
+// Apex Chart Config
+import dynamic from "next/dynamic";
+const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const CustomerChurn = () => {
   const { data: session, status } = useSession();
@@ -67,13 +70,18 @@ const CustomerChurn = () => {
       },
       responsive: [
         {
-          breakpoint: 480,
+          breakpoint: 768,
           options: {
             chart: {
-              width: 200,
+              width: "200",
+              height: "200",
             },
             legend: {
-              show: false,
+              fontSize: "17px",
+              labels: {
+                colors: ["#ffffff", "#ffffff"],
+              },
+              position: "top",
             },
           },
         },
@@ -104,7 +112,7 @@ const CustomerChurn = () => {
       {/* Show Customer Churn */}
       {customerChurnPredictionStatus.status !== "processing" && isLoading === false && (
         <>
-          <Chart options={donutApexChart.options} series={donutApexChart.series} type="donut" width={380} />
+          <ApexChart options={donutApexChart.options} series={donutApexChart.series} type="donut" width={"400"} height={"400"} />
         </>
       )}
     </Flex>

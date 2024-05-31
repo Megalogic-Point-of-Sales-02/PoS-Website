@@ -42,6 +42,7 @@ jobs:
             --build-arg CLIENT_ID=${{ secrets.CLIENT_ID }} \
             --build-arg CLIENT_SECRET=${{ secrets.CLIENT_SECRET }} \
             --build-arg GMAIL_REFRESH_TOKEN=${{ secrets.GMAIL_REFRESH_TOKEN }} \
+            --build-arg NEXT_PUBLIC_FAST_API_URL=${{ vars.NEXT_PUBLIC_FAST_API_URL }} \
             -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest .
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
@@ -65,3 +66,4 @@ jobs:
             --set-env-vars CLIENT_ID=${{ secrets.CLIENT_ID }} \
             --set-env-vars CLIENT_SECRET=${{ secrets.CLIENT_SECRET }} \
             --set-env-vars GMAIL_REFRESH_TOKEN=${{ secrets.GMAIL_REFRESH_TOKEN }} \
+            --set-env-vars NEXT_PUBLIC_FAST_API_URL=${{ vars.NEXT_PUBLIC_FAST_API_URL }} \
