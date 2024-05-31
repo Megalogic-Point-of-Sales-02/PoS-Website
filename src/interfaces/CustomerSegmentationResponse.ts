@@ -1,5 +1,7 @@
 export interface CustomerSegmentationResponse {
-    id: number;
-    customer_segmentation?: string;
+    bronzeCount:number;
+    silverCount:number;
+    goldCount:number;
+    diamondCount:number;
   }
   

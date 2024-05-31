@@ -6,6 +6,7 @@ import Totalorder from "./Totalorder/Totalorder";
 import TotalCustomer from "./Customer/TotalCustomer";
 import TotalProduct from "./Product/TotalProduct";
 import CustomerChurn from "./CustomerChurn/CustomerChurn";
+import CustomerSegmentation from "./CustomerSegmentation/CustomerSegmentation";
 
 const Dashboard = () => {
   return (
@@ -26,6 +27,9 @@ const Dashboard = () => {
         </Flex>
         <Flex flexDirection="row" wrap="wrap" gap="2rem" marginTop="2rem">
           <CustomerChurn />
+        </Flex>
+        <Flex flexDirection="row" wrap="wrap" gap="2rem" marginTop="2rem">
+          <CustomerSegmentation />
         </Flex>
       </Box>
     </>

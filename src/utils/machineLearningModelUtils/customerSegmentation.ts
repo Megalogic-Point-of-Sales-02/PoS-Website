@@ -1,7 +1,6 @@
 import { supabase } from "@/utils/supabase";
 import { Session } from "next-auth";
 import { CustomerSegmentationPerformContextType } from "../types";
-import { useState } from "react";
 
 export const triggerCustomerSegmentationPerform = async (session: Session | null, context: CustomerSegmentationPerformContextType) => {
     const { customerSegmentationPerformStatus, setCustomerSegmentationPerformStatus, customerSegmentationPerformData, setCustomerSegmentationPerformData } = context;
@@ -27,7 +26,6 @@ export const triggerCustomerSegmentationPerform = async (session: Session | null
         const customersId = await response.json();
     
         // Get the predicted values
-        console.log("FAST_API_URL: ", process.env.NEXT_PUBLIC_FAST_API_URL);
         const performResponse = await fetch(`${process.env.NEXT_PUBLIC_FAST_API_URL}/cluster`, {
             method: "POST",
             headers: {
