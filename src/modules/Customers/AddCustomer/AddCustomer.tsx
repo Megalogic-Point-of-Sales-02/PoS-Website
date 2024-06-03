@@ -22,7 +22,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
     age: "" as unknown as number, // Start with an empty string
     job: "",
     segment: "Consumer",
-    total_spend: "" as unknown as number, // Start with an empty string
+    total_spend: 0, // Start with an empty string
   });
 
   const toast = useToast();
@@ -97,7 +97,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
             total_spend: 0,
           });
           handleCustomerChange(); // call handleCustomerChange to trigger useeffect
-          onClose();
+          // onClose();   // disabled so it still opens until the modal is closed manually
         }
       } catch (error) {
         console.error("Error submitting form", error);
@@ -157,7 +157,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
 
                 <FormControl isRequired flex="1 1 40%">
                   <FormLabel htmlFor="total_spend">Total Spend</FormLabel>
-                  <Input type="number" min="1" name="total_spend" value={formData.total_spend} onChange={handleChange} id="total_spend" placeholder="Enter total spend" />
+                  <Input type="number" name="total_spend" value={0} onChange={handleChange} id="total_spend" isDisabled />
                 </FormControl>
               </Flex>
               <Button colorScheme="blue" type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
