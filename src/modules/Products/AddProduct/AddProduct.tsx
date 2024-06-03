@@ -85,7 +85,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
             product_price: "" as unknown as number,
           });
           handleProductChange();
-          onClose();
+          // onClose();   // disabled so it still opens until the modal is closed manually
         }
       } catch (error) {
         console.error("Error submitting form", error);

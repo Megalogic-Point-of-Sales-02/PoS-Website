@@ -66,7 +66,21 @@ const CustomerChurn = () => {
     series: [customerChurn.churnCount, customerChurn.notChurnCount], // set the data from customerChurn count
     options: {
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        style: {
+          fontSize: "14px",
+        },
+        background: {
+          enabled: true,
+          foreColor: "#000",
+          borderRadius: 2,
+          padding: 4,
+
+          borderColor: "#fff",
+        },
+        dropShadow: {
+          enabled: false,
+        },
       },
       responsive: [
         {

@@ -21,6 +21,7 @@ const MonthlyOrder = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const response = await fetch("/api/v1/totalorder/monthly?date-prefix=" + datePrefix);
     if (!response.ok) {
       const errorMessage = await response.json();
@@ -29,6 +30,7 @@ const MonthlyOrder = () => {
       const data = await response.json();
       setMonthlyOrder(data);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const MonthlyOrder = () => {
           </Center>
         )}
 
-        {monthlyOrder !== null && (
+        {monthlyOrder !== null && !isLoading && (
           <>
             <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
               {monthlyOrder}

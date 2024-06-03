@@ -78,7 +78,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
     };
 
     fetchCustomersAndProducts();
-  }, [toast]);
+  }, []);
 
   useEffect(() => {
     const calculateSales = async () => {
@@ -182,7 +182,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
             sales: 0,
           });
           handleOrderChange(); // call handleOrderChange to trigger useeffect
-          onClose();
+          // onClose();   // disabled so it still opens until the modal is closed manually
         }
       } catch (error) {
         console.error("Error submitting form", error);

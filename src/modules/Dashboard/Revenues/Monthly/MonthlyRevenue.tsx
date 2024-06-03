@@ -22,6 +22,7 @@ const MonthlyRevenue = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const response = await fetch("/api/v1/revenues/monthly?date-prefix=" + datePrefix);
     if (!response.ok) {
       const errorMessage = await response.json();
@@ -30,6 +31,7 @@ const MonthlyRevenue = () => {
       const data = await response.json();
       setMonthlyRevenue(data);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -61,7 +63,7 @@ const MonthlyRevenue = () => {
           </Center>
         )}
 
-        {monthlyRevenue !== null && (
+        {monthlyRevenue !== null && !isLoading && (
           <>
             <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
               {convertRupiah(monthlyRevenue)}
