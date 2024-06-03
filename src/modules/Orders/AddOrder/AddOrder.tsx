@@ -75,7 +75,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
     };
 
     fetchCustomersAndProducts();
-  }, [toast]);
+  }, []);
 
   useEffect(() => {
     const calculateSales = async () => {
