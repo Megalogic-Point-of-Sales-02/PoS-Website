@@ -21,7 +21,7 @@ export const CategoriesList = {
 
       'Electronics': [
         'Computers & Laptops',
-        'TV, Audio & Video',
+        'TV Audio & Video',
         'Cameras & Accessories',
         'Video Games & Consoles',
         'Printers & Scanners',
@@ -32,7 +32,7 @@ export const CategoriesList = {
         'Furniture',
         'Home Appliances',
         'Kitchen & Dining',
-        'Decorations, Garden & Accessories',
+        'Decorations & Accessories',
         'Other',
       ],
 
