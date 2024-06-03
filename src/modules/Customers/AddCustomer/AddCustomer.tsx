@@ -22,7 +22,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
     age: "" as unknown as number, // Start with an empty string
     job: "",
     segment: "Consumer",
-    total_spend: "" as unknown as number, // Start with an empty string
+    total_spend: 0, // Start with an empty string
   });
 
   const toast = useToast();
@@ -97,7 +97,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
             total_spend: 0,
           });
           handleCustomerChange(); // call handleCustomerChange to trigger useeffect
-          onClose();
+          // onClose();   // disabled so it still opens until the modal is closed manually
         }
       } catch (error) {
         console.error("Error submitting form", error);
@@ -117,18 +117,18 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
     <>
       <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
-        <ModalContent maxWidth="800px">
+        <ModalContent maxWidth="800px" marginX="2rem">
           <ModalHeader>Add Customer</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSubmit}>
               <Flex gap="1.5rem" wrap="wrap">
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="customer_name">Customer</FormLabel>
                   <Input name="customer_name" value={formData.customer_name} onChange={handleChange} id="customer_name" placeholder="Enter customer name" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="gender">Gender</FormLabel>
                   <Select name="gender" value={formData.gender} onChange={handleChange} id="gender">
                     <option value="Male">Male</option>
@@ -136,17 +136,17 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
                   </Select>
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="age">Age</FormLabel>
                   <Input type="number" min="1" name="age" value={formData.age} onChange={handleChange} id="age" placeholder="Enter age" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="job">Job</FormLabel>
                   <Input name="job" value={formData.job} onChange={handleChange} id="job" placeholder="Enter job" />
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="segment">Segment</FormLabel>
                   <Select name="segment" value={formData.segment} onChange={handleChange} id="segment">
                     <option value="Consumer">Consumer</option>
@@ -155,9 +155,9 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
                   </Select>
                 </FormControl>
 
-                <FormControl isRequired flex="1 1 40%">
+                <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                   <FormLabel htmlFor="total_spend">Total Spend</FormLabel>
-                  <Input type="number" min="1" name="total_spend" value={formData.total_spend} onChange={handleChange} id="total_spend" placeholder="Enter total spend" />
+                  <Input type="number" name="total_spend" value={0} onChange={handleChange} id="total_spend" isDisabled />
                 </FormControl>
               </Flex>
               <Button colorScheme="blue" type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>

@@ -39,7 +39,7 @@ const TotalRevenues = () => {
   }, [session]);
 
   return (
-    <Box flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minH="8rem" width="100%" minWidth={{ base: "100%", sm: "calc(50% - 2rem)", lg: "calc(25% - 2rem)" }}>
+    <Box flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minH="8rem" width="100%" minWidth={{ base: "100%", sm: "calc(50% - 2rem)", xl: "calc(25% - 2rem)" }} alignContent="center">
       {/* Fetching the API */}
       {isLoading === true && (
         <>
@@ -56,11 +56,9 @@ const TotalRevenues = () => {
 
       {/* Show Total Revenues */}
       {revenue !== undefined && isLoading === false && (
-        <>
-          <Text fontSize="1.5rem" fontWeight="medium" color="#3b82f6">
-            {convertRupiah(revenue)}
-          </Text>
-        </>
+        <Text fontSize="1.25rem" fontWeight="medium" color="#3b82f6" overflow="hidden" whiteSpace="nowrap">
+          {convertRupiah(revenue)}
+        </Text>
       )}
       <Text fontSize="lg" fontWeight="medium">
         Total Revenues

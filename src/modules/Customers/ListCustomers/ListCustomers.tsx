@@ -121,8 +121,8 @@ const ListCustomers = () => {
                       <Td isNumeric color="#3b82f6">
                         {convertRupiah(customer.total_spend)}
                       </Td>
-                      <Td>{customer.churn === null ? "No Yet Ordered" : customer.churn}</Td>
-                      <Td>{customer.segmentation === null ? "No Yet Ordered" : customer.segmentation}</Td>
+                      <Td>{customer.churn === null ? "Not Yet Ordered" : customer.churn}</Td>
+                      <Td>{customer.segmentation === null ? "Not Yet Ordered" : customer.segmentation}</Td>
                       <Td width="5rem">
                         <Button colorScheme="red" size="sm" variant="outline" onClick={() => handleDeleteClick(customer.id)}>
                           <FaTrashAlt />

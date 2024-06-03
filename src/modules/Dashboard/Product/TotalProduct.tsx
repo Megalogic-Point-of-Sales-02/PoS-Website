@@ -38,7 +38,7 @@ const TotalProduct = () => {
   }, [session]);
 
   return (
-    <Box flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minH="8rem" width="100%" minWidth={{ base: "100%", sm: "calc(50% - 2rem)", lg: "calc(25% - 2rem)" }}>
+    <Box flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minH="8rem" width="100%" minWidth={{ base: "100%", sm: "calc(50% - 2rem)", xl: "calc(25% - 2rem)" }} alignContent="center">
       {/* Fetching the API */}
       {isLoading === true && (
         <>
