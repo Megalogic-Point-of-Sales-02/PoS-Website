@@ -60,6 +60,9 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
         const customersData = await customersResponse.json();
         const productsData = await productsResponse.json();
 
+        console.log(customersData);
+        console.log(productsData);
+
         setCustomers(customersData);
         setProducts(productsData);
       } catch (error) {
