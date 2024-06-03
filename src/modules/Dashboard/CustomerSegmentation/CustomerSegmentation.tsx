@@ -98,14 +98,15 @@ const CustomerSegmentation = () => {
         breakpoint: 768,
         options: {
           chart: {
-            width: 250,
-            height: 250,
+            width: "275",
+            height: "275",
           },
           legend: {
             fontSize: "17px",
             labels: {
               colors: ["#ffffff", "#ffffff", "#ffffff", "#ffffff"],
             },
+            position: "top",
           },
         },
       },
