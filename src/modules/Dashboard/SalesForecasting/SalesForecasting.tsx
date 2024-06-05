@@ -19,8 +19,7 @@ const SalesForecasting = () => {
   useEffect(() => {
     const getSalesForecastingPrediction = async () => {
       setIsLoading(true);
-      const requestParams = new URLSearchParams({ days: time.toString() });
-      const predictResponse = await fetch(`${process.env.NEXT_PUBLIC_FAST_API_URL}/sales_forecast?${requestParams}`, {
+      const predictResponse = await fetch(`${process.env.NEXT_PUBLIC_FAST_API_URL}/sales_forecast`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
