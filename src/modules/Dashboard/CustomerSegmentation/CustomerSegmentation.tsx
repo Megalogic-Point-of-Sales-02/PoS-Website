@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CustomerSegmentationResponse } from "@/interfaces/CustomerSegmentationResponse";
 import { CustomerSegmentationPerformContext } from "@/utils/performContext";
-import { CircularProgress, Text, Flex } from "@chakra-ui/react";
+import { CircularProgress, Text, Flex, Box, Center } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 
@@ -61,12 +61,9 @@ const CustomerSegmentation = () => {
   }, [session]);
 
   const pieApexChart = {
-    series:[customerSegmentation.bronzeCount,
-      customerSegmentation.silverCount,
-      customerSegmentation.goldCount,
-      customerSegmentation.diamondCount,],
+    series: [customerSegmentation.bronzeCount, customerSegmentation.silverCount, customerSegmentation.goldCount, customerSegmentation.diamondCount],
     chart: {
-      height: 500,
+      width: "100%",
     },
     labels: ["Bronze", "Silver", "Gold", "Diamond"],
     colors: ["#bf8040", "#a9a9a9", "#ffbf00", "#34ebc9"],
@@ -98,8 +95,8 @@ const CustomerSegmentation = () => {
         breakpoint: 768,
         options: {
           chart: {
-            width: "275",
-            height: "275",
+            width: 250,
+            height: 250,
           },
           legend: {
             fontSize: "17px",
@@ -114,18 +111,20 @@ const CustomerSegmentation = () => {
   };
 
   return (
-    <Flex flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth={{ base: "100%", xl: "calc(50% - 2rem)" }} w="100%" minH="10rem" flexDirection="column" alignItems="center">
+    <Flex flex="1" padding="1.5rem" backgroundColor="#1c2e45" rounded="0.7rem" minWidth={{ base: "100%", xl: "calc(50% - 2rem)" }} w="100%" minH="10rem" flexDirection="column" alignItems="center" gap="1rem">
       <Text fontSize="lg" fontWeight="medium">
         Customer Segmentation Clustering
       </Text>
 
-      {isLoading ? (
-        <CircularProgress isIndeterminate color="green.300" marginBottom="0.5rem" />
-      ) : (
-        customerSegmentationPerformStatus.status !== "processing" && (
-          <ApexChart options={pieApexChart} series={pieApexChart.series} type="pie" width="400" height="400" />
-        )
-      )}
+      <Box width="100%">
+        {isLoading ? (
+          <Center>
+            <CircularProgress isIndeterminate color="green.300" marginBottom="0.5rem" />
+          </Center>
+        ) : (
+          customerSegmentationPerformStatus.status !== "processing" && <ApexChart options={pieApexChart} series={pieApexChart.series} type="pie" width="100%" height="250" />
+        )}
+      </Box>
     </Flex>
   );
 };

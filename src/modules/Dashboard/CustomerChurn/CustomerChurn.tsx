@@ -86,10 +86,6 @@ const CustomerChurn = () => {
         {
           breakpoint: 768,
           options: {
-            chart: {
-              width: "250",
-              height: "250",
-            },
             legend: {
               fontSize: "17px",
               labels: {
@@ -116,19 +112,21 @@ const CustomerChurn = () => {
         Customer Churn Prediction
       </Text>
 
-      {/* Fetching the API */}
-      {isLoading === true && (
-        <>
-          <CircularProgress isIndeterminate color="green.300" marginBottom="0.5rem" />
-        </>
-      )}
+      <Box width="100%">
+        {/* Fetching the API */}
+        {isLoading === true && (
+          <Center>
+            <CircularProgress isIndeterminate color="green.300" marginBottom="0.5rem" />
+          </Center>
+        )}
 
-      {/* Show Customer Churn */}
-      {customerChurnPredictionStatus.status !== "processing" && isLoading === false && (
-        <>
-          <ApexChart options={donutApexChart.options} series={donutApexChart.series} type="donut" width={"400"} height={"400"} />
-        </>
-      )}
+        {/* Show Customer Churn */}
+        {customerChurnPredictionStatus.status !== "processing" && isLoading === false && (
+          <>
+            <ApexChart options={donutApexChart.options} series={donutApexChart.series} type="donut" width={"100%"} height="250" />
+          </>
+        )}
+      </Box>
     </Flex>
   );
 };
