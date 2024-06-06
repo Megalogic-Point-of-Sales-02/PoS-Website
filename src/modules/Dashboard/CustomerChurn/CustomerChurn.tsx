@@ -28,7 +28,7 @@ const CustomerChurn = () => {
             Authorization: `Bearer ${session!.user.accessToken}`,
           },
         };
-        const response = await fetch("/api/v1/customer-churn", methodAndHeader);
+        const response = await fetch("/api/v2/customer-churn", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
