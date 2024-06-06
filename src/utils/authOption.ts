@@ -7,6 +7,7 @@ import { compare } from "bcrypt";
 export const authOption: NextAuthOptions = {
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
@@ -49,7 +50,7 @@ export const authOption: NextAuthOptions = {
           // if validatepassword true
           if (validatePassword) {
             // create accessToken
-            const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.NEXTAUTH_SECRET, { expiresIn: "7d" });
+            const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.NEXTAUTH_SECRET, { expiresIn: "1d" });
             // return the user
             return { id: user.id, username: user.username, fullname: user.fullname, accessToken: accessToken };
           }
