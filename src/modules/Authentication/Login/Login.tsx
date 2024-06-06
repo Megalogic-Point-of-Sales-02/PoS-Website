@@ -26,7 +26,6 @@ const Login = () => {
         username: formData.username,
         password: formData.password,
         redirect: false,
-        callbackUrl: "/",
       });
       if (!res?.error) {
         toast({
