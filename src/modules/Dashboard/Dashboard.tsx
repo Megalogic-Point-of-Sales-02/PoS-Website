@@ -34,7 +34,9 @@ const Dashboard = () => {
         <Box marginTop="2rem">
           <SalesForecasting />
         </Box>
-        <Box marginTop="2rem"><StockSales /></Box>
+        <Box marginTop="2rem">
+          <StockSales />
+        </Box>
       </Box>
     </>
   );
