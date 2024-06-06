@@ -1,6 +1,7 @@
 import { supabase } from "@/utils/supabase";
 import { Session } from "next-auth";
 import { CustomerChurnPredictionContextType } from "../types";
+import createConnection from "../db";
 
 export const triggerCustomerChurnPrediction = async (session: Session | null, context: CustomerChurnPredictionContextType) => {
   const { customerChurnPredictionStatus, setCustomerChurnPredictionStatus, customerChurnPredictionData, setCustomerChurnPredictionData } = context;
@@ -17,7 +18,7 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
         Authorization: `Bearer ${session!.user.accessToken}`,
       },
     };
-    const response = await fetch("/api/v1/customers/ordered", methodAndHeader);
+    const response = await fetch("/api/v2/customers/ordered", methodAndHeader);
     if (!response.ok) {
       const errorMessage = await response.json();
       console.log(errorMessage);
@@ -49,22 +50,21 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
       const prediction = predictionResult[i]; // Get the prediction based on the i
       const customerId = customersId[i]; // Get the customerId based on the i
       // console.log("customer id: " + customerId + " prediction: " + prediction);
-      const { data, error } = await supabase
-        .from("customers")
-        .update({ churn: prediction })
-        .eq("id", customerId) // Match the customer by their ID
-        .select();
-
-      if (error) {
-        throw error;
-      }
+      // Initialize connection
+      const connection = await createConnection();
+      const query = `
+      UPDATE customers
+      SET churn = ?
+      WHERE id = ?;`;
+      const values = [prediction, customerId];
+      const [data] = await connection.query(query, values);
     }
 
     // if completed, set the status to completed
     setCustomerChurnPredictionStatus({ status: "completed" });
     console.log("Customer Churn Prediction Completed");
   } catch (error) {
-    console.error("Error during prediction or storing prediction result", error);
+    console.error(error);
     setCustomerChurnPredictionStatus({ status: "error" });
   }
 };

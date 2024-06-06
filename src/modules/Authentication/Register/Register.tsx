@@ -23,7 +23,7 @@ const Register = () => {
     e.preventDefault();
     setIsLoadingButton(true);
     try {
-      const response = await fetch("/api/v1/auth/register", {
+      const response = await fetch("/api/v2/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const Register = () => {
         // Create a success toast
         toast({
           title: "Success",
-          description: `Register Successful`,
+          description: `${message.message}`,
           status: "success",
           duration: 5000,
           isClosable: true,

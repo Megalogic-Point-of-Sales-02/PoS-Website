@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
     // Perform a query
     const connection = await createConnection();
-    const [data] = await connection.query("SELECT * FROM CUSTOMERS");
+    const [data] = await connection.query("SELECT * FROM customers");
     console.log(data);
     return new NextResponse(JSON.stringify(data), {
       status: 200,
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     const connection = await createConnection();
 
     const query = `
-      INSERT INTO CUSTOMERS 
+      INSERT INTO customers 
         (customer_name, gender, age, job, segment, total_spend) 
       VALUES (?, ?, ?, ?, ?, ?)
     `;
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
     //   "changedRows": 0
     // }
 
-    return new NextResponse(JSON.stringify(data), {
+    return new NextResponse(JSON.stringify({ message: `Customer with ID ${data["insertId"]} added successfully` }), {
       status: 200,
     });
   } catch (error) {
@@ -98,7 +98,7 @@ export async function DELETE(req: NextRequest) {
     // Delete the data using mysql2
     const connection = await createConnection();
 
-    const query = "DELETE FROM CUSTOMERS WHERE id = ?";
+    const query = "DELETE FROM customers WHERE id = ?";
     const [data] = await connection.query(query, [customerId]);
 
     // Datanya bakal ky gini klo berhasil
@@ -131,7 +131,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     // Ada rows yg berubah
-    return new NextResponse(JSON.stringify(data), {
+    return new NextResponse(JSON.stringify({ message: `Customer with ID ${customerId} deleted successfully` }), {
       status: 200,
     });
   } catch (error) {

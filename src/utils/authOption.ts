@@ -33,7 +33,7 @@ export const authOption: NextAuthOptions = {
         const { username, password } = credentials as LoginRequest;
 
         // fetch api to get the user
-        const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/v1/auth/login", {
+        const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/v2/auth/login", {
           method: "POST",
           body: JSON.stringify({ username: username, password: password }),
           headers: { "Content-Type": "application/json" },

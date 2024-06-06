@@ -13,63 +13,64 @@ interface DeleteOrderProps {
 const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: DeleteOrderProps) => {
   const toast = useToast();
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
-  const {data: session, status} = useSession();
+  const { data: session, status } = useSession();
 
   const handleDelete = async (e) => {
     setIsLoadingButton(true);
     if (id !== null) {
       console.log("deleting order with id", id.toString());
       e.preventDefault();
-      if(session){
-      try {
-        const response = await fetch("/api/v1/orders", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session!.user.accessToken}`,
-          },
-          body: JSON.stringify({ id: id }),
-        });
+      if (session) {
+        try {
+          const response = await fetch("/api/v2/orders", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session!.user.accessToken}`,
+            },
+            body: JSON.stringify({ id: id }),
+          });
 
-        if (!response.ok) {
-          // Wait for the message
-          const errorMessage = await response.json();
-          // Create an error toast
+          if (!response.ok) {
+            // Wait for the message
+            const errorMessage = await response.json();
+            // Create an error toast
+            toast({
+              title: "Error",
+              description: errorMessage,
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          } else {
+            // Wait for the message
+            const message = await response.json();
+            // Create a success toast
+            toast({
+              title: "Success",
+              description: `${message.message}`,
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+            handleOrderChange();
+            onClose();
+          }
+        } catch (error) {
+          console.error("Error Deleting Order", error);
           toast({
             title: "Error",
-            description: errorMessage,
+            description: "An error occurred while deleting the order.",
             status: "error",
             duration: 5000,
             isClosable: true,
           });
-          return;
-        } else {
-          // Wait for the message
-          const message = await response.json();
-          // Create a success toast
-          toast({
-            title: "Success",
-            description: `Order with ID ${id} is deleted`,
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-          });
-          handleOrderChange();
-          onClose();
+        } finally {
+          setIsLoadingButton(false);
         }
-      } catch (error) {
-        console.error("Error Deleting Order", error);
-        toast({
-          title: "Error",
-          description: "An error occurred while deleting the order.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      } finally {
-        setIsLoadingButton(false);
       }
-    }} else {
+    } else {
       toast({
         title: "Error",
         description: "Order ID is null",
