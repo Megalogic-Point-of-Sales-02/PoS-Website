@@ -1,4 +1,4 @@
-import { CustomerRequest } from "@/interfaces/CustomerRequest";
+import { ProductRequest } from "@/interfaces/ProductRequest";
 import checkToken from "@/utils/checkToken";
 import createConnection from "@/utils/db";
 import pool from "@/utils/db";
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
     // Perform a query
     const connection = await createConnection();
-    const [data] = await connection.query("SELECT * FROM CUSTOMERS");
+    const [data] = await connection.query("SELECT * FROM PRODUCTS");
     console.log(data);
     return new NextResponse(JSON.stringify(data), {
       status: 200,
@@ -30,22 +30,18 @@ export async function POST(req: NextRequest) {
     // if(tokenResponse !== true) return tokenResponse;
 
     // Get the request body
-    const requestBody: CustomerRequest = await req.json();
+    const requestBody: ProductRequest = await req.json();
     console.log("data: ", requestBody);
-
-    // Insert the data using supabase
-    // query = "INSERT INTO customers (customer_name, gender, age, job, segment, total_spend) VALUES ('John Doe', 'Male', 30, 'Engineer', 'Corporate', 25000.00)"
-    // const { data, error } = await supabase.from("customers").insert([requestBody]).select();
 
     // Insert the data using mysql2 connection
     const connection = await createConnection();
 
     const query = `
-      INSERT INTO CUSTOMERS 
-        (customer_name, gender, age, job, segment, total_spend) 
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO PRODUCTS 
+        (product_name, product_category, product_sub_category, product_price) 
+      VALUES (?, ?, ?, ?)
     `;
-    const values = [requestBody.customer_name, requestBody.gender, requestBody.age, requestBody.job, requestBody.segment, requestBody.total_spend];
+    const values = [requestBody.product_name, requestBody.product_category, requestBody.product_sub_category, requestBody.product_price];
 
     const [data] = await connection.query(query, values);
     console.log(data);
@@ -66,12 +62,12 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     // Datanya bakal gini klo error
     // {
-    //   "message": "Table 'megalogic_dummy.customerss' doesn't exist",
+    //   "message": "Table 'megalogic_dummy.products' doesn't exist",
     //   "code": "ER_NO_SUCH_TABLE",
     //   "errno": 1146,
-    //   "sql": "\n      INSERT INTO CUSTOMERSS \n        (customer_name, gender, age, job, segment, total_spend) \n      VALUES ('Raihan Kusss', 'Male', 35, 'Data Scientist', 'Home Office', 0)\n    ",
+    //   "sql": "\n      INSERT INTO PRODUCTS \n        (product_name, product_category, product_sub_category, product_price) \n      VALUES ('Raihan Kusss', 'Male', 35, 'Data Scientist', 'Home Office', 0)\n    ",
     //   "sqlState": "42S02",
-    //   "sqlMessage": "Table 'megalogic_dummy.customerss' doesn't exist"
+    //   "sqlMessage": "Table 'megalogic_dummy.products' doesn't exist"
     // }
     return new NextResponse(JSON.stringify(error), {
       status: 500,
@@ -88,18 +84,18 @@ export async function DELETE(req: NextRequest) {
     const requestBody = await req.json();
 
     // Extract the id from the request body
-    const customerId = requestBody.id;
+    const productId = requestBody.id;
 
     // Check if id is provided
-    if (!customerId) {
-      throw new Error("Customer ID is required");
+    if (!productId) {
+      throw new Error("Product ID is required");
     }
 
     // Delete the data using mysql2
     const connection = await createConnection();
 
-    const query = "DELETE FROM CUSTOMERS WHERE id = ?";
-    const [data] = await connection.query(query, [customerId]);
+    const query = "DELETE FROM PRODUCTS WHERE id = ?";
+    const [data] = await connection.query(query, [productId]);
 
     // Datanya bakal ky gini klo berhasil
     // {
@@ -137,12 +133,12 @@ export async function DELETE(req: NextRequest) {
   } catch (error) {
     // Datanya bakal gini klo error
     // {
-    //   "message": "Table 'megalogic_dummy.customerss' doesn't exist",
+    //   "message": "Table 'megalogic_dummy.products' doesn't exist",
     //   "code": "ER_NO_SUCH_TABLE",
     //   "errno": 1146,
-    //   "sql": "DELETE FROM CUSTOMERSS WHERE id = 3",
+    //   "sql": "DELETE FROM PRODUCTS WHERE id = 3",
     //   "sqlState": "42S02",
-    //   "sqlMessage": "Table 'megalogic_dummy.customerss' doesn't exist"
+    //   "sqlMessage": "Table 'megalogic_dummy.products' doesn't exist"
     // }
     return new NextResponse(JSON.stringify(error), {
       status: 500,
