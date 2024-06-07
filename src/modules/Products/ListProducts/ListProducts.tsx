@@ -31,7 +31,7 @@ const ListProducts = () => {
             Authorization: `Bearer ${session!.user.accessToken}`,
           },
         };
-        const response = await fetch("/api/v1/products", methodAndHeader);
+        const response = await fetch("/api/v2/products", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);

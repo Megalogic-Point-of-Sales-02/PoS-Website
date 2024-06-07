@@ -22,7 +22,7 @@ const MonthlyOrder = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const response = await fetch("/api/v1/totalorder/monthly?date-prefix=" + datePrefix);
+    const response = await fetch("/api/v2/orders/monthly?date-prefix=" + datePrefix);
     if (!response.ok) {
       const errorMessage = await response.json();
       console.log(errorMessage);
@@ -36,7 +36,7 @@ const MonthlyOrder = () => {
   useEffect(() => {
     async function fetchTotalOrder() {
       try {
-        const response = await fetch("/api/v1/totalorder/monthly?date-prefix=" + datePrefix);
+        const response = await fetch("/api/v2/orders/monthly?date-prefix=" + datePrefix);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);

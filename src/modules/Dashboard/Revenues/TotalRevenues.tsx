@@ -21,7 +21,7 @@ const TotalRevenues = () => {
             Authorization: `Bearer ${session!.user.accessToken}`,
           },
         };
-        const response = await fetch("/api/v1/revenues", methodAndHeader);
+        const response = await fetch("/api/v2/revenues", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
