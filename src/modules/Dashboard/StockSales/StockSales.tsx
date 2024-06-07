@@ -176,7 +176,6 @@ const StockSales = () => {
       stroke: {
         show: true,
         width: 2,
-        colors: ["#FFFF00"],
       },
     },
   };
