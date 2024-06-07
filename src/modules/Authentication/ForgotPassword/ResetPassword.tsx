@@ -91,7 +91,6 @@ const ResetPassword = () => {
       ...prevData,
       [name]: value,
     }));
-    console.log(formData);
   };
 
   return (

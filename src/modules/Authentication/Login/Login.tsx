@@ -39,7 +39,6 @@ const Login = () => {
         // redirect to dashboard page
         push("/");
       } else {
-        console.log("res error: ", res.error);
         toast({
           title: "Error",
           description: "Username or Password is Incorrect!",
@@ -64,12 +63,10 @@ const Login = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log(sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
       [name]: sanitizedValue,
     }));
-    console.log(formData);
   };
 
   return (

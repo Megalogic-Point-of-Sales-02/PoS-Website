@@ -32,7 +32,6 @@ const SalesForecasting = () => {
       }
       let predictionResult = await predictResponse.json();
       predictionResult = predictionResult.result;
-      console.log("prediction result:", predictionResult);
 
       //   SET APEX CHART DATA
       const salesData: LineChartData[] = [];

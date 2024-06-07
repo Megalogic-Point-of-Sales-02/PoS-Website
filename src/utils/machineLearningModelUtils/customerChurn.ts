@@ -2,6 +2,7 @@ import { supabase } from "@/utils/supabase";
 import { Session } from "next-auth";
 import { CustomerChurnPredictionContextType } from "../types";
 import createConnection from "../db";
+import { CustomerUpdateRequest } from "@/interfaces/CustomerUpdateRequest";
 
 export const triggerCustomerChurnPrediction = async (session: Session | null, context: CustomerChurnPredictionContextType) => {
   const { customerChurnPredictionStatus, setCustomerChurnPredictionStatus, customerChurnPredictionData, setCustomerChurnPredictionData } = context;
@@ -49,15 +50,22 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
     for (let i = 0; i < predictionResult.length; i++) {
       const prediction = predictionResult[i]; // Get the prediction based on the i
       const customerId = customersId[i]; // Get the customerId based on the i
-      // console.log("customer id: " + customerId + " prediction: " + prediction);
-      // Initialize connection
-      const connection = await createConnection();
-      const query = `
-      UPDATE customers
-      SET churn = ?
-      WHERE id = ?;`;
-      const values = [prediction, customerId];
-      const [data] = await connection.query(query, values);
+      const reqBody: CustomerUpdateRequest = {
+        customerId: customerId,
+        columnName: "churn",
+        value: prediction,
+      };
+      const updateResponse = await fetch("/api/v2/customers", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqBody),
+      });
+      if (!updateResponse.ok) {
+        const errorMessage = await updateResponse.json();
+        console.log(errorMessage);
+      }
     }
 
     // if completed, set the status to completed

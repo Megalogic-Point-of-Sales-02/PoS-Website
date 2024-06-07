@@ -31,7 +31,6 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
   const handleChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log("sanitized value: " + sanitizedValue);
 
     if (!validateInput(sanitizedValue)) {
       toast({
@@ -48,7 +47,6 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
       ...prevData,
       [name]: sanitizedValue,
     }));
-    console.log(formData);
   };
 
   const handleSubmit = async (e) => {

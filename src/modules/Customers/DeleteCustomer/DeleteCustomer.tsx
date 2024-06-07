@@ -18,7 +18,6 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
   const handleDelete = async (e) => {
     setIsLoadingButton(true);
     if (id !== null) {
-      console.log("deleting customer with id", id.toString());
       e.preventDefault();
       if (session) {
         try {

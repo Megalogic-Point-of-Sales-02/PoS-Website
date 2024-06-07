@@ -81,12 +81,10 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log(sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
       [name]: sanitizedValue,
     }));
-    console.log(formData);
   };
 
   return (

@@ -1,4 +1,5 @@
 import { CustomerRequest } from "@/interfaces/CustomerRequest";
+import { CustomerUpdateRequest } from "@/interfaces/CustomerUpdateRequest";
 import checkToken from "@/utils/checkToken";
 import createConnection from "@/utils/db";
 import pool from "@/utils/db";
@@ -13,7 +14,6 @@ export async function GET(req: NextRequest) {
     // Perform a query
     const connection = await createConnection();
     const [data] = await connection.query("SELECT * FROM customers");
-    console.log(data);
     return new NextResponse(JSON.stringify(data), {
       status: 200,
     });
@@ -31,7 +31,6 @@ export async function POST(req: NextRequest) {
 
     // Get the request body
     const requestBody: CustomerRequest = await req.json();
-    console.log("data: ", requestBody);
 
     // Insert the data using supabase
     // query = "INSERT INTO customers (customer_name, gender, age, job, segment, total_spend) VALUES ('John Doe', 'Male', 30, 'Engineer', 'Corporate', 25000.00)"
@@ -144,6 +143,33 @@ export async function DELETE(req: NextRequest) {
     //   "sqlState": "42S02",
     //   "sqlMessage": "Table 'megalogic_dummy.customerss' doesn't exist"
     // }
+    return new NextResponse(JSON.stringify(error), {
+      status: 500,
+    });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    // const tokenResponse = checkToken(req);
+    // if(tokenResponse !== true) return tokenResponse;
+
+    // Get the request body
+    const requestBody: CustomerUpdateRequest = await req.json();
+
+    // Insert the data using mysql2 connection
+    const connection = await createConnection();
+    const query = `
+      UPDATE customers
+      SET ${connection.escapeId(requestBody.columnName)} = ?
+      WHERE id = ?;`;
+    const values = [requestBody.value, requestBody.customerId];
+    const [data] = await connection.query(query, values);
+
+    return new NextResponse(JSON.stringify({ message: `Customer with ID ${requestBody["customerId"]} updated successfully` }), {
+      status: 200,
+    });
+  } catch (error) {
     return new NextResponse(JSON.stringify(error), {
       status: 500,
     });

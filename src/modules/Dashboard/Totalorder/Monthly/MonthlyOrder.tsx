@@ -92,7 +92,6 @@ const MonthlyOrder = () => {
                     color="#0f1824"
                     onChange={(e) => {
                       setDatePrefix(e.target.value);
-                      console.log(e.target.value);
                     }}
                   />
                   <Button colorScheme="blue" type="submit" padding="1.4rem" height="2.8rem">

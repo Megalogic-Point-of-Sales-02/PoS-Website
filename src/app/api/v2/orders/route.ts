@@ -14,7 +14,6 @@ export async function GET(req: NextRequest) {
     // Perform a query
     const connection = await createConnection();
     const [data] = await connection.query("SELECT * FROM orders");
-    console.log(data);
     return new NextResponse(JSON.stringify(data), {
       status: 200,
     });
@@ -32,7 +31,6 @@ export async function POST(req: NextRequest) {
 
     // Get the request body
     const requestBody: OrderRequest = await req.json();
-    console.log("data: ", requestBody);
 
     // Insert the data using supabase
     // query = "INSERT INTO customers (customer_name, gender, age, job, segment, total_spend) VALUES ('John Doe', 'Male', 30, 'Engineer', 'Corporate', 25000.00)"
@@ -52,7 +50,6 @@ export async function POST(req: NextRequest) {
 
     const [insertData] = await connection.query(insertQuery, insertValues);
 
-    console.log("INSERT DATA:", insertData);
     // Update Customers Total Spend
     const incrementTotalSpendQuery = `
     UPDATE customers
@@ -61,7 +58,6 @@ export async function POST(req: NextRequest) {
     const incrementTotalSpendValues = [requestBody.sales, requestBody.customer_id];
 
     const [incrementTotalSpendData] = await connection.query(incrementTotalSpendQuery, incrementTotalSpendValues);
-    console.log("INCREMENT DATA:", incrementTotalSpendData);
 
     return new NextResponse(JSON.stringify({ message: `Order with ID ${insertData["insertId"]} added successfully` }), {
       status: 200,

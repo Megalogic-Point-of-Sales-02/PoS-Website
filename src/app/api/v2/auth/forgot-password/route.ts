@@ -19,7 +19,6 @@ export async function POST(req: NextRequest) {
       return new NextResponse(JSON.stringify({ message: "No email registered!" }), { status: 409 });
     }
 
-    console.log("requestBody: ", requestBody);
     // Create reset token
     const reset_token = crypto.randomBytes(32).toString("hex");
     const reset_token_expiration = new Date();
@@ -30,7 +29,6 @@ export async function POST(req: NextRequest) {
       reset_token: reset_token,
       reset_token_expiration: reset_token_expiration,
     };
-    console.log("new requestBody: ", newRequestBody);
 
     // Send to database
     const query = `
@@ -39,8 +37,6 @@ export async function POST(req: NextRequest) {
     WHERE email = ?;`;
     const values = [newRequestBody.reset_token, newRequestBody.reset_token_expiration, newRequestBody.email];
     const [sendData] = await connection.query(query, values);
-    console.log("SEND DATA:");
-    console.log(sendData);
     // Send email
     await sendPasswordResetEmail(newRequestBody.email, newRequestBody.reset_token);
 
