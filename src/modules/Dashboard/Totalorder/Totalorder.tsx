@@ -20,7 +20,7 @@ const Totalorder = () => {
             Authorization: `Bearer ${session!.user.accessToken}`,
           },
         };
-        const response = await fetch("/api/v1/totalorder", methodAndHeader);
+        const response = await fetch("/api/v2/orders/total", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);

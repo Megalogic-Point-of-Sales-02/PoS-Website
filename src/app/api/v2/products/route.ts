@@ -9,11 +9,19 @@ export async function GET(req: NextRequest) {
   try {
     // const tokenResponse = checkToken(req);
     // if(tokenResponse !== true) return tokenResponse;
+    const searchParams = req.nextUrl.searchParams;
 
     // Perform a query
     const connection = await createConnection();
-    const [data] = await connection.query("SELECT * FROM PRODUCTS");
-    console.log(data);
+    if(searchParams.get("id")!==null){
+      const id = searchParams.get("id");
+      const[data] = await connection.query(`SELECT * FROM products WHERE id = ?`, 
+      [Number(id)]);
+      return new NextResponse(JSON.stringify(data), {
+        status: 200,
+      });
+    }
+    const [data] = await connection.query(`SELECT * FROM products`);
     return new NextResponse(JSON.stringify(data), {
       status: 200,
     });
@@ -31,20 +39,18 @@ export async function POST(req: NextRequest) {
 
     // Get the request body
     const requestBody: ProductRequest = await req.json();
-    console.log("data: ", requestBody);
 
     // Insert the data using mysql2 connection
     const connection = await createConnection();
 
     const query = `
-      INSERT INTO PRODUCTS 
+      INSERT INTO products
         (product_name, product_category, product_sub_category, product_price) 
       VALUES (?, ?, ?, ?)
     `;
     const values = [requestBody.product_name, requestBody.product_category, requestBody.product_sub_category, requestBody.product_price];
 
     const [data] = await connection.query(query, values);
-    console.log(data);
     // Datanya bakal ky gini klo berhasil
     // {
     //   "fieldCount": 0,
@@ -56,7 +62,7 @@ export async function POST(req: NextRequest) {
     //   "changedRows": 0
     // }
 
-    return new NextResponse(JSON.stringify(data), {
+    return new NextResponse(JSON.stringify({ message: `Product with ID ${data["insertId"]} added successfully` }), {
       status: 200,
     });
   } catch (error) {
@@ -94,7 +100,7 @@ export async function DELETE(req: NextRequest) {
     // Delete the data using mysql2
     const connection = await createConnection();
 
-    const query = "DELETE FROM PRODUCTS WHERE id = ?";
+    const query = "DELETE FROM products WHERE id = ?";
     const [data] = await connection.query(query, [productId]);
 
     // Datanya bakal ky gini klo berhasil
@@ -127,7 +133,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     // Ada rows yg berubah
-    return new NextResponse(JSON.stringify(data), {
+    return new NextResponse(JSON.stringify({ message: `Product with ID ${productId} deleted successfully` }), {
       status: 200,
     });
   } catch (error) {

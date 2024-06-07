@@ -1,6 +1,7 @@
 import { supabase } from "@/utils/supabase";
 import { Session } from "next-auth";
 import { CustomerSegmentationPerformContextType } from "../types";
+import createConnection from "../db";
 
 export const triggerCustomerSegmentationPerform = async (session: Session | null, context: CustomerSegmentationPerformContextType) => {
     const { customerSegmentationPerformStatus, setCustomerSegmentationPerformStatus, customerSegmentationPerformData, setCustomerSegmentationPerformData } = context;
@@ -16,7 +17,7 @@ export const triggerCustomerSegmentationPerform = async (session: Session | null
           Authorization: `Bearer ${session!.user.accessToken}`,
         },
         };
-        const response = await fetch("/api/v1/customers/ordered", methodAndHeader);
+        const response = await fetch("/api/v2/customers/ordered", methodAndHeader);
         if (!response.ok) {
             const errorMessage = await response.json();
             console.log(errorMessage);
@@ -48,15 +49,13 @@ export const triggerCustomerSegmentationPerform = async (session: Session | null
             const perform = performSegmentation[i]; // Get the perform based on the i
             const customerId = customersId[i]; // Get the customerId based on the i
             // console.log("customer id: " + customerId + " perform: " + perform);
-            const { data, error } = await supabase
-            .from("customers")
-            .update({ segmentation: perform })
-            .eq("id", customerId) // Match the customer by their ID
-            .select();
-        
-            if (error) {
-                throw error;
-            }
+            const connection = await createConnection();
+            const query =`
+            UPDATE customers
+            SET segmentation = ?
+            WHERE id = ?;`
+            const values = [perform, customerId];
+            const [data] = await connection.query(query,values);
         }
     
         // if completed, set the status to completed
