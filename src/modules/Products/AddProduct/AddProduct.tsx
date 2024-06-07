@@ -51,7 +51,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
     setIsLoadingButton(true);
     if (session) {
       try {
-        const response = await fetch("/api/v1/products", {
+        const response = await fetch("/api/v2/products", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +73,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
           const message = await response.json();
           toast({
             title: "Success",
-            description: `Product with ID ${message[0].id} added successfully`,
+            description: `${message.message}`,
             status: "success",
             duration: 5000,
             isClosable: true,

@@ -1,6 +1,8 @@
 import { supabase } from "@/utils/supabase";
 import { Session } from "next-auth";
 import { CustomerChurnPredictionContextType } from "../types";
+import createConnection from "../db";
+import { CustomerUpdateRequest } from "@/interfaces/CustomerUpdateRequest";
 
 export const triggerCustomerChurnPrediction = async (session: Session | null, context: CustomerChurnPredictionContextType) => {
   const { customerChurnPredictionStatus, setCustomerChurnPredictionStatus, customerChurnPredictionData, setCustomerChurnPredictionData } = context;
@@ -17,7 +19,7 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
         Authorization: `Bearer ${session!.user.accessToken}`,
       },
     };
-    const response = await fetch("/api/v1/customers/ordered", methodAndHeader);
+    const response = await fetch("/api/v2/customers/ordered", methodAndHeader);
     if (!response.ok) {
       const errorMessage = await response.json();
       console.log(errorMessage);
@@ -48,15 +50,21 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
     for (let i = 0; i < predictionResult.length; i++) {
       const prediction = predictionResult[i]; // Get the prediction based on the i
       const customerId = customersId[i]; // Get the customerId based on the i
-      // console.log("customer id: " + customerId + " prediction: " + prediction);
-      const { data, error } = await supabase
-        .from("customers")
-        .update({ churn: prediction })
-        .eq("id", customerId) // Match the customer by their ID
-        .select();
-
-      if (error) {
-        throw error;
+      const reqBody: CustomerUpdateRequest = {
+        customerId: customerId,
+        columnName: "churn",
+        value: prediction,
+      };
+      const updateResponse = await fetch("/api/v2/customers", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqBody),
+      });
+      if (!updateResponse.ok) {
+        const errorMessage = await updateResponse.json();
+        console.log(errorMessage);
       }
     }
 
@@ -64,7 +72,7 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
     setCustomerChurnPredictionStatus({ status: "completed" });
     console.log("Customer Churn Prediction Completed");
   } catch (error) {
-    console.error("Error during prediction or storing prediction result", error);
+    console.error(error);
     setCustomerChurnPredictionStatus({ status: "error" });
   }
 };

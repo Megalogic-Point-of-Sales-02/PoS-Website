@@ -19,7 +19,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     setIsLoadingButton(true);
     try {
-      const response = await fetch("/api/v1/auth/forgot-password", {
+      const response = await fetch("/api/v2/auth/forgot-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +29,6 @@ const ForgotPassword = () => {
       if (!response.ok) {
         // Wait for the message
         const errorMessage = await response.json();
-        console.log("error message:", errorMessage);
         // TODO: Create an error message
         toast({
           title: "Error",
@@ -41,7 +40,6 @@ const ForgotPassword = () => {
       } else {
         // Wait for the message
         const message = await response.json();
-        console.log("error message:", message);
         // Create a success toast
         toast({
           title: "Success",
@@ -81,7 +79,6 @@ const ForgotPassword = () => {
       ...prevData,
       [name]: value,
     }));
-    console.log(formData);
   };
 
   return (

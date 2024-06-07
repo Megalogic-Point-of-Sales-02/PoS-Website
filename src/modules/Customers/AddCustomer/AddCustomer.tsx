@@ -31,7 +31,6 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
   const handleChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log("sanitized value: " + sanitizedValue);
 
     if (!validateInput(sanitizedValue)) {
       toast({
@@ -48,7 +47,6 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
       ...prevData,
       [name]: sanitizedValue,
     }));
-    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
@@ -56,7 +54,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
     setIsLoadingButton(true);
     if (session) {
       try {
-        const response = await fetch("/api/v1/customers", {
+        const response = await fetch("/api/v2/customers", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +80,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
           // Create a success toast
           toast({
             title: "Success",
-            description: `Customer with ID ${message[0].id} added successfully`,
+            description: `${message.message}`,
             status: "success",
             duration: 5000,
             isClosable: true,

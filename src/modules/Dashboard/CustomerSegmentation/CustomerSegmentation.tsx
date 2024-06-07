@@ -26,7 +26,7 @@ const CustomerSegmentation = () => {
             Authorization: `Bearer ${session!.user.accessToken}`,
           },
         };
-        const response = await fetch("/api/v1/customer-segmentation", methodAndHeader);
+        const response = await fetch("/api/v2/customer-segmentation", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);

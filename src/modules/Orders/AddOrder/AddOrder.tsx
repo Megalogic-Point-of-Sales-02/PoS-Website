@@ -51,7 +51,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
             Authorization: `Bearer ${session!.user.accessToken}`,
           },
         };
-        const [customersResponse, productsResponse] = await Promise.all([fetch("/api/v1/customers", methodAndHeader), fetch("/api/v1/products", methodAndHeader)]);
+        const [customersResponse, productsResponse] = await Promise.all([fetch("/api/v2/customers", methodAndHeader), fetch("/api/v2/products", methodAndHeader)]);
 
         if (!customersResponse.ok || !productsResponse.ok) {
           throw new Error("Failed to fetch data");
@@ -59,9 +59,6 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
 
         const customersData = await customersResponse.json();
         const productsData = await productsResponse.json();
-
-        console.log(customersData);
-        console.log(productsData);
 
         setCustomers(customersData);
         setProducts(productsData);
@@ -89,7 +86,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
           Authorization: `Bearer ${session!.user.accessToken}`,
         },
       };
-      const response = await fetch(`/api/v1/products?id=${formData.product_id}`, methodAndHeader);
+      const response = await fetch(`/api/v2/products?id=${formData.product_id}`, methodAndHeader);
       const productData = await response.json();
       const sales = productData[0].product_price * formData.quantity;
       setFormData((prevData) => ({
@@ -108,7 +105,6 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
   const handleDateChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log("sanitized value: " + sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
       [name]: new Date(sanitizedValue),
@@ -136,7 +132,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
     setIsLoadingButton(true);
     if (session) {
       try {
-        const response = await fetch("/api/v1/orders", {
+        const response = await fetch("/api/v2/orders", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -162,7 +158,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
           // Create a success toast
           toast({
             title: "Success",
-            description: `Order with ID ${message[0].id} added successfully`,
+            description: `${message.message}`,
             status: "success",
             duration: 5000,
             isClosable: true,

@@ -1,6 +1,6 @@
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useToast, Spinner } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import React , { useState }from "react";
+import React, { useState } from "react";
 
 interface DeleteCustomerProps {
   id: number | null;
@@ -18,58 +18,58 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
   const handleDelete = async (e) => {
     setIsLoadingButton(true);
     if (id !== null) {
-      console.log("deleting customer with id", id.toString());
       e.preventDefault();
-      if(session){
-      try {
-        const response = await fetch("/api/v1/customers", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session!.user.accessToken}`,
-          },
-          body: JSON.stringify({ id: id }),
-        });
+      if (session) {
+        try {
+          const response = await fetch("/api/v2/customers", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session!.user.accessToken}`,
+            },
+            body: JSON.stringify({ id: id }),
+          });
 
-        if (!response.ok) {
-          // Wait for the message
-          const errorMessage = await response.json();
-          // Create an error toast
+          if (!response.ok) {
+            // Wait for the message
+            const errorMessage = await response.json();
+            // Create an error toast
+            toast({
+              title: "Error",
+              description: errorMessage,
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          } else {
+            // Wait for the message
+            const message = await response.json();
+            // Create a success toast
+            toast({
+              title: "Success",
+              description: `${message.message}`,
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+            handleCustomerChange();
+            onClose();
+          }
+        } catch (error) {
+          console.error("Error Deleting Customer", error);
           toast({
             title: "Error",
-            description: errorMessage,
+            description: "An error occurred while deleting the customer.",
             status: "error",
             duration: 5000,
             isClosable: true,
           });
-          return;
-        } else {
-          // Wait for the message
-          const message = await response.json();
-          // Create a success toast
-          toast({
-            title: "Success",
-            description: `Customer with ID ${id} is deleted`,
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-          });
-          handleCustomerChange();
-          onClose();
+        } finally {
+          setIsLoadingButton(false);
         }
-      } catch (error) {
-        console.error("Error Deleting Customer", error);
-        toast({
-          title: "Error",
-          description: "An error occurred while deleting the customer.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      } finally {
-        setIsLoadingButton(false);
       }
-    }} else {
+    } else {
       toast({
         title: "Error",
         description: "Customer ID is null",
@@ -97,7 +97,7 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
                 Cancel
               </Button>
               <Button colorScheme="red" onClick={handleDelete} ml={3}>
-              {isLoadingButton ? <Spinner /> : "Delete"}
+                {isLoadingButton ? <Spinner /> : "Delete"}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

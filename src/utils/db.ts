@@ -6,6 +6,7 @@ const createConnection = async () => {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+    timezone: "Asia/Jakarta",
   });
 
   if (connection) console.log(`Connected to the MySQL database: ${process.env.DB_NAME}`);

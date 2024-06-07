@@ -2,11 +2,13 @@
 
 import convertRupiah from "@/utils/convertRupiah";
 import { Box, Button, Center, CircularProgress, Flex, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const MonthlyRevenue = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [monthlyRevenue, setMonthlyRevenue] = useState(null);
+  const { data: session, status } = useSession();
 
   const getCurrentDatePrefix = () => {
     const dateObj = new Date();
@@ -23,7 +25,14 @@ const MonthlyRevenue = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const response = await fetch("/api/v1/revenues/monthly?date-prefix=" + datePrefix);
+    const methodAndHeader = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session!.user.accessToken}`,
+      },
+    };
+    const response = await fetch(`/api/v2/revenues/monthly?date-prefix=${datePrefix}`, methodAndHeader);
     if (!response.ok) {
       const errorMessage = await response.json();
       console.log(errorMessage);
@@ -35,9 +44,16 @@ const MonthlyRevenue = () => {
   };
 
   useEffect(() => {
-    async function fetchTotalOrder() {
+    async function fetchTotalRevenue() {
       try {
-        const response = await fetch("/api/v1/revenues/monthly?date-prefix=" + datePrefix);
+        const methodAndHeader = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+        };
+        const response = await fetch(`/api/v2/revenues/monthly?date-prefix=${datePrefix}`, methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
@@ -51,7 +67,7 @@ const MonthlyRevenue = () => {
         setIsLoading(false);
       }
     }
-    fetchTotalOrder();
+    fetchTotalRevenue();
   }, []);
 
   return (
@@ -93,7 +109,6 @@ const MonthlyRevenue = () => {
                     color="#0f1824"
                     onChange={(e) => {
                       setDatePrefix(e.target.value);
-                      console.log(e.target.value);
                     }}
                   />
                   <Button colorScheme="blue" type="submit" padding="1.4rem" height="2.8rem">

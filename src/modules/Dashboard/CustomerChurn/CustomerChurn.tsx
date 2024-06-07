@@ -18,7 +18,6 @@ const CustomerChurn = () => {
 
   useEffect(() => {
     async function fetchCustomerChurn() {
-      console.log("customerChurn modules prediction status:", customerChurnPredictionStatus);
       setIsLoading(true);
       try {
         const methodAndHeader = {
@@ -28,24 +27,20 @@ const CustomerChurn = () => {
             Authorization: `Bearer ${session!.user.accessToken}`,
           },
         };
-        const response = await fetch("/api/v1/customer-churn", methodAndHeader);
+        const response = await fetch("/api/v2/customer-churn", methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
         } else {
           const data = await response.json();
-          console.log("data customer churn:", data);
           // Get Churn count
           for (const loop of data) {
-            console.log(loop);
             if (loop["churn"] === "Churn") {
-              console.log("loop count churn:", loop["count"]);
               setCustomerChurn((prevState) => ({
                 ...prevState,
                 churnCount: loop["count"],
               }));
             } else if (loop["churn"] === "Not Churn") {
-              console.log("loop count not churn:", loop["count"]);
               setCustomerChurn((prevState) => ({
                 ...prevState,
                 notChurnCount: loop["count"],

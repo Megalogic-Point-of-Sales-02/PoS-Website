@@ -8,6 +8,7 @@ import TotalProduct from "./Product/TotalProduct";
 import CustomerChurn from "./CustomerChurn/CustomerChurn";
 import CustomerSegmentation from "./CustomerSegmentation/CustomerSegmentation";
 import SalesForecasting from "./SalesForecasting/SalesForecasting";
+import StockSales from "./StockSales/StockSales";
 
 const Dashboard = () => {
   return (
@@ -33,7 +34,9 @@ const Dashboard = () => {
         <Box marginTop="2rem">
           <SalesForecasting />
         </Box>
-        <Box marginTop="2rem">{/* TODO: Stock Sales Forecasting */}</Box>
+        <Box marginTop="2rem">
+          <StockSales />
+        </Box>
       </Box>
     </>
   );
