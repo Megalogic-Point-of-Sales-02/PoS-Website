@@ -60,9 +60,6 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
         const customersData = await customersResponse.json();
         const productsData = await productsResponse.json();
 
-        console.log(customersData);
-        console.log(productsData);
-
         setCustomers(customersData);
         setProducts(productsData);
       } catch (error) {
@@ -108,7 +105,6 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
   const handleDateChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
-    console.log("sanitized value: " + sanitizedValue);
     setFormData((prevData) => ({
       ...prevData,
       [name]: new Date(sanitizedValue),

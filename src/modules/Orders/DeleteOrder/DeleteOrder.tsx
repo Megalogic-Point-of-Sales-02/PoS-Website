@@ -18,7 +18,6 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
   const handleDelete = async (e) => {
     setIsLoadingButton(true);
     if (id !== null) {
-      console.log("deleting order with id", id.toString());
       e.preventDefault();
       if (session) {
         try {

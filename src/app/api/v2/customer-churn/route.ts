@@ -17,7 +17,6 @@ export async function GET(req: NextRequest) {
     GROUP BY c.churn;`;
 
     const [data] = await connection.query(query);
-    console.log(data);
     return new NextResponse(JSON.stringify(data), {
       status: 200,
     });
