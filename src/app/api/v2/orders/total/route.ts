@@ -1,11 +1,11 @@
-import checkToken from "@/utils/checkToken"
+import checkToken from "@/utils/checkToken";
 import createConnection from "@/utils/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  try{
-    // const tokenResponse = checkToken(req);
-    // if (tokenResponse !== true) return tokenResponse;
+  try {
+    const tokenResponse = checkToken(req);
+    if (tokenResponse !== true) return tokenResponse;
 
     // Perform a query
     const connection = await createConnection();
@@ -16,9 +16,9 @@ export async function GET(req: NextRequest) {
     return new NextResponse(JSON.stringify(finalData), {
       status: 200,
     });
- } catch(error){
+  } catch (error) {
     return new NextResponse(JSON.stringify(error), {
-    status: 500,
+      status: 500,
     });
- }
+  }
 }

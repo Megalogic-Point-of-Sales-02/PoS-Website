@@ -7,16 +7,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    // const tokenResponse = checkToken(req);
-    // if(tokenResponse !== true) return tokenResponse;
+    const tokenResponse = checkToken(req);
+    if (tokenResponse !== true) return tokenResponse;
     const searchParams = req.nextUrl.searchParams;
 
     // Perform a query
     const connection = await createConnection();
-    if(searchParams.get("id")!==null){
+    if (searchParams.get("id") !== null) {
       const id = searchParams.get("id");
-      const[data] = await connection.query(`SELECT * FROM products WHERE id = ?`, 
-      [Number(id)]);
+      const [data] = await connection.query(`SELECT * FROM products WHERE id = ?`, [Number(id)]);
       return new NextResponse(JSON.stringify(data), {
         status: 200,
       });

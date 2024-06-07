@@ -5,8 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    // const tokenResponse = checkToken(req);
-    // if(tokenResponse !== true) return tokenResponse;
+    const tokenResponse = checkToken(req);
+    if (tokenResponse !== true) return tokenResponse;
 
     // Perform a query
     const connection = await createConnection();

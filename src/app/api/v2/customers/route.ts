@@ -8,8 +8,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    // const tokenResponse = checkToken(req);
-    // if(tokenResponse !== true) return tokenResponse;
+    const tokenResponse = checkToken(req);
+    if (tokenResponse !== true) return tokenResponse;
 
     // Perform a query
     const connection = await createConnection();
@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // const tokenResponse = checkToken(req);
-    // if(tokenResponse !== true) return tokenResponse;
+    const tokenResponse = checkToken(req);
+    if (tokenResponse !== true) return tokenResponse;
 
     // Get the request body
     const requestBody: CustomerRequest = await req.json();
@@ -80,8 +80,8 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    // const tokenResponse = checkToken(req);
-    // if(tokenResponse !== true) return tokenResponse;
+    const tokenResponse = checkToken(req);
+    if (tokenResponse !== true) return tokenResponse;
 
     // Get the request body
     const requestBody = await req.json();
@@ -151,8 +151,8 @@ export async function DELETE(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    // const tokenResponse = checkToken(req);
-    // if(tokenResponse !== true) return tokenResponse;
+    const tokenResponse = checkToken(req);
+    if (tokenResponse !== true) return tokenResponse;
 
     // Get the request body
     const requestBody: CustomerUpdateRequest = await req.json();
