@@ -22,7 +22,7 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: 
       e.preventDefault();
       if(session){
       try {
-        const response = await fetch("/api/v1/products", {
+        const response = await fetch("/api/v2/products", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: 
           // Create a success toast
           toast({
             title: "Success",
-            description: `Product with ID ${id} is deleted`,
+            description: `${message.message}`,
             status: "success",
             duration: 5000,
             isClosable: true,

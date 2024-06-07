@@ -23,7 +23,7 @@ const MonthlyRevenue = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const response = await fetch("/api/v1/revenues/monthly?date-prefix=" + datePrefix);
+    const response = await fetch("/api/v2/revenues/monthly?date-prefix=" + datePrefix);
     if (!response.ok) {
       const errorMessage = await response.json();
       console.log(errorMessage);
@@ -35,9 +35,9 @@ const MonthlyRevenue = () => {
   };
 
   useEffect(() => {
-    async function fetchTotalOrder() {
+    async function fetchTotalRevenue() {
       try {
-        const response = await fetch("/api/v1/revenues/monthly?date-prefix=" + datePrefix);
+        const response = await fetch("/api/v2/revenues/monthly?date-prefix=" + datePrefix);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
@@ -51,7 +51,7 @@ const MonthlyRevenue = () => {
         setIsLoading(false);
       }
     }
-    fetchTotalOrder();
+    fetchTotalRevenue();
   }, []);
 
   return (
