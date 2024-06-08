@@ -104,6 +104,9 @@ const StockSales = () => {
         },
         toolbar: {
           autoSelected: "zoom" as const,
+          tools: {
+            download: false,
+          },
         },
       },
       dataLabels: {

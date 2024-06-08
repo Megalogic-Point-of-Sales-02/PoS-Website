@@ -104,6 +104,9 @@ const SalesForecasting = () => {
         },
         toolbar: {
           autoSelected: "zoom" as const,
+          tools: {
+            download: false,
+          },
         },
       },
       dataLabels: {
