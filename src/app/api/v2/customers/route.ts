@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
     // Perform a query
     const connection = await createConnection();
-    const [data] = await connection.query("SELECT * FROM customers");
+    const [data] = await connection.query("SELECT * FROM customers_left_join_orders_view"); // changed from table customers to get the order_id that the customers ordered
     return new NextResponse(JSON.stringify(data), {
       status: 200,
     });

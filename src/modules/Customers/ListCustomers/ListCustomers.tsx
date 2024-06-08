@@ -126,9 +126,11 @@ const ListCustomers = () => {
                       <Td>{customer.churn === null ? "Not Yet Ordered" : customer.churn}</Td>
                       <Td>{customer.segmentation === null ? "Not Yet Ordered" : customer.segmentation}</Td>
                       <Td width="5rem">
-                        <Button colorScheme="red" size="sm" variant="outline" onClick={() => handleDeleteClick(customer.id)}>
-                          <FaTrashAlt />
-                        </Button>
+                        {customer.order_id_list === null && (
+                          <Button colorScheme="red" size="sm" variant="outline" onClick={() => handleDeleteClick(customer.id)}>
+                            <FaTrashAlt />
+                          </Button>
+                        )}
                       </Td>
                     </Tr>
                   ))}

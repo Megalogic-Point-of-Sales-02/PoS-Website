@@ -117,9 +117,11 @@ const ListProducts = () => {
                         {convertRupiah(product.product_price)}
                       </Td>
                       <Td width="5rem">
-                        <Button onClick={() => handleDeleteClick(product.id)} colorScheme="red" size="sm" variant="outline">
-                          <FaTrashAlt />
-                        </Button>
+                        {product.order_id_list === null && (
+                          <Button onClick={() => handleDeleteClick(product.id)} colorScheme="red" size="sm" variant="outline">
+                            <FaTrashAlt />
+                          </Button>
+                        )}
                       </Td>
                     </Tr>
                   ))}

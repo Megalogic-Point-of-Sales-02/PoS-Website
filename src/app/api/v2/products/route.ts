@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
         status: 200,
       });
     }
-    const [data] = await connection.query(`SELECT * FROM products`);
+    const [data] = await connection.query(`SELECT * FROM products_left_join_orders_view`); // changed from table products to get the order_id that the product ordered
     return new NextResponse(JSON.stringify(data), {
       status: 200,
     });

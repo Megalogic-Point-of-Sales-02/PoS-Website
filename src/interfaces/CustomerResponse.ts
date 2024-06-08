@@ -8,4 +8,5 @@ export interface CustomerResponse {
   total_spend: number;
   churn: string | null;
   segmentation: string | null;
+  order_id_list: string | null;
 }
