@@ -45,6 +45,7 @@ const MonthlyRevenue = () => {
 
   useEffect(() => {
     async function fetchTotalRevenue() {
+      setIsLoading(true);
       try {
         const methodAndHeader = {
           method: "GET",
@@ -68,7 +69,7 @@ const MonthlyRevenue = () => {
       }
     }
     fetchTotalRevenue();
-  }, []);
+  }, [session]);
 
   return (
     <>
