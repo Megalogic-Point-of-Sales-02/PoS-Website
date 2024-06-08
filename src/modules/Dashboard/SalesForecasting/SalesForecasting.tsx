@@ -3,6 +3,7 @@
 import { CircularProgress, Text, Flex, Box, Center } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+import "./styles.css";
 
 // Apex Chart Config
 import dynamic from "next/dynamic";
@@ -104,9 +105,6 @@ const SalesForecasting = () => {
         },
         toolbar: {
           autoSelected: "zoom" as const,
-          tools: {
-            download: false,
-          },
         },
       },
       dataLabels: {
