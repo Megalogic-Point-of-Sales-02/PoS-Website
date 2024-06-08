@@ -13,63 +13,64 @@ interface DeleteProductProps {
 const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: DeleteProductProps) => {
   const toast = useToast();
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
-  const { data: session, status} = useSession();
+  const { data: session, status } = useSession();
 
   const handleDelete = async (e) => {
     setIsLoadingButton(true);
     if (id !== null) {
       console.log("deleting product with id", id.toString());
       e.preventDefault();
-      if(session){
-      try {
-        const response = await fetch("/api/v2/products", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session!.user.accessToken}`,
-          },
-          body: JSON.stringify({ id: id }),
-        });
+      if (session) {
+        try {
+          const response = await fetch("/api/v2/products", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session!.user.accessToken}`,
+            },
+            body: JSON.stringify({ id: id }),
+          });
 
-        if (!response.ok) {
-          // Wait for the message
-          const errorMessage = await response.json();
-          // Create an error toast
+          if (!response.ok) {
+            // Wait for the message
+            const errorMessage = await response.json();
+            // Create an error toast
+            toast({
+              title: "Error",
+              description: errorMessage.message,
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          } else {
+            // Wait for the message
+            const message = await response.json();
+            // Create a success toast
+            toast({
+              title: "Success",
+              description: `${message.message}`,
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+            handleProductChange();
+            onClose();
+          }
+        } catch (error) {
+          console.error("Error Deleting product", error);
           toast({
             title: "Error",
-            description: errorMessage.error,
+            description: "An error occurred while deleting the product.",
             status: "error",
             duration: 5000,
             isClosable: true,
           });
-          return;
-        } else {
-          // Wait for the message
-          const message = await response.json();
-          // Create a success toast
-          toast({
-            title: "Success",
-            description: `${message.message}`,
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-          });
-          handleProductChange();
-          onClose();
+        } finally {
+          setIsLoadingButton(false);
         }
-      } catch (error) {
-        console.error("Error Deleting product", error);
-        toast({
-          title: "Error",
-          description: "An error occurred while deleting the product.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      } finally {
-        setIsLoadingButton(false);
       }
-    }} else {
+    } else {
       toast({
         title: "Error",
         description: "Product ID is null. Please try again.",

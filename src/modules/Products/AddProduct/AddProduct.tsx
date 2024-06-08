@@ -63,7 +63,7 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
           const errorMessage = await response.json();
           toast({
             title: "Error",
-            description: errorMessage.error,
+            description: errorMessage.message,
             status: "error",
             duration: 5000,
             isClosable: true,
@@ -129,7 +129,9 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
                 <FormLabel htmlFor="product_category">Category</FormLabel>
                 <Select name="product_category" value={formData.product_category} onChange={handleCategoryChange} id="product_category" placeholder="Select category">
                   {Object.keys(CategoriesList).map((category) => (
-                    <option key={category} value={category}>{category}</option>
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
                   ))}
                 </Select>
               </FormControl>
@@ -137,9 +139,12 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
               <FormControl isRequired flex={{ base: "1 1 100%", md: "1 1 40%" }}>
                 <FormLabel htmlFor="product_sub_category">Sub Category</FormLabel>
                 <Select name="product_sub_category" value={formData.product_sub_category} onChange={handleChange} id="product_sub_category" placeholder="Select sub category" isDisabled={!formData.product_category}>
-                  {formData.product_category && CategoriesList[formData.product_category].map((subCategory) => (
-                    <option key={subCategory} value={subCategory}>{subCategory}</option>
-                  ))}
+                  {formData.product_category &&
+                    CategoriesList[formData.product_category].map((subCategory) => (
+                      <option key={subCategory} value={subCategory}>
+                        {subCategory}
+                      </option>
+                    ))}
                 </Select>
               </FormControl>
 
@@ -147,15 +152,15 @@ const AddProduct = ({ onClose, isOpen, handleProductChange }: AddProductProps) =
                 <FormLabel htmlFor="product_price">Price</FormLabel>
                 <Input type="number" min="1" name="product_price" value={formData.product_price} onChange={handleChange} id="product_price" placeholder="Enter price" />
               </FormControl>
-              </Flex>
-              <Button colorScheme="blue" type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
-                {isLoadingButton ? <Spinner /> : "Submit"}
-              </Button>
-            </form>
-          </ModalBody>
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
+            </Flex>
+            <Button colorScheme="blue" type="submit" width="100%" marginTop="2rem" isDisabled={isLoadingButton}>
+              {isLoadingButton ? <Spinner /> : "Submit"}
+            </Button>
+          </form>
+        </ModalBody>
+        <ModalFooter></ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

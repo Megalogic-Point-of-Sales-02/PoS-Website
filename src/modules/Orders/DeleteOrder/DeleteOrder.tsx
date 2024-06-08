@@ -1,6 +1,10 @@
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useToast, Spinner } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useSession } from "next-auth/react";
+import { triggerCustomerChurnPrediction } from "@/utils/machineLearningModelUtils/customerChurn";
+import { CustomerChurnPredictionContext } from "@/utils/predictionContext";
+import { triggerCustomerSegmentationPerform } from "@/utils/machineLearningModelUtils/customerSegmentation";
+import { CustomerSegmentationPerformContext } from "@/utils/performContext";
 
 interface DeleteOrderProps {
   id: number | null;
@@ -12,6 +16,8 @@ interface DeleteOrderProps {
 
 const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: DeleteOrderProps) => {
   const toast = useToast();
+  const contextChurn = useContext(CustomerChurnPredictionContext);
+  const contextSegmentation = useContext(CustomerSegmentationPerformContext);
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const { data: session, status } = useSession();
 
@@ -36,7 +42,7 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
             // Create an error toast
             toast({
               title: "Error",
-              description: errorMessage,
+              description: errorMessage.message,
               status: "error",
               duration: 5000,
               isClosable: true,
@@ -53,6 +59,10 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
               duration: 5000,
               isClosable: true,
             });
+            // Run predict machine learning model in background
+            triggerCustomerChurnPrediction(session, contextChurn);
+            triggerCustomerSegmentationPerform(session, contextSegmentation);
+
             handleOrderChange();
             onClose();
           }

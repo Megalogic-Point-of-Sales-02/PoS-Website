@@ -60,35 +60,38 @@ const ListOrders = () => {
   };
   return (
     <div>
-      {/* Fetching the API */}
-      {isLoading === true && (
-        <>
-          <Center>
-            <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
-          </Center>
-        </>
-      )}
-
-      {/* No Customer */}
-      {orders === undefined && isLoading === false && (
-        <>
-          <div>No Orders</div>
-        </>
-      )}
-
-      {/* Show Customers */}
-      {isLoading === false && orders !== undefined && (
-        <>
-          {/* Table */}
-          <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
-            <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
-              <Text fontSize="2xl">Order List</Text>
-              <Spacer />
+      {/* Table */}
+      <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
+        <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
+          <Text fontSize="2xl">Order List</Text>
+          <Spacer />
+          {isLoading === false && (
+            <>
               <Button colorScheme="blue" leftIcon={<AddIcon />} onClick={onAddOrderOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Order
               </Button>
+
               <AddOrder isOpen={isAddOrderOpen} onClose={onAddOrderClose} handleOrderChange={handleOrderChange} />
-            </Flex>
+            </>
+          )}
+        </Flex>
+        {/* Fetching the API */}
+        {isLoading === true && (
+          <>
+            <Center>
+              <CircularProgress isIndeterminate color="green.300" />
+            </Center>
+          </>
+        )}
+        {/* No Customer */}
+        {orders === undefined && isLoading === false && (
+          <>
+            <div>No Orders</div>
+          </>
+        )}
+        {/* Show Customers */}
+        {isLoading === false && orders !== undefined && (
+          <>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
@@ -125,9 +128,9 @@ const ListOrders = () => {
               </Table>
             </TableContainer>
             <DeleteOrder id={currentOrderId} isOpen={isDeleteOrderOpen} onClose={onDeleteOrderClose} cancelRef={cancelRef} handleOrderChange={handleOrderChange} />
-          </Flex>
-        </>
-      )}
+          </>
+        )}
+      </Flex>
     </div>
   );
 };
