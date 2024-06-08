@@ -1,11 +1,13 @@
 "use client";
 
 import { Box, Button, Center, CircularProgress, Flex, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const MonthlyOrder = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [monthlyOrder, setMonthlyOrder] = useState(null);
+  const { data: session, status } = useSession();
 
   const getCurrentDatePrefix = () => {
     const dateObj = new Date();
@@ -22,7 +24,14 @@ const MonthlyOrder = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const response = await fetch("/api/v2/orders/monthly?date-prefix=" + datePrefix);
+    const methodAndHeader = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session!.user.accessToken}`,
+      },
+    };
+    const response = await fetch(`/api/v2/orders/monthly?date-prefix=${datePrefix}`, methodAndHeader);
     if (!response.ok) {
       const errorMessage = await response.json();
       console.log(errorMessage);
@@ -36,7 +45,14 @@ const MonthlyOrder = () => {
   useEffect(() => {
     async function fetchTotalOrder() {
       try {
-        const response = await fetch("/api/v2/orders/monthly?date-prefix=" + datePrefix);
+        const methodAndHeader = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session!.user.accessToken}`,
+          },
+        };
+        const response = await fetch(`/api/v2/orders/monthly?date-prefix=${datePrefix}`, methodAndHeader);
         if (!response.ok) {
           const errorMessage = await response.json();
           console.log(errorMessage);
