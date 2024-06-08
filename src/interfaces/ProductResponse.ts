@@ -4,4 +4,5 @@ export interface ProductResponse {
   product_category: string;
   product_sub_category: string;
   product_price: number;
+  order_id_list: string | null;
 }
