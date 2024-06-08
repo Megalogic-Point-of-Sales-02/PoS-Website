@@ -52,7 +52,7 @@ export const authOption: NextAuthOptions = {
             // create accessToken
             const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.NEXTAUTH_SECRET, { expiresIn: "1d" });
             // return the user
-            return { id: user.id, username: user.username, fullname: user.fullname, accessToken: accessToken };
+            return { id: user.id, username: user.username, fullname: user.fullname, email: user.email, accessToken: accessToken };
           }
         }
         // Return null if user data could not be retrieved or password not validated

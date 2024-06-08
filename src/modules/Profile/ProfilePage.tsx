@@ -22,7 +22,8 @@ const ProfilePage = () => {
           <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="0.5rem" margin="1rem" alignItems="center">
             <Avatar size={"xl"} />
             <Text>{session.user.fullname}</Text>
-            <Text>@{session.user.username}</Text>
+            <Text>Username: {session.user.username}</Text>
+            <Text>Email: {session.user.email}</Text>
           </Flex>
         </>
       )}
