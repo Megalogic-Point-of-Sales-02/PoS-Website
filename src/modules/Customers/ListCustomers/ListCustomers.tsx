@@ -60,35 +60,37 @@ const ListCustomers = () => {
 
   return (
     <div>
-      {/* Fetching the API */}
-      {isLoading === true && (
-        <>
-          <Center>
-            <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
-          </Center>
-        </>
-      )}
-
-      {/* No Customer */}
-      {customers === undefined && isLoading === false && (
-        <>
-          <div>No customer</div>
-        </>
-      )}
-
-      {/* Show Customers */}
-      {customers !== undefined && isLoading === false && (
-        <>
-          {/* Table */}
-          <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
-            <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
-              <Text fontSize="2xl">Customer List</Text>
-              <Spacer />
+      {/* Table */}
+      <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
+        <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
+          <Text fontSize="2xl">Customer List</Text>
+          <Spacer />
+          {isLoading === false && (
+            <>
               <Button colorScheme="blue" leftIcon={<AddIcon />} onClick={onAddCustOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Customer
               </Button>
               <AddCustomer isOpen={isAddCustOpen} onClose={onAddCustClose} handleCustomerChange={handleCustomerChange} />
-            </Flex>
+            </>
+          )}
+        </Flex>
+        {/* Fetching the API */}
+        {isLoading === true && (
+          <>
+            <Center>
+              <CircularProgress isIndeterminate color="green.300" />
+            </Center>
+          </>
+        )}
+        {/* No Customer */}
+        {customers === undefined && isLoading === false && (
+          <>
+            <div>No customer</div>
+          </>
+        )}
+        {/* Show Customers */}
+        {customers !== undefined && isLoading === false && (
+          <>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
@@ -135,9 +137,9 @@ const ListCustomers = () => {
               </Table>
             </TableContainer>
             <DeleteCustomer id={currentCustomerId} isOpen={isDeleteCustOpen} onClose={onDeleteCustClose} cancelRef={cancelRef} handleCustomerChange={handleCustomerChange} />
-          </Flex>
-        </>
-      )}
+          </>
+        )}
+      </Flex>
     </div>
   );
 };

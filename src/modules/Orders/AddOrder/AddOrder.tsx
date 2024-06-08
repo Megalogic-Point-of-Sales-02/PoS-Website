@@ -146,7 +146,7 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
           // Create an error toast
           toast({
             title: "Error",
-            description: errorMessage.error,
+            description: errorMessage.message,
             status: "error",
             duration: 5000,
             isClosable: true,

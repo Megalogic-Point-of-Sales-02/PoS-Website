@@ -36,7 +36,7 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
             // Create an error toast
             toast({
               title: "Error",
-              description: errorMessage,
+              description: errorMessage.message,
               status: "error",
               duration: 5000,
               isClosable: true,

@@ -68,7 +68,7 @@ const AddCustomer = ({ onClose, isOpen, handleCustomerChange }: AddCustomerProps
           // Create an error toast
           toast({
             title: "Error",
-            description: errorMessage,
+            description: errorMessage.message,
             status: "error",
             duration: 5000,
             isClosable: true,

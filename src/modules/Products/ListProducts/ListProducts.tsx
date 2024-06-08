@@ -60,35 +60,38 @@ const ListProducts = () => {
 
   return (
     <div>
-      {/* Fetching the API */}
-      {isLoading === true && (
-        <>
-          <Center>
-            <CircularProgress isIndeterminate color="green.300" marginTop="3rem" />
-          </Center>
-        </>
-      )}
-
-      {/* No product */}
-      {products === undefined && isLoading === false && (
-        <>
-          <div>No Products</div>
-        </>
-      )}
-
-      {/* Show products */}
-      {isLoading === false && products !== undefined && (
-        <>
-          {/* Table */}
-          <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
-            <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
-              <Text fontSize="2xl">Product List</Text>
-              <Spacer />
+      {/* Table */}
+      <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
+        <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
+          <Text fontSize="2xl">Product List</Text>
+          <Spacer />
+          {isLoading === false && (
+            <>
               <Button colorScheme="blue" leftIcon={<AddIcon />} onClick={onAddProdOpen} w={{ base: "100%", sm: "fit-content" }}>
                 Add Product
               </Button>
               <AddProduct isOpen={isAddProdOpen} onClose={onAddProdClose} handleProductChange={handleProductChange} />
-            </Flex>
+            </>
+          )}
+        </Flex>
+        {/* Fetching the API */}
+        {isLoading === true && (
+          <>
+            <Center>
+              <CircularProgress isIndeterminate color="green.300" />
+            </Center>
+          </>
+        )}
+
+        {/* No product */}
+        {products === undefined && isLoading === false && (
+          <>
+            <div>No Products</div>
+          </>
+        )}
+        {/* Show products */}
+        {isLoading === false && products !== undefined && (
+          <>
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
@@ -125,9 +128,9 @@ const ListProducts = () => {
               </Table>
             </TableContainer>
             <DeleteProduct id={currentProductId} isOpen={isDeleteProdOpen} onClose={onDeleteProdClose} cancelRef={cancelRef} handleProductChange={handleProductChange} />
-          </Flex>
-        </>
-      )}
+          </>
+        )}
+      </Flex>
     </div>
   );
 };
