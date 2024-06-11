@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
     // Perform a query
     const connection = await createConnection();
-    const [data] = await connection.query("SELECT * FROM orders");
+    const [data] = await connection.query("SELECT * FROM orders_view");
     return new NextResponse(JSON.stringify(data), {
       status: 200,
     });

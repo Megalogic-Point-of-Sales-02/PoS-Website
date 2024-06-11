@@ -95,7 +95,8 @@ const ListCustomers = () => {
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
                   <Tr>
-                    <Th color="white">ID</Th>
+                    {/* <Th color="white">ID</Th> */}
+                    <Th color="white">No.</Th>
                     <Th color="white">Name</Th>
                     <Th color="white">Gender</Th>
                     <Th color="white" isNumeric>
@@ -112,9 +113,10 @@ const ListCustomers = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {customers.map((customer: CustomerResponse) => (
+                  {customers.map((customer: CustomerResponse, index) => (
                     <Tr key={customer.id} color="#92afd3">
-                      <Td>{customer.id}</Td>
+                      {/* <Td>{customer.id}</Td> */}
+                      <Td>{index + 1}</Td>
                       <Td color="white">{customer.customer_name}</Td>
                       <Td>{customer.gender}</Td>
                       <Td isNumeric>{customer.age}</Td>
