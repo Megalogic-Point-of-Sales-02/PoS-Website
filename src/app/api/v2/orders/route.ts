@@ -99,7 +99,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     // Ada rows yg berubah
-    return new NextResponse(JSON.stringify({ message: `Customer with ID ${orderId} deleted successfully` }), {
+    return new NextResponse(JSON.stringify({ message: `Order with ID ${orderId} deleted successfully` }), {
       status: 200,
     });
   } catch (error) {
