@@ -8,13 +8,14 @@ import { CustomerSegmentationPerformContext } from "@/utils/performContext";
 
 interface DeleteOrderProps {
   id: number | null;
+  number: number | null;
   isOpen: boolean;
   onClose: () => void;
   cancelRef: React.RefObject<HTMLButtonElement>;
   handleOrderChange: () => void;
 }
 
-const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: DeleteOrderProps) => {
+const DeleteOrder = ({ id, number, isOpen, onClose, cancelRef, handleOrderChange }: DeleteOrderProps) => {
   const toast = useToast();
   const contextChurn = useContext(CustomerChurnPredictionContext);
   const contextSegmentation = useContext(CustomerSegmentationPerformContext);
@@ -97,7 +98,7 @@ const DeleteOrder = ({ id, isOpen, onClose, cancelRef, handleOrderChange }: Dele
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Order With ID {id}
+              Delete Order Number {number} (ID: {id})
             </AlertDialogHeader>
 
             <AlertDialogBody>Are you sure? You can&apos;t undo this action afterwards.</AlertDialogBody>

@@ -16,6 +16,7 @@ const ListProducts = () => {
   const [products, setProducts] = useState<ProductResponse[] | undefined>(undefined);
   const [refreshData, setRefreshData] = useState<boolean>(false);
   const [currentProductId, setCurrentProductId] = useState<number | null>(null); // State for the current product ID to be deleted
+  const [currentProductNumber, setCurrentProductNumber] = useState<number | null>(null); // State for the current product number index to be deleted
   const { isOpen: isAddProdOpen, onOpen: onAddProdOpen, onClose: onAddProdClose } = useDisclosure();
   const { isOpen: isDeleteProdOpen, onOpen: onDeleteProdOpen, onClose: onDeleteProdClose } = useDisclosure();
   const { data: session, status } = useSession();
@@ -53,8 +54,9 @@ const ListProducts = () => {
     setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
   };
 
-  const handleDeleteClick = (id: number) => {
+  const handleDeleteClick = (id: number, number: number) => {
     setCurrentProductId(id);
+    setCurrentProductNumber(number);
     onDeleteProdOpen();
   };
 
@@ -120,7 +122,7 @@ const ListProducts = () => {
                       </Td>
                       <Td width="5rem">
                         {product.order_id_list === null && (
-                          <Button onClick={() => handleDeleteClick(product.id)} colorScheme="red" size="sm" variant="outline">
+                          <Button onClick={() => handleDeleteClick(product.id, index + 1)} colorScheme="red" size="sm" variant="outline">
                             <FaTrashAlt />
                           </Button>
                         )}
@@ -131,7 +133,7 @@ const ListProducts = () => {
                 <Tfoot></Tfoot>
               </Table>
             </TableContainer>
-            <DeleteProduct id={currentProductId} isOpen={isDeleteProdOpen} onClose={onDeleteProdClose} cancelRef={cancelRef} handleProductChange={handleProductChange} />
+            <DeleteProduct id={currentProductId} number={currentProductNumber} isOpen={isDeleteProdOpen} onClose={onDeleteProdClose} cancelRef={cancelRef} handleProductChange={handleProductChange} />
           </>
         )}
       </Flex>

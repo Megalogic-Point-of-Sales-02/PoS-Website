@@ -4,13 +4,14 @@ import React, { useState } from "react";
 
 interface DeleteCustomerProps {
   id: number | null;
+  number: number | null;
   isOpen: boolean;
   onClose: () => void;
   cancelRef: React.RefObject<HTMLButtonElement>;
   handleCustomerChange: () => void;
 }
 
-const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }: DeleteCustomerProps) => {
+const DeleteCustomer = ({ id, number, isOpen, onClose, cancelRef, handleCustomerChange }: DeleteCustomerProps) => {
   const { data: session, status } = useSession();
   const toast = useToast();
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
@@ -87,7 +88,7 @@ const DeleteCustomer = ({ id, isOpen, onClose, cancelRef, handleCustomerChange }
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Customer With ID {id}
+              Delete Customer Number {number} (ID: {id})
             </AlertDialogHeader>
 
             <AlertDialogBody>Are you sure? You can&apos;t undo this action afterwards.</AlertDialogBody>
