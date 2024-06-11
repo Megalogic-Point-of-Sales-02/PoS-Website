@@ -19,6 +19,7 @@ const ListCustomers = () => {
   const { isOpen: isDeleteCustOpen, onOpen: onDeleteCustOpen, onClose: onDeleteCustClose } = useDisclosure();
   const [customers, setCustomers] = useState<CustomerResponse[] | undefined>(undefined);
   const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(null); // State for the current customer ID to be deleted
+  const [currentCustomerNumber, setCurrentCustomerNumber] = useState<number | null>(null); // State for the current customer number index to be deleted
   const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -53,8 +54,9 @@ const ListCustomers = () => {
     setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
   };
 
-  const handleDeleteClick = (id: number) => {
+  const handleDeleteClick = (id: number, number: number) => {
     setCurrentCustomerId(id);
+    setCurrentCustomerNumber(number);
     onDeleteCustOpen();
   };
 
@@ -129,7 +131,7 @@ const ListCustomers = () => {
                       <Td>{customer.segmentation === null ? "Not Yet Ordered" : customer.segmentation}</Td>
                       <Td width="5rem">
                         {customer.order_id_list === null && (
-                          <Button colorScheme="red" size="sm" variant="outline" onClick={() => handleDeleteClick(customer.id)}>
+                          <Button colorScheme="red" size="sm" variant="outline" onClick={() => handleDeleteClick(customer.id, index + 1)}>
                             <FaTrashAlt />
                           </Button>
                         )}
@@ -140,7 +142,7 @@ const ListCustomers = () => {
                 <Tfoot></Tfoot>
               </Table>
             </TableContainer>
-            <DeleteCustomer id={currentCustomerId} isOpen={isDeleteCustOpen} onClose={onDeleteCustClose} cancelRef={cancelRef} handleCustomerChange={handleCustomerChange} />
+            <DeleteCustomer id={currentCustomerId} number={currentCustomerNumber} isOpen={isDeleteCustOpen} onClose={onDeleteCustClose} cancelRef={cancelRef} handleCustomerChange={handleCustomerChange} />
           </>
         )}
       </Flex>

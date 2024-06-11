@@ -4,13 +4,14 @@ import { useSession } from "next-auth/react";
 
 interface DeleteProductProps {
   id: number | null;
+  number: number | null;
   isOpen: boolean;
   onClose: () => void;
   cancelRef: React.RefObject<HTMLButtonElement>;
   handleProductChange: () => void;
 }
 
-const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: DeleteProductProps) => {
+const DeleteProduct = ({ id, number, isOpen, onClose, cancelRef, handleProductChange }: DeleteProductProps) => {
   const toast = useToast();
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const { data: session, status } = useSession();
@@ -88,7 +89,7 @@ const DeleteProduct = ({ id, isOpen, onClose, cancelRef, handleProductChange }: 
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete product with ID: {id}
+              Delete Product Number {number} (ID: {id})
             </AlertDialogHeader>
 
             <AlertDialogBody>Are you sure? You can&apos;t undo this action afterwards.</AlertDialogBody>
