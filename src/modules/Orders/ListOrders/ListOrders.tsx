@@ -96,7 +96,8 @@ const ListOrders = () => {
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
                   <Tr>
-                    <Th color="white">ID</Th>
+                    {/* <Th color="white">ID</Th> */}
+                    <Th color="white">No.</Th>
                     <Th color="white">Order Date</Th>
                     <Th color="white">Shipping Date</Th>
                     <Th color="white">Customer</Th>
@@ -107,13 +108,14 @@ const ListOrders = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {orders.map((order: OrderResponse) => (
+                  {orders.map((order: OrderResponse, index) => (
                     <Tr key={order.id} color="#92afd3">
-                      <Td>{order.id}</Td>
+                      {/* <Td>{order.id}</Td> */}
+                      <Td>{index + 1}</Td>
                       <Td>{convertDate(order.order_date)}</Td>
                       <Td>{convertDate(order.ship_date)}</Td>
-                      <Td color="#3b82f6">{order.customer_id}</Td>
-                      <Td color="#3b82f6">{order.product_id}</Td>
+                      <Td color="#3b82f6">{order.customer_name}</Td>
+                      <Td color="#3b82f6">{order.product_name}</Td>
                       <Td color="#3b82f6">{order.quantity}</Td>
                       <Td color="#3b82f6">{convertRupiah(order.sales)}</Td>
                       <Td width="5rem">

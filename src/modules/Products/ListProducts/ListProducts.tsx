@@ -96,7 +96,8 @@ const ListProducts = () => {
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
                   <Tr>
-                    <Th color="white">ID</Th>
+                    {/* <Th color="white">ID</Th> */}
+                    <Th color="white">No.</Th>
                     <Th color="white">Name</Th>
                     <Th color="white">Category</Th>
                     <Th color="white">Subcategory</Th>
@@ -107,9 +108,10 @@ const ListProducts = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {products.map((product: ProductResponse) => (
+                  {products.map((product: ProductResponse, index) => (
                     <Tr key={product.id} color="#92afd3">
-                      <Td>{product.id}</Td>
+                      {/* <Td>{product.id}</Td> */}
+                      <Td>{index + 1}</Td>
                       <Td color="white">{product.product_name}</Td>
                       <Td>{product.product_category}</Td>
                       <Td>{product.product_sub_category}</Td>
