@@ -44,6 +44,7 @@ const MonthlyOrder = () => {
 
   useEffect(() => {
     async function fetchTotalOrder() {
+      setIsLoading(true);
       try {
         const methodAndHeader = {
           method: "GET",
@@ -67,7 +68,7 @@ const MonthlyOrder = () => {
       }
     }
     fetchTotalOrder();
-  }, []);
+  }, [session]);
 
   return (
     <>
