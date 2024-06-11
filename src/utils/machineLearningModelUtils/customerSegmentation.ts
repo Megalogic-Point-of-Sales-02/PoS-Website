@@ -58,6 +58,7 @@ export const triggerCustomerSegmentationPerform = async (session: Session | null
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session!.user.accessToken}`,
         },
         body: JSON.stringify(reqBody),
       });

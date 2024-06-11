@@ -4,6 +4,7 @@ import { CustomerChurnPredictionContextType } from "../types";
 import createConnection from "../db";
 import { CustomerUpdateRequest } from "@/interfaces/CustomerUpdateRequest";
 
+
 export const triggerCustomerChurnPrediction = async (session: Session | null, context: CustomerChurnPredictionContextType) => {
   const { customerChurnPredictionStatus, setCustomerChurnPredictionStatus, customerChurnPredictionData, setCustomerChurnPredictionData } = context;
 
@@ -59,6 +60,7 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session!.user.accessToken}`,
         },
         body: JSON.stringify(reqBody),
       });

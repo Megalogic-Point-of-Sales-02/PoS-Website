@@ -3,6 +3,7 @@
 import { CircularProgress, Text, Flex, Box, Center } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+import "./styles.css";
 
 // Apex Chart Config
 import dynamic from "next/dynamic";
@@ -94,7 +95,7 @@ const StockSales = () => {
     ],
     options: {
       chart: {
-        type: "area" as const,
+        type: "line" as const,
         stacked: false,
         width: "100%",
         zoom: {
@@ -104,31 +105,19 @@ const StockSales = () => {
         },
         toolbar: {
           autoSelected: "zoom" as const,
-          tools: {
-            download: false,
-          },
         },
       },
       dataLabels: {
         enabled: false,
       },
       markers: {
+        colors:["#50C878"],
         size: 0,
       },
       //   title: {
       //     text: "Sales Forecasting Chart",
       //     align: "left" as const,
       //   },
-      fill: {
-        type: "gradient" as const,
-        gradient: {
-          shadeIntensity: 1,
-          inverseColors: false,
-          opacityFrom: 0.7,
-          opacityTo: 0,
-          //   stops: [0, 60, 100],
-        },
-      },
       yaxis: {
         min: 0,
         labels: {
@@ -178,7 +167,8 @@ const StockSales = () => {
       },
       stroke: {
         show: true,
-        width: 2,
+        width: 3,
+        colors:["#50C878"],
       },
     },
   };
@@ -194,7 +184,7 @@ const StockSales = () => {
             <CircularProgress isIndeterminate color="green.300" marginBottom="0.5rem" />
           </Center>
         ) : (
-          <ApexChart options={lineApexChart.options} series={lineApexChart.series} type="area" width={"100%"} height={"350"} />
+          <ApexChart options={lineApexChart.options} series={lineApexChart.series} type="line" width={"100%"} height={"350"} />
         )}
       </Box>
     </Flex>
