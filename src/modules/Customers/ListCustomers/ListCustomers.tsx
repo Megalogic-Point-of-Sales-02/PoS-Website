@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomerResponse } from "@/interfaces/CustomerResponse";
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, useDisclosure, Center, CircularProgress } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, useDisclosure, Center, CircularProgress, Input } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
@@ -21,6 +21,8 @@ const ListCustomers = () => {
   const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(null); // State for the current customer ID to be deleted
   const [currentCustomerNumber, setCurrentCustomerNumber] = useState<number | null>(null); // State for the current customer number index to be deleted
   const cancelRef = React.useRef<HTMLButtonElement>(null);
+  const [filteredCustomers, setFilteredCustomers] = useState<CustomerResponse[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     async function fetchCustomers() {
@@ -39,6 +41,7 @@ const ListCustomers = () => {
         } else {
           const data = await response.json();
           setCustomers(data);
+          setFilteredCustomers(data)
         }
       } catch (error) {
         console.error("Error fetching the data");
@@ -58,6 +61,15 @@ const ListCustomers = () => {
     setCurrentCustomerId(id);
     setCurrentCustomerNumber(number);
     onDeleteCustOpen();
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    if (customers) {
+      const filtered = customers.filter((customer) => customer.customer_name.toLowerCase().includes(query));
+      setFilteredCustomers(filtered);
+    }
   };
 
   return (
@@ -93,6 +105,9 @@ const ListCustomers = () => {
         {/* Show Customers */}
         {customers !== undefined && isLoading === false && (
           <>
+            {/* Input Search */}
+            <Input placeholder="Search customers..." value={searchQuery} onChange={handleSearchChange} w="100%" colorScheme="blackAlpha" />
+            {/* Table */}
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
@@ -115,7 +130,7 @@ const ListCustomers = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {customers.map((customer: CustomerResponse, index) => (
+                  {filteredCustomers.map((customer: CustomerResponse, index) => (
                     <Tr key={customer.id} color="#92afd3">
                       {/* <Td>{customer.id}</Td> */}
                       <Td>{index + 1}</Td>
