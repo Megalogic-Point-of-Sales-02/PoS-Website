@@ -9,6 +9,7 @@ import { IoPeopleOutline, IoCartOutline } from "react-icons/io5";
 import { AiOutlineInbox } from "react-icons/ai";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { BiBulb } from "react-icons/bi";
 
 interface LinkItemProps {
   name: string;
@@ -20,6 +21,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Customers", icon: IoPeopleOutline, endpoint: "/customers" },
   { name: "Products", icon: AiOutlineInbox, endpoint: "/products" },
   { name: "Orders", icon: IoCartOutline, endpoint: "/orders" },
+  { name: "Insights", icon: BiBulb, endpoint: "/insights" },
 ];
 
 export default function SidebarWithHeader({ children }: { children: ReactNode }) {
