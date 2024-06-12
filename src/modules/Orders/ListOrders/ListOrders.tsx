@@ -18,8 +18,8 @@ const ListOrders = () => {
   const [orders, setOrders] = useState<OrderResponse[] | undefined>(undefined);
   const { isOpen: isAddOrderOpen, onOpen: onAddOrderOpen, onClose: onAddOrderClose } = useDisclosure();
   const { isOpen: isDeleteOrderOpen, onOpen: onDeleteOrderOpen, onClose: onDeleteOrderClose } = useDisclosure();
-  const [currentOrderId, setCurrentOrderId] = useState<number | null>(null); // State for the current order ID to be deleted
   const [currentOrderNumber, setCurrentOrderNumber] = useState<number | null>(null); // State for the current order number index to be deleted
+  const [currentOrderData, setCurrentOrderData] = useState<OrderResponse | undefined>(undefined); // State for the current order data to be deleted
   const cancelRef = React.useRef<HTMLButtonElement>(null);
   const { data: session, status } = useSession();
 
@@ -55,9 +55,9 @@ const ListOrders = () => {
     setRefreshData((prev) => !prev); // Toggle refreshData state to trigger useEffect
   };
 
-  const handleDeleteClick = (id: number, number: number) => {
-    setCurrentOrderId(id);
+  const handleDeleteClick = (number: number, order: OrderResponse) => {
     setCurrentOrderNumber(number);
+    setCurrentOrderData(order);
     onDeleteOrderOpen();
   };
   return (
@@ -121,7 +121,7 @@ const ListOrders = () => {
                       <Td color="#3b82f6">{order.quantity}</Td>
                       <Td color="#3b82f6">{convertRupiah(order.sales)}</Td>
                       <Td width="5rem">
-                        <Button onClick={() => handleDeleteClick(order.id, index + 1)} colorScheme="red" size="sm" variant="outline">
+                        <Button onClick={() => handleDeleteClick(index + 1, order)} colorScheme="red" size="sm" variant="outline">
                           <FaTrashAlt />
                         </Button>
                       </Td>
@@ -131,7 +131,7 @@ const ListOrders = () => {
                 <Tfoot></Tfoot>
               </Table>
             </TableContainer>
-            <DeleteOrder id={currentOrderId} number={currentOrderNumber} isOpen={isDeleteOrderOpen} onClose={onDeleteOrderClose} cancelRef={cancelRef} handleOrderChange={handleOrderChange} />
+            <DeleteOrder number={currentOrderNumber} isOpen={isDeleteOrderOpen} onClose={onDeleteOrderClose} cancelRef={cancelRef} handleOrderChange={handleOrderChange} orderData={currentOrderData} />
           </>
         )}
       </Flex>
