@@ -1,7 +1,7 @@
 "use client";
 
-import React, { ReactNode } from "react";
-import { IconButton, Avatar, Box, CloseButton, Flex, HStack, VStack, Icon, Link, Drawer, DrawerContent, Text, useDisclosure, BoxProps, FlexProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
+import React, { ReactNode, useState } from "react";
+import { IconButton, Avatar, Box, CloseButton, Flex, HStack, VStack, Icon, Link, Drawer, DrawerContent, Text, useDisclosure, BoxProps, FlexProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Collapse } from "@chakra-ui/react";
 import { FiHome, FiMenu, FiChevronDown } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
@@ -9,17 +9,28 @@ import { IoPeopleOutline, IoCartOutline } from "react-icons/io5";
 import { AiOutlineInbox } from "react-icons/ai";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { BiBulb } from "react-icons/bi";
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
   endpoint: string;
+  children?: LinkItemProps[];
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: "Dashboard", icon: FiHome, endpoint: "/" },
-  { name: "Customers", icon: IoPeopleOutline, endpoint: "/customers" },
+  {
+    name: "Customers",
+    icon: IoPeopleOutline,
+    endpoint: "/customers",
+    children: [
+      { name: "Customers", icon: IoPeopleOutline, endpoint: "/customers" },
+      { name: "Insights", icon: BiBulb, endpoint: "/customers/insights" },
+    ],
+  },
   { name: "Products", icon: AiOutlineInbox, endpoint: "/products" },
   { name: "Orders", icon: IoCartOutline, endpoint: "/orders" },
+  { name: "Insights", icon: BiBulb, endpoint: "/insights" },
 ];
 
 export default function SidebarWithHeader({ children }: { children: ReactNode }) {
@@ -58,11 +69,16 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </Link>
         <CloseButton display={{ base: "flex", md: "none" }} bgColor={"white"} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} endpoint={link.endpoint} isActive={pathname === link.endpoint} color={"white"}>
-          {link.name}
-        </NavItem>
-      ))}
+      {LinkItems.map((link) => {
+        if (link.children) {
+          return <NavDropdown key={link.name} icon={link.icon} items={link.children} />;
+        }
+        return (
+          <NavItem key={link.name} icon={link.icon} endpoint={link.endpoint}>
+            {link.name}
+          </NavItem>
+        );
+      })}
     </Box>
   );
 };
@@ -70,10 +86,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   endpoint: string;
-  isActive: boolean;
   children: ReactText;
 }
-const NavItem = ({ icon, endpoint, isActive, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, endpoint, children, ...rest }: NavItemProps) => {
+  const pathname = usePathname();
+  const isActive = pathname === endpoint; // Check if route starts with endpoint
+
   return (
     <Link href={endpoint} style={{ textDecoration: "none" }} _focus={{ boxShadow: "none" }}>
       <Flex
@@ -110,6 +128,73 @@ const NavItem = ({ icon, endpoint, isActive, children, ...rest }: NavItemProps) 
     </Link>
   );
 };
+
+interface NavDropdownProps extends FlexProps {
+  icon: IconType;
+  items: Array<LinkItemProps>;
+}
+const NavDropdown = ({ icon, items, ...rest }: NavDropdownProps) => {
+  // Check if any child item is active
+  const pathname = usePathname();
+  const isActive = items.some((item) => pathname === item.endpoint);
+
+  const [isOpen, setIsOpen] = useState(isActive);
+
+  const toggleOpen = () => setIsOpen(!isOpen);
+
+
+  return (
+    <>
+      <Flex
+        align="center"
+        p="4"
+        mx="4"
+        borderRadius="lg"
+        role="group"
+        cursor="pointer"
+        bg={isActive && !isOpen ? "#1c2e45" : "transparent"}
+        _hover={{ bg: "#1c2e45", color: "white" }}
+        onClick={toggleOpen}
+        transition="all 0.2s ease"
+        {...rest}
+      >
+        {icon && (
+          <Icon
+            mr="4"
+            fontSize="16"
+            color={isActive && !isOpen ? "#3b82f6" : "#92afd3"}
+            _groupHover={{ color: "white" }}
+            as={icon}
+            transition="all 0.2s ease"
+          />
+        )}
+        <Text color={isActive && !isOpen ? "#3b82f6" : "#92afd3"} _groupHover={{ color: "white" }} transition="all 0.2s ease">
+          Customers
+        </Text>
+        <Box ml="auto" transition="all 0.2s ease" transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}>
+          <Icon
+            as={FiChevronDown}
+            fontSize="16"
+            color={isActive && !isOpen ? "#3b82f6" : "#92afd3"}
+            _groupHover={{ color: "white" }}
+            transition="all 0.2s ease"
+          />
+        </Box>
+      </Flex>
+      <Collapse in={isOpen} animateOpacity>
+        <Box pl={4}>
+          {items.map((item) => (
+            <NavItem key={item.name} icon={item.icon} endpoint={item.endpoint}>
+              {item.name}
+            </NavItem>
+          ))}
+        </Box>
+      </Collapse>
+    </>
+  );
+};
+
+
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;

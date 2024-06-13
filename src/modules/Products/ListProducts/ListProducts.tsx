@@ -2,7 +2,7 @@
 
 import { ProductResponse } from "@/interfaces/ProductResponse";
 import { useEffect, useState } from "react";
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, Center, CircularProgress, useDisclosure } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Text, Flex, Button, Spacer, Center, CircularProgress, useDisclosure, Input } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { FaTrashAlt } from "react-icons/fa";
 import { useSession } from "next-auth/react";
@@ -21,6 +21,8 @@ const ListProducts = () => {
   const { isOpen: isDeleteProdOpen, onOpen: onDeleteProdOpen, onClose: onDeleteProdClose } = useDisclosure();
   const { data: session, status } = useSession();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
+  const [filteredProduct, setFilteredProduct] = useState<ProductResponse[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     async function fetchProducts() {
@@ -39,6 +41,8 @@ const ListProducts = () => {
         } else {
           const data = await response.json();
           setProducts(data);
+          setFilteredProduct(data)
+
         }
       } catch (error) {
         console.error("Error fetching the data");
@@ -59,6 +63,16 @@ const ListProducts = () => {
     setCurrentProductNumber(number);
     onDeleteProdOpen();
   };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    if (products) {
+      const filtered = products.filter((product) => product.product_name.toLowerCase().includes(query));
+      setFilteredProduct(filtered);
+    }
+  };
+
 
   return (
     <div>
@@ -94,6 +108,9 @@ const ListProducts = () => {
         {/* Show products */}
         {isLoading === false && products !== undefined && (
           <>
+          {/* Input Search */}
+          <Input placeholder="Search product..." value={searchQuery} onChange={handleSearchChange} w="100%" className="!bg-white !text-black !border-white" />
+            {/* Table */}
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
                 <Thead bgColor={"#1c2e45"}>
@@ -110,7 +127,7 @@ const ListProducts = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {products.map((product: ProductResponse, index) => (
+                  {filteredProduct.map((product: ProductResponse, index) => (
                     <Tr key={product.id} color="#92afd3">
                       {/* <Td>{product.id}</Td> */}
                       <Td>{index + 1}</Td>
