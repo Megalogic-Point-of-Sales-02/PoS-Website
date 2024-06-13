@@ -11,7 +11,6 @@ const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const CustomerSegmentation = () => {
   const { data: session } = useSession();
-  const { customerSegmentationPerformStatus } = useContext(CustomerSegmentationPerformContext);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [customerSegmentation, setCustomerSegmentation] = useState<CustomerSegmentationResponse>({ bronzeCount: 0, silverCount: 0, goldCount: 0, diamondCount: 0 });
 
@@ -122,7 +121,7 @@ const CustomerSegmentation = () => {
             <CircularProgress isIndeterminate color="green.300" marginBottom="0.5rem" />
           </Center>
         ) : (
-          customerSegmentationPerformStatus.status !== "processing" && <ApexChart options={pieApexChart} series={pieApexChart.series} type="pie" width="100%" height="250" />
+          <ApexChart options={pieApexChart} series={pieApexChart.series} type="pie" width="100%" height="250" />
         )}
       </Box>
     </Flex>

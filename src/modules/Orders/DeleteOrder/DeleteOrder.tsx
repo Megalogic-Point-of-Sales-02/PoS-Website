@@ -18,8 +18,8 @@ interface DeleteOrderProps {
 
 const DeleteOrder = ({ number, orderData, isOpen, onClose, cancelRef, handleOrderChange }: DeleteOrderProps) => {
   const toast = useToast();
-  const contextChurn = useContext(CustomerChurnPredictionContext);
-  const contextSegmentation = useContext(CustomerSegmentationPerformContext);
+  const { triggerCustomerChurnPredictionContext } = useContext(CustomerChurnPredictionContext);
+  const { triggerCustomerSegmentationPerformContext } = useContext(CustomerSegmentationPerformContext);
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const { data: session, status } = useSession();
 
@@ -109,8 +109,8 @@ const DeleteOrder = ({ number, orderData, isOpen, onClose, cancelRef, handleOrde
             isClosable: true,
           });
           // Run predict machine learning model in background
-          triggerCustomerChurnPrediction(session, contextChurn);
-          triggerCustomerSegmentationPerform(session, contextSegmentation);
+          triggerCustomerChurnPredictionContext(session);
+          triggerCustomerSegmentationPerformContext(session);
 
           handleOrderChange();
           onClose();

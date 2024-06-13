@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
-import { IconButton, Avatar, Box, CloseButton, Flex, HStack, VStack, Icon, Link, Drawer, DrawerContent, Text, useDisclosure, BoxProps, FlexProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Collapse } from "@chakra-ui/react";
+import { IconButton, Avatar, Box, CloseButton, Flex, HStack, VStack, Icon, Drawer, DrawerContent, Text, useDisclosure, BoxProps, FlexProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Collapse } from "@chakra-ui/react";
 import { FiHome, FiMenu, FiChevronDown } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
@@ -10,6 +10,7 @@ import { AiOutlineInbox } from "react-icons/ai";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { BiBulb } from "react-icons/bi";
+import Link from "next/link";
 
 interface LinkItemProps {
   name: string;
@@ -93,7 +94,7 @@ const NavItem = ({ icon, endpoint, children, ...rest }: NavItemProps) => {
   const isActive = pathname === endpoint; // Check if route starts with endpoint
 
   return (
-    <Link href={endpoint} style={{ textDecoration: "none" }} _focus={{ boxShadow: "none" }}>
+    <Link href={endpoint} style={{ textDecoration: "none" }}>
       <Flex
         align="center"
         p="4"
