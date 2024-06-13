@@ -106,7 +106,7 @@ const ListCustomers = () => {
         {customers !== undefined && isLoading === false && (
           <>
             {/* Input Search */}
-            <Input placeholder="Search customers..." value={searchQuery} onChange={handleSearchChange} w="100%" colorScheme="blackAlpha" />
+            <Input placeholder="Search customers..." value={searchQuery} onChange={handleSearchChange} w="100%" className="!bg-white !text-black !border-white" />
             {/* Table */}
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">

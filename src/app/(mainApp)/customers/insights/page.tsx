@@ -1,4 +1,4 @@
-import InsightsModule from "@/modules/Insights/InsightsModule";
+import InsightsModule from "@/modules/Customers/Insights/InsightsModule";
 
 const page = () => {
   return (

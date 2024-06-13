@@ -76,7 +76,7 @@ const InsightsPage = () => {
       {/* Table */}
       <Flex flexDirection="column" rounded="1rem" bgColor="#132337" padding="1.5rem" gap="1rem" margin="1rem">
         <Flex flexDirection={{ base: "column", sm: "row" }} alignItems="center" rowGap="0.25rem">
-          <Text fontSize="2xl">Insight</Text>
+          <Text fontSize="2xl">Customer Insight</Text>
           <Spacer />
         </Flex>
         {/* Fetching the API */}
@@ -97,7 +97,7 @@ const InsightsPage = () => {
         {insights !== undefined && isLoading === false && (
           <>
             {/* Input Search */}
-            <Input placeholder="Search customer..." value={searchQuery} onChange={handleSearchChange} w="100%" colorScheme="blackAlpha" />
+            <Input placeholder="Search customer..." value={searchQuery} onChange={handleSearchChange} w="100%" className="!bg-white !text-black !border-white" />
             {/* Table */}
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">

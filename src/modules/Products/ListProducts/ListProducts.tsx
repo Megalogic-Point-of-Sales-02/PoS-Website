@@ -109,7 +109,7 @@ const ListProducts = () => {
         {isLoading === false && products !== undefined && (
           <>
           {/* Input Search */}
-          <Input placeholder="Search product..." value={searchQuery} onChange={handleSearchChange} w="100%" />
+          <Input placeholder="Search product..." value={searchQuery} onChange={handleSearchChange} w="100%" className="!bg-white !text-black !border-white" />
             {/* Table */}
             <TableContainer>
               <Table variant="simple" colorScheme="blackAlpha">
