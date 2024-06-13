@@ -13,7 +13,6 @@ const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 const CustomerChurn = () => {
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { customerChurnPredictionStatus } = useContext(CustomerChurnPredictionContext);
   const [customerChurn, setCustomerChurn] = useState<CustomerChurnResponse>({ churnCount: 0, notChurnCount: 0 });
 
   useEffect(() => {
@@ -116,7 +115,7 @@ const CustomerChurn = () => {
         )}
 
         {/* Show Customer Churn */}
-        {customerChurnPredictionStatus.status !== "processing" && isLoading === false && (
+        {isLoading === false && (
           <>
             <ApexChart options={donutApexChart.options} series={donutApexChart.series} type="donut" width={"100%"} height="250" />
           </>

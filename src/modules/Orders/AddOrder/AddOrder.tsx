@@ -6,11 +6,8 @@ import { useContext, useEffect, useState } from "react";
 import ReactSelect from "react-select";
 import DOMPurify from "isomorphic-dompurify";
 import { useSession } from "next-auth/react";
-import { triggerCustomerChurnPrediction } from "@/utils/machineLearningModelUtils/customerChurn";
 import { CustomerChurnPredictionContext } from "@/utils/predictionContext";
-import { triggerCustomerSegmentationPerform } from "@/utils/machineLearningModelUtils/customerSegmentation";
 import { CustomerSegmentationPerformContext } from "@/utils/performContext";
-import { supabase } from "@/utils/supabase";
 
 interface AddOrderProps extends BoxProps {
   onClose: () => void;
@@ -19,8 +16,8 @@ interface AddOrderProps extends BoxProps {
 }
 
 const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
-  const contextChurn = useContext(CustomerChurnPredictionContext);
-  const contextSegmentation = useContext(CustomerSegmentationPerformContext);
+  const { triggerCustomerChurnPredictionContext } = useContext(CustomerChurnPredictionContext);
+  const { triggerCustomerSegmentationPerformContext } = useContext(CustomerSegmentationPerformContext);
 
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [isLoadingPrice, setIsLoadingPrice] = useState<boolean>(false);
@@ -165,8 +162,8 @@ const AddOrder = ({ onClose, isOpen, handleOrderChange }: AddOrderProps) => {
           });
 
           // Run predict machine learning model in background
-          triggerCustomerChurnPrediction(session, contextChurn);
-          triggerCustomerSegmentationPerform(session, contextSegmentation);
+          triggerCustomerChurnPredictionContext(session);
+          triggerCustomerSegmentationPerformContext(session);
 
           // Set the form data back to the default
           setFormData({

@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import AuthProvider from "./AuthProvider";
+import { CustomerChurnPredictionProvider } from "@/utils/predictionContext";
+import { CustomerSegmentationPerformProvider } from "@/utils/performContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <AuthProvider>{children}</AuthProvider>
+          <CustomerChurnPredictionProvider>
+            <CustomerSegmentationPerformProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </CustomerSegmentationPerformProvider>
+          </CustomerChurnPredictionProvider>
         </Providers>
       </body>
     </html>

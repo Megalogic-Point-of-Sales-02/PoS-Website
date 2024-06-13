@@ -4,12 +4,8 @@ import { CustomerSegmentationPerformContextType } from "../types";
 import createConnection from "../db";
 import { CustomerUpdateRequest } from "@/interfaces/CustomerUpdateRequest";
 
-export const triggerCustomerSegmentationPerform = async (session: Session | null, context: CustomerSegmentationPerformContextType) => {
-  const { customerSegmentationPerformStatus, setCustomerSegmentationPerformStatus, customerSegmentationPerformData, setCustomerSegmentationPerformData } = context;
-
+export const triggerCustomerSegmentationPerform = async (session: Session | null) => {
   try {
-    setCustomerSegmentationPerformStatus({ status: "processing" });
-
     // Get all customers id who ordered
     const methodAndHeader = {
       method: "GET",
@@ -22,7 +18,6 @@ export const triggerCustomerSegmentationPerform = async (session: Session | null
     if (!response.ok) {
       const errorMessage = await response.json();
       console.log(errorMessage);
-      setCustomerSegmentationPerformStatus({ status: "Error in get all customers id who ordered" });
       return;
     }
     const customersId = await response.json();
@@ -38,12 +33,10 @@ export const triggerCustomerSegmentationPerform = async (session: Session | null
     if (!performResponse.ok) {
       const errorMessage = await performResponse.json();
       console.log(errorMessage);
-      setCustomerSegmentationPerformStatus({ status: "Error in performing the customer segmentation model" });
       return;
     }
     let performSegmentation = await performResponse.json();
     performSegmentation = performSegmentation.segmentation[0];
-    setCustomerSegmentationPerformData(performSegmentation);
 
     // Update segmentation field in the customers table for each customer ID
     for (let i = 0; i < performSegmentation.length; i++) {
@@ -66,13 +59,12 @@ export const triggerCustomerSegmentationPerform = async (session: Session | null
         const errorMessage = await updateResponse.json();
         console.log(errorMessage);
       }
+      // console.log("CUST SEGMENTATION UPDATE CUST:", i)
     }
 
     // if completed, set the status to completed
-    setCustomerSegmentationPerformStatus({ status: "completed" });
     console.log("Customer Segmentation Perfomance Completed");
   } catch (error) {
     console.error("Error during perform or storing perform result", error);
-    setCustomerSegmentationPerformStatus({ status: "error" });
   }
 };

@@ -5,13 +5,9 @@ import createConnection from "../db";
 import { CustomerUpdateRequest } from "@/interfaces/CustomerUpdateRequest";
 
 
-export const triggerCustomerChurnPrediction = async (session: Session | null, context: CustomerChurnPredictionContextType) => {
-  const { customerChurnPredictionStatus, setCustomerChurnPredictionStatus, customerChurnPredictionData, setCustomerChurnPredictionData } = context;
+export const triggerCustomerChurnPrediction = async (session: Session | null) => {
 
   try {
-    // Set status
-    setCustomerChurnPredictionStatus({ status: "processing" });
-
     // Get all customers id who ordered
     const methodAndHeader = {
       method: "GET",
@@ -24,7 +20,6 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
     if (!response.ok) {
       const errorMessage = await response.json();
       console.log(errorMessage);
-      setCustomerChurnPredictionStatus({ status: "Error in get all customers id who ordered" });
       return;
     }
     const customersId = await response.json();
@@ -40,12 +35,10 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
     if (!predictResponse.ok) {
       const errorMessage = await predictResponse.json();
       console.log(errorMessage);
-      setCustomerChurnPredictionStatus({ status: "Error in predicting the customer churn model" });
       return;
     }
     let predictionResult = await predictResponse.json();
     predictionResult = predictionResult.result[0];
-    setCustomerChurnPredictionData(predictionResult);
 
     // Update churn field in the customers table for each customer ID
     for (let i = 0; i < predictionResult.length; i++) {
@@ -68,13 +61,12 @@ export const triggerCustomerChurnPrediction = async (session: Session | null, co
         const errorMessage = await updateResponse.json();
         console.log(errorMessage);
       }
+      // console.log("CUST CHURN UPDATE CUST:", i)
     }
 
     // if completed, set the status to completed
-    setCustomerChurnPredictionStatus({ status: "completed" });
     console.log("Customer Churn Prediction Completed");
   } catch (error) {
     console.error(error);
-    setCustomerChurnPredictionStatus({ status: "error" });
   }
 };
