@@ -31,7 +31,6 @@ const LinkItems: Array<LinkItemProps> = [
   },
   { name: "Products", icon: AiOutlineInbox, endpoint: "/products" },
   { name: "Orders", icon: IoCartOutline, endpoint: "/orders" },
-  { name: "Insights", icon: BiBulb, endpoint: "/insights" },
 ];
 
 export default function SidebarWithHeader({ children }: { children: ReactNode }) {
