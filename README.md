@@ -253,7 +253,7 @@ Anda dapat menjalankan aplikasi dengan menjalankan perintah _**npm run dev**_.
   ```json
   [
     {
-      “id”: 1,
+      "id": 1,
       "customer_name": "John Doe",
       "gender": "Male",
       "age": 20,
