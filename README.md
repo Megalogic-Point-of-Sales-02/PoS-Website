@@ -316,6 +316,20 @@ Anda dapat menjalankan aplikasi dengan menjalankan perintah _**npm run dev**_.
 - **Headers**: `“Authorization”: “Bearer <Token>”`
 - **Response**: ```10```
 
+## Revenues
+### Total Revenues
+- **URL**: `/revenues/total`
+- **Method**: `GET`
+- **Headers**: `“Authorization”: “Bearer <Token>”`
+- **Response**: ```897750000```
+
+
+### Monthly Revenues
+- **URL**: `/revenues/monthly`
+- **Method**: `GET`
+- **Headers**: `“Authorization”: “Bearer <Token>”`
+- **Request Params**: ```date_prefix="2024-05"```
+- **Response**: ```897750000```
 
 
 
